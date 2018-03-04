@@ -86,6 +86,26 @@
       <version>1.0.0</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+       <!-- Use checker-qual7 if targeting Java 7 -->
+       <!-- <artifactId>checker-qual7</artifactId> -->
+      <version>2.3.2</version>
+    </dependency>
+    <!-- The Type Annotations compiler. Uncomment if using annotations in comments. -->
+    <!-- <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>compiler</artifactId>
+      <version>2.3.2</version>
+    </dependency> -->
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>jdk8</artifactId>
+      <version>2.3.2</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -96,7 +116,7 @@
         <executions> <!-- or?  combine.children="merge"> -->
           <execution>
             <id>enforce-properties</id>
-      <phase>validate</phase>
+	    <phase>validate</phase>
             <goals><goal>enforce</goal></goals>
           </execution>
         </executions>

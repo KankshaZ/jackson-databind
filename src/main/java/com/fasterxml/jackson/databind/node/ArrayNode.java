@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.util.RawValue;
+import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.initialization.qual.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -47,6 +49,7 @@ public class ArrayNode
         _children = children;
     }
 
+    @SuppressWarnings("nullness")
     @Override
     protected JsonNode _at(JsonPointer ptr) {
         return get(ptr.getMatchingIndex());
@@ -104,6 +107,7 @@ public class ArrayNode
         return _children.iterator();
     }
 
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode get(int index) {
         if (index >= 0 && index < _children.size()) {
@@ -112,6 +116,7 @@ public class ArrayNode
         return null;
     }
 
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode get(String fieldName) { return null; }
 
@@ -185,6 +190,7 @@ public class ArrayNode
     /**********************************************************
      */
 
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode findValue(String fieldName)
     {
@@ -215,6 +221,7 @@ public class ArrayNode
         return foundSoFar;
     }
 
+    @SuppressWarnings("nullness")
     @Override
     public ObjectNode findParent(String fieldName)
     {
@@ -330,7 +337,7 @@ public class ArrayNode
      *
      * @return Node removed, if any; null if none
      */
-    public JsonNode remove(int index)
+    public @Nullable JsonNode remove(int index)
     {
         if (index >= 0 && index < _children.size()) {
             return _children.remove(index);
@@ -817,7 +824,7 @@ public class ArrayNode
      */
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

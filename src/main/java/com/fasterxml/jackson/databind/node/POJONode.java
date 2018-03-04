@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.util.RawValue;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Value node that contains a wrapped POJO, to be serialized as
@@ -131,7 +132,7 @@ public class POJONode
      */
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

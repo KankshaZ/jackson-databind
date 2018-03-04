@@ -6,6 +6,8 @@ import java.math.BigInteger;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
+import org.checkerframework.checker.nullness.qual.*;
+
 
 /**
  * Numeric node that contains values that do not fit in simple
@@ -111,7 +113,7 @@ public class DecimalNode
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

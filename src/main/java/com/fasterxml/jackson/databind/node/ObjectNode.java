@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.util.RawValue;
+import org.checkerframework.checker.nullness.qual.*;
+
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -95,9 +97,11 @@ public class ObjectNode
         return _children.values().iterator();
     }
 
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode get(int index) { return null; }
 
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode get(String fieldName) {
         return _children.get(fieldName);
@@ -194,7 +198,7 @@ public class ObjectNode
     /* Public API, finding value nodes
     /**********************************************************
      */
-    
+    @SuppressWarnings("nullness")
     @Override
     public JsonNode findValue(String fieldName)
     {
@@ -243,6 +247,7 @@ public class ObjectNode
         return foundSoFar;
     }
     
+    @SuppressWarnings("nullness")
     @Override
     public ObjectNode findParent(String fieldName)
     {
@@ -421,7 +426,7 @@ public class ObjectNode
      * 
      * @since 2.1
      */
-    public JsonNode replace(String fieldName, JsonNode value)
+    public @Nullable JsonNode replace(String fieldName, JsonNode value)
     {
         if (value == null) { // let's not store 'raw' nulls but nodes
             value = nullNode();
@@ -478,7 +483,7 @@ public class ObjectNode
      * @deprecated Since 2.4 use either {@link #set(String,JsonNode)} or {@link #replace(String,JsonNode)},
      */
     @Deprecated
-    public JsonNode put(String fieldName, JsonNode value)
+    public @Nullable JsonNode put(String fieldName, JsonNode value)
     {
         if (value == null) { // let's not store 'raw' nulls but nodes
             value = nullNode();
@@ -493,7 +498,7 @@ public class ObjectNode
      * 
      * @return Value of specified field, if it existed; null if not
      */
-    public JsonNode remove(String fieldName) {
+    public @Nullable JsonNode remove(String fieldName) {
         return _children.remove(fieldName);
     }
 
@@ -828,7 +833,7 @@ public class ObjectNode
      */
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

@@ -4,11 +4,13 @@ import java.util.*;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Helper class used by {@link TreeTraversingParser} to keep track
  * of current location within traversed JSON tree.
  */
+@SuppressWarnings("initialization.fields.uninitialized")
 abstract class NodeCursor
     extends JsonStreamContext
 {
@@ -21,7 +23,7 @@ abstract class NodeCursor
     /**
      * Current field name
      */
-    protected String _currentName;
+    protected @Nullable String _currentName;
 
     /**
      * @since 2.5
@@ -46,6 +48,7 @@ abstract class NodeCursor
     @Override
     public final NodeCursor getParent() { return _parent; }
 
+    @SuppressWarnings("nullness")
     @Override
     public final String getCurrentName() {
         return _currentName;
@@ -125,6 +128,7 @@ abstract class NodeCursor
             
         }
         
+        @SuppressWarnings("nullness")
         @Override
         public JsonToken nextToken() {
             if (!_done) {
@@ -134,9 +138,11 @@ abstract class NodeCursor
             _node = null;
             return null;
         }
-        
+
+        @SuppressWarnings("nullness")
         @Override
         public JsonToken nextValue() { return nextToken(); }
+        @SuppressWarnings("nullness")
         @Override
         public JsonToken endToken() { return null; }
         @Override
@@ -148,6 +154,7 @@ abstract class NodeCursor
     /**
      * Cursor used for traversing non-empty JSON Array nodes
      */
+    @SuppressWarnings("initialization.fields.uninitialized")
     protected final static class ArrayCursor
         extends NodeCursor
     {
@@ -160,6 +167,7 @@ abstract class NodeCursor
             _contents = n.elements();
         }
 
+        @SuppressWarnings("nullness")
         @Override
         public JsonToken nextToken()
         {
@@ -188,6 +196,7 @@ abstract class NodeCursor
     /**
      * Cursor used for traversing non-empty JSON Object nodes
      */
+    @SuppressWarnings("initialization.fields.uninitialized")
     protected final static class ObjectCursor
         extends NodeCursor
     {
@@ -203,6 +212,7 @@ abstract class NodeCursor
             _needEntry = true;
         }
 
+        @SuppressWarnings("nullness")
         @Override
         public JsonToken nextToken()
         {
@@ -235,6 +245,7 @@ abstract class NodeCursor
         @Override
         public JsonToken endToken() { return JsonToken.END_OBJECT; }
 
+        @SuppressWarnings("nullness")
         @Override
         public JsonNode currentNode() {
             return (_current == null) ? null : _current.getValue();

@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.io.NumberOutput;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.checkerframework.checker.nullness.qual.*;
 
 
 /**
@@ -94,7 +95,7 @@ public class LongNode
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

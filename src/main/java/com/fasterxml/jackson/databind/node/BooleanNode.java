@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.checkerframework.checker.nullness.qual.*;
 
 
 /**
@@ -85,7 +86,7 @@ public class BooleanNode
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         /* 11-Mar-2013, tatu: Apparently ClassLoaders can manage to load
          *    different instances, rendering identity comparisons broken.

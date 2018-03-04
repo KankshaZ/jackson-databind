@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * This singleton value class is used to contain explicit JSON null
@@ -52,7 +52,7 @@ public final class NullNode
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         return (o == this);
     }
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.checkerframework.checker.nullness.qual.*;
 
 
 /**
@@ -33,7 +34,7 @@ public class BinaryNode
         }
     }
 
-    public static BinaryNode valueOf(byte[] data)
+    public @Nullable static BinaryNode valueOf(byte[] data)
     {
         if (data == null) {
             return null;
@@ -44,7 +45,7 @@ public class BinaryNode
         return new BinaryNode(data);
     }
 
-    public static BinaryNode valueOf(byte[] data, int offset, int length)
+    public @Nullable static BinaryNode valueOf(byte[] data, int offset, int length)
     {
         if (data == null) {
             return null;
@@ -96,7 +97,7 @@ public class BinaryNode
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;

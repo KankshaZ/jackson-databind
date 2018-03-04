@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * This singleton node class is generated to denote "missing nodes"
@@ -85,7 +86,7 @@ public final class MissingNode
     }
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         /* Hmmh. Since there's just a singleton instance, this
          * fails in all cases but with identity comparison.

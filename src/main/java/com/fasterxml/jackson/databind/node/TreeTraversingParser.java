@@ -9,6 +9,8 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.checkerframework.checker.nullness.qual.*;
+
 
 /**
  * Facade over {@link JsonNode} that implements {@link JsonParser} to allow
@@ -29,7 +31,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**
      * Traversal context within tree
      */
-    protected NodeCursor _nodeCursor;
+    protected @Nullable NodeCursor _nodeCursor;
 
     /*
     /**********************************************************
@@ -61,9 +63,10 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Life-cycle
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     public TreeTraversingParser(JsonNode n) { this(n, null); }
 
+    @SuppressWarnings("nullness")
     public TreeTraversingParser(JsonNode n, ObjectCodec codec)
     {
         super(0);
@@ -99,7 +102,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Closeable implementation
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public void close() throws IOException
     {
@@ -115,7 +118,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, traversal
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public JsonToken nextToken() throws IOException, JsonParseException
     {
@@ -185,7 +188,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, token accessors
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public String getCurrentName() {
         return (_nodeCursor == null) ? null : _nodeCursor.getCurrentName();
@@ -199,6 +202,7 @@ public class TreeTraversingParser extends ParserMinimalBase
         }
     }
     
+    @SuppressWarnings("nullness")
     @Override
     public JsonStreamContext getParsingContext() {
         return _nodeCursor;
@@ -219,7 +223,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, access to textual content
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public String getText()
     {
@@ -274,7 +278,7 @@ public class TreeTraversingParser extends ParserMinimalBase
      */
 
     //public byte getByteValue() throws IOException, JsonParseException
-
+    @SuppressWarnings("nullness")
     @Override
     public NumberType getNumberType() throws IOException, JsonParseException {
         JsonNode n = currentNumericNode();
@@ -317,6 +321,7 @@ public class TreeTraversingParser extends ParserMinimalBase
         return currentNumericNode().numberValue();
     }
 
+    @SuppressWarnings("nullness")
     @Override
     public Object getEmbeddedObject()
     {
@@ -350,7 +355,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, typed binary (base64) access
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public byte[] getBinaryValue(Base64Variant b64variant)
         throws IOException, JsonParseException
@@ -394,7 +399,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    protected JsonNode currentNode() {
+    protected @Nullable JsonNode currentNode() {
         if (_closed || _nodeCursor == null) {
             return null;
         }

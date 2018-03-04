@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * This intermediate base class is used for all leaf nodes, that is,
@@ -61,7 +62,7 @@ public abstract class ValueNode
      * Navigation methods
      **********************************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public final JsonNode get(int index) { return null; }
 
@@ -74,6 +75,7 @@ public abstract class ValueNode
     @Override
     public final boolean hasNonNull(int index) { return false; }
 
+    @SuppressWarnings("nullness")
     @Override
     public final JsonNode get(String fieldName) { return null; }
 
@@ -91,13 +93,14 @@ public abstract class ValueNode
      * Find methods: all "leaf" nodes return the same for these
      **********************************************************************
      */
-
+    @SuppressWarnings("nullness")
     @Override
     public final JsonNode findValue(String fieldName) {
         return null;
     }
 
     // note: co-variant return type
+    @SuppressWarnings("nullness")
     @Override
     public final ObjectNode findParent(String fieldName) {
         return null;

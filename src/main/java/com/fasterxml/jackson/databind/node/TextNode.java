@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Value node that contains a text value.
@@ -31,7 +32,7 @@ public class TextNode
      * @return Resulting {@link TextNode} object, if <b>v</b>
      *   is NOT null; null if it is.
      */
-    public static TextNode valueOf(String v)
+    public static @Nullable TextNode valueOf(String v)
     {
         if (v == null) {
             return null;
@@ -59,7 +60,7 @@ public class TextNode
      * base64 encoded; if so, they are decoded and resulting binary
      * data is returned.
      */
-    @SuppressWarnings("resource")
+    @SuppressWarnings({"resource", "nullness"})
     public byte[] getBinaryValue(Base64Variant b64variant) throws IOException
     {
         final String str = _value.trim();
@@ -151,7 +152,7 @@ e.getMessage()),
      */
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (o == this) return true;
         if (o == null) return false;
