@@ -3,7 +3,7 @@
   * This branch contains the annotated jackson databind library for nullness checker strictly according to the specifications mentioned in JavaDoc. 
   * The command used for checker is as follow : javac -processor nullness _Myfile.java_
   * The programs were also tested for Tainted Checker but no bugs were found
-  * For quick up & running checking and adding of annotations, clone the repository and download the [jackson databind, jackson-core, and jackson-annotations jars] (https://mvnrepository.com/artifact/com.fasterxml.jackson.core). Add them to your CLASSPATH.	
+  * For quick up & running checking and adding of annotations, clone the repository and download the [jackson databind, jackson-core, and jackson-annotations jars](https://mvnrepository.com/artifact/com.fasterxml.jackson.core). Add them to your CLASSPATH.	
   * pom.xml is yet to be updated for nullness checker.
 
 ### List of annotated files
