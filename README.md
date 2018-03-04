@@ -1,3 +1,35 @@
+#Annotated jackson-databind
+
+  * This branch contains the annotated jackson databind library for nullness checker strictly according to the specifications mentioned in JavaDoc. 
+  * The command used for checker is as follow : javac -processor nullness _Myfile.java_
+  * The programs were also tested for Tainted Checker but no bugs were found
+  * For quick up & running checking and adding of annotations, clone the repository and download the [jackson databind, jackson-core, and jackson-annotations jars] (https://mvnrepository.com/artifact/com.fasterxml.jackson.core). Add them to your CLASSPATH.	
+  * pom.xml is yet to be updated for nullness checker.
+
+### List of annotated files
+
+  * ArrayNode.java
+  * BaseJsonNode.java
+  * BigIntegerNode.java
+  * BinaryNode.java
+  * BooleanNode.java
+  * DecimalNode.java
+  * DoubleNode.java
+  * FloatNode.java
+  * IntNode.java
+  * JsonNodeFactory.java
+  * LongNode.java
+  * MissingNode.java
+  * NodeCursor.java
+  * NullNode.java
+  * ObjectNode.java
+  * POJONode.java
+  * ShortNode.java
+  * TextNode.java
+  * TreeTraversingParser.java
+  * ValueNode.java
+
+
 # Overview
 
 This project contains the general-purpose data-binding functionality
