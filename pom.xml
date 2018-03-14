@@ -46,8 +46,7 @@
     <jdk.module.name>com.fasterxml.jackson.databind</jdk.module.name>
 
 
-    <!--  -->
-       <!-- These properties will be set by the Maven Dependency plugin -->
+    <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <!-- Uncomment to use the Type Annotations compiler. -->
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
@@ -115,10 +114,6 @@
 
 
   </dependencies>
-
-
-
-  
 
   <build>
      <plugins>
