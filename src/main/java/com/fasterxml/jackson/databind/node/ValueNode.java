@@ -62,6 +62,7 @@ public abstract class ValueNode
      * Navigation methods
      **********************************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public final JsonNode get(int index) { return null; }
@@ -93,6 +94,7 @@ public abstract class ValueNode
      * Find methods: all "leaf" nodes return the same for these
      **********************************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public final JsonNode findValue(String fieldName) {

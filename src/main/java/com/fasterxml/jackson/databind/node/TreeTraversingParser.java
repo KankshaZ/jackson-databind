@@ -63,6 +63,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Life-cycle
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     public TreeTraversingParser(JsonNode n) { this(n, null); }
 
@@ -102,6 +103,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Closeable implementation
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public void close() throws IOException
@@ -118,6 +120,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, traversal
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public JsonToken nextToken() throws IOException, JsonParseException
@@ -188,6 +191,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, token accessors
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public String getCurrentName() {
@@ -223,6 +227,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, access to textual content
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public String getText()
@@ -278,6 +283,7 @@ public class TreeTraversingParser extends ParserMinimalBase
      */
 
     //public byte getByteValue() throws IOException, JsonParseException
+
     @SuppressWarnings("nullness")
     @Override
     public NumberType getNumberType() throws IOException, JsonParseException {
@@ -355,6 +361,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /* Public API, typed binary (base64) access
     /**********************************************************
      */
+
     @SuppressWarnings("nullness")
     @Override
     public byte[] getBinaryValue(Base64Variant b64variant)
