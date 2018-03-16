@@ -70,7 +70,7 @@ public abstract class BaseJsonNode
      * Returns code that identifies type of underlying numeric
      * value, if (and only if) node is a number node.
      */
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //NumberType has been initialized to NonNull
     @Override
     public JsonParser.NumberType numberType() {
         // most types non-numeric, so:

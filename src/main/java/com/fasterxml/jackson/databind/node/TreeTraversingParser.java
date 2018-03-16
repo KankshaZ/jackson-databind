@@ -31,7 +31,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**
      * Traversal context within tree
      */
-    protected @Nullable NodeCursor _nodeCursor;
+    protected NodeCursor _nodeCursor;
 
     /*
     /**********************************************************
@@ -64,10 +64,10 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //null in ObjectCodec is desirable 
     public TreeTraversingParser(JsonNode n) { this(n, null); }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings({"initialization.fields.uninitialized", "nullness"}) //_nextToken initialized as non-null value 
     public TreeTraversingParser(JsonNode n, ObjectCodec codec)
     {
         super(0);
@@ -104,7 +104,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //It is desirable to set _nodeCursor and _currToken as null
     @Override
     public void close() throws IOException
     {
@@ -121,7 +121,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //_currToken cannot be null since it is always given value of non-null 
     @Override
     public JsonToken nextToken() throws IOException, JsonParseException
     {
@@ -192,7 +192,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //It is desirable to return null
     @Override
     public String getCurrentName() {
         return (_nodeCursor == null) ? null : _nodeCursor.getCurrentName();
@@ -206,7 +206,6 @@ public class TreeTraversingParser extends ParserMinimalBase
         }
     }
     
-    @SuppressWarnings("nullness")
     @Override
     public JsonStreamContext getParsingContext() {
         return _nodeCursor;
@@ -228,7 +227,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //First condition requires to return null. All other gets will return non-null if _closed is false 
     @Override
     public String getText()
     {
@@ -251,7 +250,7 @@ public class TreeTraversingParser extends ParserMinimalBase
                 return n.asText();
             }
         default:
-        	return (_currToken == null) ? null : _currToken.asString();
+            return (_currToken == null) ? null : _currToken.asString();
         }
     }
 
@@ -284,7 +283,7 @@ public class TreeTraversingParser extends ParserMinimalBase
 
     //public byte getByteValue() throws IOException, JsonParseException
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //It is desirable to return null
     @Override
     public NumberType getNumberType() throws IOException, JsonParseException {
         JsonNode n = currentNumericNode();
@@ -327,7 +326,7 @@ public class TreeTraversingParser extends ParserMinimalBase
         return currentNumericNode().numberValue();
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //Before method gets called, there is a check of _closed. Method called only when _closed is false.
     @Override
     public Object getEmbeddedObject()
     {
@@ -362,7 +361,7 @@ public class TreeTraversingParser extends ParserMinimalBase
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //If null is returned, it is desirable
     @Override
     public byte[] getBinaryValue(Base64Variant b64variant)
         throws IOException, JsonParseException

@@ -63,7 +63,7 @@ public abstract class ValueNode
      **********************************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //if the element value has been explicitly set as <code>null</code> a {@link com.fasterxml.jackson.databind.node.NullNode} will be returned, not null.
     @Override
     public final JsonNode get(int index) { return null; }
 
@@ -76,7 +76,7 @@ public abstract class ValueNode
     @Override
     public final boolean hasNonNull(int index) { return false; }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //if the element value has been explicitly set as <code>null</code> a {@link com.fasterxml.jackson.databind.node.NullNode} will be returned, not null.
     @Override
     public final JsonNode get(String fieldName) { return null; }
 
@@ -95,14 +95,14 @@ public abstract class ValueNode
      **********************************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //Method returns null
     @Override
     public final JsonNode findValue(String fieldName) {
         return null;
     }
 
     // note: co-variant return type
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //Method returns null
     @Override
     public final ObjectNode findParent(String fieldName) {
         return null;

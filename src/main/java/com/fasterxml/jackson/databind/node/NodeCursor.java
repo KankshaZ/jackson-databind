@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.*;
  * Helper class used by {@link TreeTraversingParser} to keep track
  * of current location within traversed JSON tree.
  */
-@SuppressWarnings("initialization.fields.uninitialized")
+@SuppressWarnings("initialization.fields.uninitialized") //_currentValue will be always initialized as non-null
 abstract class NodeCursor
     extends JsonStreamContext
 {
@@ -23,7 +23,7 @@ abstract class NodeCursor
     /**
      * Current field name
      */
-    protected @Nullable String _currentName;
+    protected String _currentName;
 
     /**
      * @since 2.5
@@ -48,7 +48,6 @@ abstract class NodeCursor
     @Override
     public final NodeCursor getParent() { return _parent; }
 
-    @SuppressWarnings("nullness")
     @Override
     public final String getCurrentName() {
         return _currentName;
@@ -128,7 +127,7 @@ abstract class NodeCursor
             
         }
         
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if _done is true
         @Override
         public JsonToken nextToken() {
             if (!_done) {
@@ -139,10 +138,10 @@ abstract class NodeCursor
             return null;
         }
 
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if _done is true
         @Override
         public JsonToken nextValue() { return nextToken(); }
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if it is the end token
         @Override
         public JsonToken endToken() { return null; }
         @Override
@@ -167,7 +166,7 @@ abstract class NodeCursor
             _contents = n.elements();
         }
 
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if there is no next token
         @Override
         public JsonToken nextToken()
         {
@@ -212,7 +211,7 @@ abstract class NodeCursor
             _needEntry = true;
         }
 
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if there is no next token
         @Override
         public JsonToken nextToken()
         {
@@ -245,7 +244,7 @@ abstract class NodeCursor
         @Override
         public JsonToken endToken() { return JsonToken.END_OBJECT; }
 
-        @SuppressWarnings("nullness")
+        @SuppressWarnings("nullness") //method should return null if _current is null
         @Override
         public JsonNode currentNode() {
             return (_current == null) ? null : _current.getValue();

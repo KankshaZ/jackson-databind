@@ -97,11 +97,11 @@ public class ObjectNode
         return _children.values().iterator();
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //method returns null, desirable
     @Override
     public JsonNode get(int index) { return null; }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //with argument fieldName, methods returns non-null value always
     @Override
     public JsonNode get(String fieldName) {
         return _children.get(fieldName);
@@ -198,7 +198,7 @@ public class ObjectNode
     /* Public API, finding value nodes
     /**********************************************************
      */
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //returning null is necessary if certain conditions are not satisfied
     @Override
     public JsonNode findValue(String fieldName)
     {
@@ -247,7 +247,7 @@ public class ObjectNode
         return foundSoFar;
     }
     
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //returning null is necessary if certain conditions are not satisfied
     @Override
     public ObjectNode findParent(String fieldName)
     {

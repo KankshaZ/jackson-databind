@@ -60,7 +60,7 @@ public class TextNode
      * base64 encoded; if so, they are decoded and resulting binary
      * data is returned.
      */
-    @SuppressWarnings({"resource", "nullness"})
+    @SuppressWarnings({"resource", "nullness"}) //binary data returned is non-null
     public byte[] getBinaryValue(Base64Variant b64variant) throws IOException
     {
         final String str = _value.trim();

@@ -286,7 +286,7 @@ public class JsonNodeFactory
      * Factory method for constructing a node that represents JSON
      * String value
      */
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //when argument text is passed, return value will be non-null
     @Override
     public TextNode textNode(String text) { return TextNode.valueOf(text); }
 
@@ -295,7 +295,7 @@ public class JsonNodeFactory
      * binary data, and will get serialized as equivalent base64-encoded
      * String value
      */
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //when argument data is passed, return value will be non-null
     @Override
     public BinaryNode binaryNode(byte[] data) { return BinaryNode.valueOf(data); }
 
@@ -304,7 +304,7 @@ public class JsonNodeFactory
      * binary data, and will get serialized as equivalent base64-encoded
      * String value
      */
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //when argument data is passed, return value will be non-null
     @Override
     public BinaryNode binaryNode(byte[] data, int offset, int length) {
         return BinaryNode.valueOf(data, offset, length);

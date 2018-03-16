@@ -49,7 +49,7 @@ public class ArrayNode
         _children = children;
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //with formal parameter ptr, getMatchingIndex always returns a non-null value
     @Override
     protected JsonNode _at(JsonPointer ptr) {
         return get(ptr.getMatchingIndex());
@@ -107,16 +107,16 @@ public class ArrayNode
         return _children.iterator();
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //From implementation returning null value when index is not in range is desired.
     @Override
-    public JsonNode get(int index) {
+    public @Nullable JsonNode get(int index) {
         if (index >= 0 && index < _children.size()) {
             return _children.get(index);
         }
         return null;
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //From implementation returning null value is desired.
     @Override
     public JsonNode get(String fieldName) { return null; }
 
@@ -190,7 +190,7 @@ public class ArrayNode
     /**********************************************************
      */
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //with argument fieldName, if findValue returns a null value, null is returned
     @Override
     public JsonNode findValue(String fieldName)
     {
@@ -221,7 +221,7 @@ public class ArrayNode
         return foundSoFar;
     }
 
-    @SuppressWarnings("nullness")
+    @SuppressWarnings("nullness") //Overidding implementation deviates from original JsonNode's specifications and returns non null type values.
     @Override
     public ObjectNode findParent(String fieldName)
     {
