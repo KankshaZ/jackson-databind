@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.util.Converter;
 import com.fasterxml.jackson.databind.util.NameTransformer;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Abstract class that defines API used for introspecting annotation-based
@@ -188,7 +189,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.0
      */
-    public ObjectIdInfo findObjectIdInfo(Annotated ann) {
+    public @Nullable ObjectIdInfo findObjectIdInfo(Annotated ann) {
         return null;
     }
 
@@ -217,7 +218,7 @@ public abstract class AnnotationIntrospector
      * NOTE: method signature changed in 2.1, to return {@link PropertyName}
      * instead of String.
      */
-    public PropertyName findRootName(AnnotatedClass ac) {
+    public @Nullable PropertyName findRootName(AnnotatedClass ac) {
         return null;
     }
 
@@ -249,7 +250,7 @@ public abstract class AnnotationIntrospector
      *   Boolean.FALSE if they are not to be ignored, null for default
      *   handling (which is 'do not ignore')
      */
-    public Boolean isIgnorableType(AnnotatedClass ac) { return null; }
+    public @Nullable Boolean isIgnorableType(AnnotatedClass ac) { return null; }
 
     /**
      * Method for finding if annotated class has associated filter; and if so,
@@ -258,7 +259,7 @@ public abstract class AnnotationIntrospector
      * @return Id of the filter to use for filtering properties of annotated
      *    class, if any; or null if none found.
      */
-    public Object findFilterId(Annotated ann) { return null; }
+    public @Nullable Object findFilterId(Annotated ann) { return null; }
 
     /**
      * Method for finding {@link PropertyNamingStrategy} for given
@@ -271,7 +272,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.1
      */
-    public Object findNamingStrategy(AnnotatedClass ac) { return null; }
+    public @Nullable Object findNamingStrategy(AnnotatedClass ac) { return null; }
 
     /**
      * Method used to check whether specified class defines a human-readable
@@ -284,7 +285,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.7
      */
-    public String findClassDescription(AnnotatedClass ac) { return null; }
+    public @Nullable String findClassDescription(AnnotatedClass ac) { return null; }
 
     /**
      * @param forSerialization True if requesting properties to ignore for serialization;
@@ -295,7 +296,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.8, use {@link #findPropertyIgnorals} instead
      */
     @Deprecated // since 2.8
-    public String[] findPropertiesToIgnore(Annotated ac, boolean forSerialization) {
+    public String @Nullable [] findPropertiesToIgnore(Annotated ac, boolean forSerialization) {
         return null;
     }
 
@@ -303,7 +304,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.6, use variant that takes second argument.
      */
     @Deprecated // since 2.6
-    public String[] findPropertiesToIgnore(Annotated ac) {
+    public String @Nullable [] findPropertiesToIgnore(Annotated ac) {
         return null;
     }
 
@@ -313,7 +314,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.8, use {@link #findPropertyIgnorals} instead
      */
     @Deprecated // since 2.8
-    public Boolean findIgnoreUnknownProperties(AnnotatedClass ac) { return null; }
+    public @Nullable Boolean findIgnoreUnknownProperties(AnnotatedClass ac) { return null; }
     
     /*
     /**********************************************************
@@ -352,7 +353,7 @@ public abstract class AnnotationIntrospector
      * 
      * @return Type resolver builder for given type, if one found; null if none
      */
-    public TypeResolverBuilder<?> findTypeResolver(MapperConfig<?> config,
+    public @Nullable TypeResolverBuilder<?> findTypeResolver(MapperConfig<?> config,
             AnnotatedClass ac, JavaType baseType) {
         return null;
     }
@@ -372,7 +373,7 @@ public abstract class AnnotationIntrospector
      * @return Type resolver builder for properties of given entity, if one found;
      *    null if none
      */
-    public TypeResolverBuilder<?> findPropertyTypeResolver(MapperConfig<?> config,
+    public @Nullable TypeResolverBuilder<?> findPropertyTypeResolver(MapperConfig<?> config,
             AnnotatedMember am, JavaType baseType) {
         return null;
     }
@@ -394,7 +395,7 @@ public abstract class AnnotationIntrospector
      * @return Type resolver builder for values contained in properties of given entity,
      *    if one found; null if none
      */    
-    public TypeResolverBuilder<?> findPropertyContentTypeResolver(MapperConfig<?> config,
+    public @Nullable TypeResolverBuilder<?> findPropertyContentTypeResolver(MapperConfig<?> config,
             AnnotatedMember am, JavaType containerType) {
         return null;
     }
@@ -408,21 +409,21 @@ public abstract class AnnotationIntrospector
      * 
      * @param a Annotated entity (class, field/method) to check for annotations
      */
-    public List<NamedType> findSubtypes(Annotated a) { return null; }
+    public @Nullable List<NamedType> findSubtypes(Annotated a) { return null; }
 
     /**
      * Method for checking if specified type has explicit name.
      * 
      * @param ac Class to check for type name annotations
      */
-    public String findTypeName(AnnotatedClass ac) { return null; }
+    public @Nullable String findTypeName(AnnotatedClass ac) { return null; }
 
     /**
      * Method for checking whether given accessor claims to represent
      * type id: if so, its value may be used as an override,
      * instead of generated type id.
      */
-    public Boolean isTypeId(AnnotatedMember member) { return null; }
+    public @Nullable Boolean isTypeId(AnnotatedMember member) { return null; }
 
     /*
     /**********************************************************
@@ -434,7 +435,7 @@ public abstract class AnnotationIntrospector
      * Method for checking if given member indicates that it is part
      * of a reference (parent/child).
      */
-    public ReferenceProperty findReferenceType(AnnotatedMember member) { return null; }
+    public @Nullable ReferenceProperty findReferenceType(AnnotatedMember member) { return null; }
 
     /**
      * Method called to check whether given property is marked to be "unwrapped"
@@ -444,7 +445,7 @@ public abstract class AnnotationIntrospector
      * should  be done, or null if not -- note that transformation may simply
      * be identity transformation (no changes).
      */
-    public NameTransformer findUnwrappingNameTransformer(AnnotatedMember member) { return null; }
+    public @Nullable NameTransformer findUnwrappingNameTransformer(AnnotatedMember member) { return null; }
 
     /**
      * Method called to check whether given property is marked to
@@ -470,7 +471,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.9
      */
-    public JacksonInject.Value findInjectableValue(AnnotatedMember m) {
+    public JacksonInject.@Nullable Value findInjectableValue(AnnotatedMember m) {
         // 05-Apr-2017, tatu: Just for 2.9, call deprecated method to help
         //    with some cases of overrides for legacy code
         Object id = findInjectableValueId(m);
@@ -485,7 +486,7 @@ public abstract class AnnotationIntrospector
      * an annotation that suggests whether value for matching property
      * is required or not.
      */
-    public Boolean hasRequiredMarker(AnnotatedMember m) { return null; }
+    public @Nullable Boolean hasRequiredMarker(AnnotatedMember m) { return null; }
 
     /**
      * Method for checking if annotated property (represented by a field or
@@ -503,7 +504,7 @@ public abstract class AnnotationIntrospector
      * @return Array of views (represented by classes) that the property is included in;
      *    if null, always included (same as returning array containing <code>Object.class</code>)
      */
-    public Class<?>[] findViews(Annotated a) { return null; }
+    public Class<?> @Nullable [] findViews(Annotated a) { return null; }
 
     /**
      * Method for finding format annotations for property or class.
@@ -528,7 +529,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.1
      */
-    public PropertyName findWrapperName(Annotated ann) { return null; }
+    public @Nullable PropertyName findWrapperName(Annotated ann) { return null; }
 
     /**
      * Method for finding suggested default value (as simple textual serialization)
@@ -538,7 +539,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.5
      */
-    public String findPropertyDefaultValue(Annotated ann) { return null; }
+    public @Nullable String findPropertyDefaultValue(Annotated ann) { return null; }
 
     /**
      * Method used to check whether specified property member (accessor
@@ -550,7 +551,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.3
      */
-    public String findPropertyDescription(Annotated ann) { return null; }
+    public @Nullable String findPropertyDescription(Annotated ann) { return null; }
 
     /**
      * Method used to check whether specified property member (accessor
@@ -563,7 +564,7 @@ public abstract class AnnotationIntrospector
      * 
      * @return Explicitly specified index for the property, if any
      */
-    public Integer findPropertyIndex(Annotated ann) { return null; }
+    public @Nullable Integer findPropertyIndex(Annotated ann) { return null; }
 
     /**
      * Method for finding implicit name for a property that given annotated
@@ -578,7 +579,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.4
      */
-    public String findImplicitPropertyName(AnnotatedMember member) { return null; }
+    public @Nullable String findImplicitPropertyName(AnnotatedMember member) { return null; }
 
     /**
      * Method called to find if given property has alias(es) defined.
@@ -588,7 +589,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.9
      */
-    public List<PropertyName> findPropertyAliases(Annotated ann) { return null; }
+    public @Nullable List<PropertyName> findPropertyAliases(Annotated ann) { return null; }
 
     /**
      * Method for finding optional access definition for a property, annotated
@@ -599,7 +600,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.6
      */
-    public JsonProperty.Access findPropertyAccess(Annotated ann) { return null; }
+    public JsonProperty.@Nullable Access findPropertyAccess(Annotated ann) { return null; }
 
     /**
      * Method called in cases where a class has two methods eligible to be used
@@ -609,7 +610,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.7
      */
-    public AnnotatedMethod resolveSetterConflict(MapperConfig<?> config,
+    public @Nullable AnnotatedMethod resolveSetterConflict(MapperConfig<?> config,
             AnnotatedMethod setter1, AnnotatedMethod setter2) {
         return null;
     }
@@ -618,7 +619,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.9 Use {@link #findInjectableValue} instead
      */
     @Deprecated // since 2.9
-    public Object findInjectableValueId(AnnotatedMember m) {
+    public @Nullable Object findInjectableValueId(AnnotatedMember m) {
         return null;
     }
 
@@ -635,7 +636,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonSerializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findSerializer(Annotated am) {
+    public @Nullable Object findSerializer(Annotated am) {
         return null;
     }
 
@@ -646,7 +647,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonSerializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findKeySerializer(Annotated am) {
+    public @Nullable Object findKeySerializer(Annotated am) {
         return null;
     }
 
@@ -658,7 +659,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonSerializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findContentSerializer(Annotated am) {
+    public @Nullable Object findContentSerializer(Annotated am) {
         return null;
     }
 
@@ -668,7 +669,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.3
      */
-    public Object findNullSerializer(Annotated am) {
+    public @Nullable Object findNullSerializer(Annotated am) {
         return null;
     }
 
@@ -680,7 +681,7 @@ public abstract class AnnotationIntrospector
      *
      * @return Typing mode to use, if annotation is found; null otherwise
      */
-    public JsonSerialize.Typing findSerializationTyping(Annotated a) {
+    public JsonSerialize.@Nullable Typing findSerializationTyping(Annotated a) {
         return null;
     }
 
@@ -705,7 +706,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.2
      */
-    public Object findSerializationConverter(Annotated a) {
+    public @Nullable Object findSerializationConverter(Annotated a) {
         return null;
     }
 
@@ -727,7 +728,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.2
      */
-    public Object findSerializationContentConverter(AnnotatedMember a) {
+    public @Nullable Object findSerializationContentConverter(AnnotatedMember a) {
         return null;
     }
 
@@ -802,7 +803,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineSerializationType} instead
      */
     @Deprecated // since 2.7
-    public Class<?> findSerializationType(Annotated a) {
+    public @Nullable Class<?> findSerializationType(Annotated a) {
         return null;
     }
 
@@ -810,7 +811,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineSerializationType} instead
      */
     @Deprecated // since 2.7
-    public Class<?> findSerializationKeyType(Annotated am, JavaType baseType) {
+    public @Nullable Class<?> findSerializationKeyType(Annotated am, JavaType baseType) {
         return null;
     }
 
@@ -818,7 +819,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineSerializationType} instead
      */
     @Deprecated // since 2.7
-    public Class<?> findSerializationContentType(Annotated am, JavaType baseType) {
+    public @Nullable Class<?> findSerializationContentType(Annotated am, JavaType baseType) {
         return null;
     }
     
@@ -832,7 +833,7 @@ public abstract class AnnotationIntrospector
      * Method for accessing defined property serialization order (which may be
      * partial). May return null if no ordering is defined.
      */
-    public String[] findSerializationPropertyOrder(AnnotatedClass ac) {
+    public String @Nullable [] findSerializationPropertyOrder(AnnotatedClass ac) {
         return null;
     }
 
@@ -841,7 +842,7 @@ public abstract class AnnotationIntrospector
      * for which no explicit is defined should be alphabetically (lexicograpically)
      * ordered
      */
-    public Boolean findSerializationSortAlphabetically(Annotated ann) {
+    public @Nullable Boolean findSerializationSortAlphabetically(Annotated ann) {
         return null;
     }
 
@@ -874,7 +875,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.1
      */
-    public PropertyName findNameForSerialization(Annotated a) {
+    public @Nullable PropertyName findNameForSerialization(Annotated a) {
         return null;
     }
 
@@ -891,7 +892,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.9
      */
-    public Boolean hasAsValue(Annotated a) {
+    public @Nullable Boolean hasAsValue(Annotated a) {
         // 20-Nov-2016, tatu: Delegate in 2.9; remove redirect from later versions
         if (a instanceof AnnotatedMethod) {
             if (hasAsValueAnnotation((AnnotatedMethod) a)) {
@@ -912,7 +913,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.9
      */
-    public Boolean hasAnyGetter(Annotated a) {
+    public @Nullable Boolean hasAnyGetter(Annotated a) {
 
         // 21-Nov-2016, tatu: Delegate in 2.9; remove redirect from later versions
         if (a instanceof AnnotatedMethod) {
@@ -947,7 +948,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.8
      */
-    public Enum<?> findDefaultEnumValue(Class<Enum<?>> enumCls) {
+    public @Nullable Enum<?> findDefaultEnumValue(Class<Enum<?>> enumCls) {
         return null;
     }
 
@@ -998,7 +999,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonDeserializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findDeserializer(Annotated am) {
+    public @Nullable Object findDeserializer(Annotated am) {
         return null;
     }
 
@@ -1010,7 +1011,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonDeserializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findKeyDeserializer(Annotated am) {
+    public @Nullable Object findKeyDeserializer(Annotated am) {
         return null;
     }
 
@@ -1023,7 +1024,7 @@ public abstract class AnnotationIntrospector
      * <code>Class&lt;JsonDeserializer></code>); if value of different
      * type is returned, a runtime exception may be thrown by caller.
      */
-    public Object findContentDeserializer(Annotated am) {
+    public @Nullable Object findContentDeserializer(Annotated am) {
         return null;
     }
 
@@ -1049,7 +1050,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.2
      */
-    public Object findDeserializationConverter(Annotated a) {
+    public @Nullable Object findDeserializationConverter(Annotated a) {
         return null;
     }
 
@@ -1071,7 +1072,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.2
      */
-    public Object findDeserializationContentConverter(AnnotatedMember a) {
+    public @Nullable Object findDeserializationContentConverter(AnnotatedMember a) {
         return null;
     }
 
@@ -1107,7 +1108,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineDeserializationType} instead
      */
     @Deprecated
-    public Class<?> findDeserializationType(Annotated am, JavaType baseType) {
+    public @Nullable Class<?> findDeserializationType(Annotated am, JavaType baseType) {
         return null;
     }
     
@@ -1124,7 +1125,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineDeserializationType} instead
      */
     @Deprecated
-    public Class<?> findDeserializationKeyType(Annotated am, JavaType baseKeyType) {
+    public @Nullable Class<?> findDeserializationKeyType(Annotated am, JavaType baseKeyType) {
         return null;
     }
 
@@ -1142,7 +1143,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.7 call {@link #refineDeserializationType} instead
      */
     @Deprecated
-    public Class<?> findDeserializationContentType(Annotated am, JavaType baseContentType) {
+    public @Nullable Class<?> findDeserializationContentType(Annotated am, JavaType baseContentType) {
         return null;
     }
 
@@ -1157,7 +1158,7 @@ public abstract class AnnotationIntrospector
      * type (class): return value can either be an instance of
      * instantiator, or class of instantiator to create.
      */
-    public Object findValueInstantiator(AnnotatedClass ac) {
+    public @Nullable Object findValueInstantiator(AnnotatedClass ac) {
         return null;
     }
 
@@ -1174,14 +1175,14 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.0
      */
-    public Class<?> findPOJOBuilder(AnnotatedClass ac) {
+    public @Nullable Class<?> findPOJOBuilder(AnnotatedClass ac) {
         return null;
     }
 
     /**
      * @since 2.0
      */
-    public JsonPOJOBuilder.Value findPOJOBuilderConfig(AnnotatedClass ac) {
+    public JsonPOJOBuilder.@Nullable Value findPOJOBuilderConfig(AnnotatedClass ac) {
         return null;
     }
 
@@ -1205,7 +1206,7 @@ public abstract class AnnotationIntrospector
      * 
      * @since 2.1
      */
-    public PropertyName findNameForDeserialization(Annotated a) {
+    public @Nullable PropertyName findNameForDeserialization(Annotated a) {
         return null;
     }
     
@@ -1220,7 +1221,7 @@ public abstract class AnnotationIntrospector
      *   
      * @since 2.9
      */
-    public Boolean hasAnySetter(Annotated a) {
+    public @Nullable Boolean hasAnySetter(Annotated a) {
         return null;
     }
 
@@ -1239,7 +1240,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.9
      */
-    public Boolean findMergeInfo(Annotated a) {
+    public @Nullable Boolean findMergeInfo(Annotated a) {
         return null;
     }
 
@@ -1258,7 +1259,7 @@ public abstract class AnnotationIntrospector
      *
      * @since 2.9
      */
-    public JsonCreator.Mode findCreatorAnnotation(MapperConfig<?> config, Annotated a) {
+    public JsonCreator.@Nullable Mode findCreatorAnnotation(MapperConfig<?> config, Annotated a) {
         // 13-Sep-2016, tatu: for backwards compatibility, implement using delegation
         ///   (remove from version AFTER 2.9)
         if (hasCreatorAnnotation(a)) {
@@ -1298,7 +1299,7 @@ public abstract class AnnotationIntrospector
      * @deprecated Since 2.9 use {@link #findCreatorAnnotation} instead.
      */
     @Deprecated
-    public JsonCreator.Mode findCreatorBinding(Annotated a) {
+    public JsonCreator.@Nullable Mode findCreatorBinding(Annotated a) {
         return null;
     }
 

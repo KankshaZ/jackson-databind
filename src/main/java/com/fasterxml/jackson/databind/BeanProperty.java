@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Annotations;
 import com.fasterxml.jackson.databind.util.Named;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Bean properties are logical entities that represent data
@@ -65,7 +66,7 @@ public interface BeanProperty extends Named
      * 
      * @since 2.2
      */
-    public PropertyName getWrapperName();
+    public @Nullable PropertyName getWrapperName();
 
     /**
      * Accessor for additional optional information about property.
@@ -112,7 +113,7 @@ public interface BeanProperty extends Named
      * alternate {@link AnnotationIntrospector}s) should be accessed
      * through {@link AnnotationIntrospector}.
      */
-    public <A extends Annotation> A getAnnotation(Class<A> acls);
+    public @Nullable <A extends Annotation> A getAnnotation(Class<A> acls);
 
     /**
      * Method for finding annotation associated with context of
@@ -124,13 +125,13 @@ public interface BeanProperty extends Named
      * alternate {@link AnnotationIntrospector}s) should be accessed
      * through {@link AnnotationIntrospector}.
      */
-    public <A extends Annotation> A getContextAnnotation(Class<A> acls);
+    public @Nullable <A extends Annotation> A getContextAnnotation(Class<A> acls);
 
     /**
      * Method for accessing primary physical entity that represents the property;
      * annotated field, method or constructor property.
      */
-    public AnnotatedMember getMember();
+    public @Nullable AnnotatedMember getMember();
 
     /**
      * Convenience method that is roughly equivalent to
@@ -164,7 +165,7 @@ public interface BeanProperty extends Named
      *
      * @since 2.7
      */
-    public JsonInclude.Value findPropertyInclusion(MapperConfig<?> config, Class<?> baseType);
+    public JsonInclude.@Nullable Value findPropertyInclusion(MapperConfig<?> config, Class<?> baseType);
 
     /**
      * Method for accessing set of possible alternate names that are accepted
@@ -262,12 +263,12 @@ public interface BeanProperty extends Named
         }
 
         @Override
-        public <A extends Annotation> A getAnnotation(Class<A> acls) {
+        public @Nullable <A extends Annotation> A getAnnotation(Class<A> acls) {
             return (_member == null) ? null : _member.getAnnotation(acls);
         }
 
         @Override
-        public <A extends Annotation> A getContextAnnotation(Class<A> acls) {
+        public @Nullable <A extends Annotation> A getContextAnnotation(Class<A> acls) {
             return null;
         }
 
@@ -367,7 +368,7 @@ public interface BeanProperty extends Named
         }
 
         @Override
-        public PropertyName getWrapperName() {
+        public @Nullable PropertyName getWrapperName() {
             return null;
         }
 
@@ -387,17 +388,17 @@ public interface BeanProperty extends Named
         }
 
         @Override
-        public <A extends Annotation> A getAnnotation(Class<A> acls) {
+        public @Nullable <A extends Annotation> A getAnnotation(Class<A> acls) {
             return null;
         }
 
         @Override
-        public <A extends Annotation> A getContextAnnotation(Class<A> acls) {
+        public @Nullable <A extends Annotation> A getContextAnnotation(Class<A> acls) {
             return null;
         }
 
         @Override
-        public AnnotatedMember getMember() {
+        public @Nullable AnnotatedMember getMember() {
             return null;
         }
 
@@ -413,7 +414,7 @@ public interface BeanProperty extends Named
         }
 
         @Override
-        public com.fasterxml.jackson.annotation.JsonInclude.Value findPropertyInclusion(
+        public com.fasterxml.jackson.annotation.JsonInclude.@Nullable Value findPropertyInclusion(
                 MapperConfig<?> config, Class<?> baseType)
         {
             return null;

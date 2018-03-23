@@ -1,5 +1,5 @@
 package com.fasterxml.jackson.databind;
-
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Defines interface for resolvers that can resolve abstract types into concrete
@@ -26,7 +26,7 @@ public abstract class AbstractTypeResolver
      * @param config Configuration in use; should always be of type
      *    <code>DeserializationConfig</code>
      */
-    public JavaType findTypeMapping(DeserializationConfig config, JavaType type) {
+    public @Nullable JavaType findTypeMapping(DeserializationConfig config, JavaType type) {
         return null;
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractTypeResolver
      * @deprecated since 2.8 (may be removed from 2.9 or later)
      */
     @Deprecated
-    public JavaType resolveAbstractType(DeserializationConfig config,
+    public @Nullable JavaType resolveAbstractType(DeserializationConfig config,
             JavaType type) {
         return null;
     }
@@ -59,7 +59,7 @@ public abstract class AbstractTypeResolver
      *
      * @since 2.7
      */
-    public JavaType resolveAbstractType(DeserializationConfig config,
+    public @Nullable JavaType resolveAbstractType(DeserializationConfig config,
             BeanDescription typeDesc) {
         return null;
     }

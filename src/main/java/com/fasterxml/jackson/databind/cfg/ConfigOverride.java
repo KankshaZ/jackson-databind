@@ -72,8 +72,9 @@ public abstract class ConfigOverride
      * or not.
      */
     protected Boolean _mergeable;
-    
+    @SuppressWarnings("initialization.fields.uninitialized")
     protected ConfigOverride() { }
+    @SuppressWarnings("initialization.fields.uninitialized")
     protected ConfigOverride(ConfigOverride src) {
         _format = src._format;
         _include = src._include;

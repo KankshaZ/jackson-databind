@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.introspect.*;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.util.Annotations;
 import com.fasterxml.jackson.databind.util.Converter;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Basic container for information gathered by {@link ClassIntrospector} to
@@ -209,7 +210,7 @@ public abstract class BeanDescription
      * @deprecated Since 2.9: use {@link #findAnySetterAccessor} instead
      */
     @Deprecated
-    public AnnotatedMethod findAnySetter() {
+    public @Nullable AnnotatedMethod findAnySetter() {
         AnnotatedMember m = findAnySetterAccessor();
         if (m instanceof AnnotatedMethod) {
             return (AnnotatedMethod) m;
@@ -221,7 +222,7 @@ public abstract class BeanDescription
      * @deprecated Since 2.9: use {@link #findAnySetterAccessor} instead
      */
     @Deprecated
-    public AnnotatedMember findAnySetterField() {
+    public @Nullable AnnotatedMember findAnySetterField() {
         AnnotatedMember m = findAnySetterAccessor();
         if (m instanceof AnnotatedField) {
             return m;
@@ -277,7 +278,7 @@ public abstract class BeanDescription
      *
      * @since 2.7
      */
-    public String findClassDescription() { return null; }
+    public @Nullable String findClassDescription() { return null; }
 
     /*
     /**********************************************************

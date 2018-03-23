@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Container for individual {@link ConfigOverride} values.
@@ -19,7 +20,7 @@ public class ConfigOverrides
     /**
      * Per-type override definitions
      */
-    protected Map<Class<?>, MutableConfigOverride> _overrides;
+    protected @Nullable Map<Class<?>, MutableConfigOverride> _overrides;
 
     // // // Global defaulting
 
@@ -41,7 +42,7 @@ public class ConfigOverrides
     /**
      * @since 2.9
      */
-    protected Boolean _defaultMergeable;
+    protected @Nullable Boolean _defaultMergeable;
 
     /*
     /**********************************************************
@@ -59,11 +60,11 @@ public class ConfigOverrides
         );
     }
 
-    protected ConfigOverrides(Map<Class<?>, MutableConfigOverride> overrides,
+    protected ConfigOverrides(@Nullable Map<Class<?>, MutableConfigOverride> overrides,
             JsonInclude.Value defIncl,
             JsonSetter.Value defSetter,
             VisibilityChecker<?> defVisibility,
-            Boolean defMergeable) {
+            @Nullable Boolean defMergeable) {
         _overrides = overrides;
         _defaultInclusion = defIncl;
         _defaultSetterInfo = defSetter;
@@ -71,6 +72,7 @@ public class ConfigOverrides
         _defaultMergeable = defMergeable;
     }
 
+    @SuppressWarnings("nullness") //Dereference of _overrides.entrySet() is okay since check for _overrides to be non-null is present. 
     public ConfigOverrides copy()
     {
         Map<Class<?>, MutableConfigOverride> newOverrides;
@@ -92,7 +94,7 @@ public class ConfigOverrides
     /**********************************************************
      */
     
-    public ConfigOverride findOverride(Class<?> type) {
+    public @Nullable ConfigOverride findOverride(Class<?> type) {
         if (_overrides == null) {
             return null;
         }
@@ -125,7 +127,7 @@ public class ConfigOverrides
         return _defaultSetterInfo;
     }
 
-    public Boolean getDefaultMergeable() {
+    public @Nullable Boolean getDefaultMergeable() {
         return _defaultMergeable;
     }
 

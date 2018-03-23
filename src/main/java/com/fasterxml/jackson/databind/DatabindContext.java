@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.fasterxml.jackson.databind.util.Converter;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Shared base class for {@link DeserializationContext} and
@@ -142,7 +143,7 @@ public abstract class DatabindContext
      * Convenience method for constructing {@link JavaType} for given JDK
      * type (usually {@link java.lang.Class})
      */
-    public JavaType constructType(Type type) {
+    public @Nullable JavaType constructType(@Nullable Type type) {
         if (type == null) {
             return null;
         }
@@ -167,7 +168,7 @@ public abstract class DatabindContext
      *
      * @since 2.9
      */
-    public JavaType resolveSubType(JavaType baseType, String subClass)
+    public @Nullable JavaType resolveSubType(JavaType baseType, String subClass)
         throws JsonMappingException
     {
         // 30-Jan-2010, tatu: Most ids are basic class names; so let's first
@@ -221,7 +222,7 @@ public abstract class DatabindContext
     /* Helper object construction
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness") //warining is "dereference of possibly-null reference gen" but gen will not be null for sure (since if gen==null, gen is initiated)
     public ObjectIdGenerator<?> objectIdGeneratorInstance(Annotated annotated,
             ObjectIdInfo objectIdInfo)
         throws JsonMappingException
@@ -257,7 +258,7 @@ public abstract class DatabindContext
      * @since 2.2
      */
     @SuppressWarnings("unchecked")
-    public Converter<Object,Object> converterInstance(Annotated annotated,
+    public @Nullable Converter<Object,Object> converterInstance(Annotated annotated,
             Object converterDef)
         throws JsonMappingException
     {
@@ -303,12 +304,12 @@ public abstract class DatabindContext
      *
      * @since 2.9
      */
-    public abstract <T> T reportBadDefinition(JavaType type, String msg) throws JsonMappingException;
+    public abstract <T> T reportBadDefinition(@Nullable JavaType type, String msg) throws JsonMappingException;
 
     /**
      * @since 2.9
      */
-    public <T> T reportBadDefinition(Class<?> type, String msg) throws JsonMappingException {
+    public <T> T reportBadDefinition(@Nullable Class<?> type, String msg) throws JsonMappingException {
         return reportBadDefinition(constructType(type), msg);
     }
 
