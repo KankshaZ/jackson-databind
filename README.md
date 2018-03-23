@@ -1,7 +1,7 @@
 # Annotated jackson-databind (version 2.9.4)
 
   * This branch contains the annotated jackson databind library for nullness checker strictly according to the specifications mentioned in JavaDoc. 
-  * pom.xml has been updated
+  * pom.xml has been updated only for compiling the package node.
   * mvn compile command is used for compiling the checker framework
   * To see the changes, checkout the [UnannotatedJacksonDatabind](https://github.com/KankshaZ/jackson-databind/tree/UnannotatedJacksonDatabind) branch and "git diff UnannotatedJacksonDatabind..AnnotatedJacksonDatabind"
   * The programs were also tested for Tainted Checker but no bugs were found
@@ -9,26 +9,33 @@
 
 ### List of annotated files
 
-  * ArrayNode.java
-  * BaseJsonNode.java
-  * BigIntegerNode.java
-  * BinaryNode.java
-  * BooleanNode.java
-  * DecimalNode.java
-  * DoubleNode.java
-  * FloatNode.java
-  * IntNode.java
-  * JsonNodeFactory.java
-  * LongNode.java
-  * MissingNode.java
-  * NodeCursor.java
-  * NullNode.java
-  * ObjectNode.java
-  * POJONode.java
-  * ShortNode.java
-  * TextNode.java
-  * TreeTraversingParser.java
-  * ValueNode.java
+  * AbstractTypeResolver.java 
+  * AnnotationIntrospector.java 
+  * BeanDescription.java 
+  * BeanProperty.java 
+  * DatabindContext.java 
+  * cfg/ConfigOverride.java 
+  * cfg/ConfigOverrides.java
+  * node/ArrayNode.java
+  * node/BaseJsonNode.java
+  * node/BigIntegerNode.java
+  * node/BinaryNode.java
+  * node/BooleanNode.java
+  * node/DecimalNode.java
+  * node/node/DoubleNode.java
+  * node/FloatNode.java
+  * node/IntNode.java
+  * node/JsonNodeFactory.java
+  * node/LongNode.java
+  * node/MissingNode.java
+  * node/NodeCursor.java
+  * node/NullNode.java
+  * node/ObjectNode.java
+  * node/POJONode.java
+  * node/ShortNode.java
+  * node/TextNode.java
+  * node/TreeTraversingParser.java
+  * node/ValueNode.java
 
 
 # Overview
