@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.jsontype.*;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.util.LinkedNode;
 import com.fasterxml.jackson.databind.util.RootNameLookup;
-
+import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.initialization.qual.*;
 /**
  * Object that contains baseline configuration for deserialization
  * process. An instance is owned by {@link ObjectMapper}, which
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.util.RootNameLookup;
  * should need to be created for sharing; all copying is done with
  * "fluent factory" methods.
  */
+
 public final class DeserializationConfig
     extends MapperConfigBase<DeserializationFeature, DeserializationConfig>
     implements java.io.Serializable // since 2.1
@@ -39,7 +41,7 @@ public final class DeserializationConfig
      * Implementation as front-added linked list allows for sharing
      * of the list (tail) without copying the list.
      */
-    protected final LinkedNode<DeserializationProblemHandler> _problemHandlers;
+    protected final @Nullable LinkedNode<@Nullable DeserializationProblemHandler> _problemHandlers;
 
     /**
      * Factory used for constructing {@link com.fasterxml.jackson.databind.JsonNode} instances.
@@ -192,7 +194,7 @@ public final class DeserializationConfig
     }
 
     private DeserializationConfig(DeserializationConfig src,
-            LinkedNode<DeserializationProblemHandler> problemHandlers)
+            @Nullable LinkedNode<@Nullable DeserializationProblemHandler> problemHandlers)
     {
         super(src);
         _deserFeatures = src._deserFeatures;
@@ -592,7 +594,7 @@ public final class DeserializationConfig
             return this;
         }
         return new DeserializationConfig(this,
-                new LinkedNode<DeserializationProblemHandler>(h, _problemHandlers));
+                new LinkedNode<@Nullable DeserializationProblemHandler>(h, _problemHandlers));
     }
 
     /**
@@ -604,7 +606,7 @@ public final class DeserializationConfig
             return this;
         }
         return new DeserializationConfig(this,
-                (LinkedNode<DeserializationProblemHandler>) null);
+                (LinkedNode<@Nullable DeserializationProblemHandler>) null);
     }
 
     /*
@@ -706,7 +708,7 @@ public final class DeserializationConfig
      * Method for getting head of the problem handler chain. May be null,
      * if no handlers have been added.
      */
-    public LinkedNode<DeserializationProblemHandler> getProblemHandlers() {
+    public @Nullable LinkedNode<@Nullable DeserializationProblemHandler> getProblemHandlers() {
         return _problemHandlers;
     }
 
@@ -761,7 +763,8 @@ public final class DeserializationConfig
      * 
      * @since 2.4
      */
-    public TypeDeserializer findTypeDeserializer(JavaType baseType)
+    @SuppressWarnings("nullness") //subtypes is always non-null when passed into method buildTypeDeserializer even though it is initialised as null
+    public @Nullable TypeDeserializer findTypeDeserializer(JavaType baseType)
         throws JsonMappingException
     {
         BeanDescription bean = introspectClassAnnotations(baseType.getRawClass());

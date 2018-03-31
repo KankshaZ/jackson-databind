@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
 import java.util.*;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * Helper class used for storing and accessing per-call attributes.
@@ -45,7 +46,7 @@ public abstract class ContextAttributes
     /**
      * Accessor for value of specified attribute
      */
-    public abstract Object getAttribute(Object key);
+    public abstract @Nullable Object getAttribute(Object key);
 
     /**
      * Mutator used during call (via context) to set value of "non-shared"
@@ -81,7 +82,7 @@ public abstract class ContextAttributes
          * we need to be able to modify contents, and wildcard type would
          * complicate that access.
          */
-        protected transient Map<Object,Object> _nonShared;
+        protected transient @Nullable Map<Object,Object> _nonShared;
         
         /*
         /**********************************************************
@@ -94,7 +95,7 @@ public abstract class ContextAttributes
             _nonShared = null;
         }
 
-        protected Impl(Map<?,?> shared, Map<Object,Object> nonShared) {
+        protected Impl(Map<?,?> shared, @Nullable Map<Object,Object> nonShared) {
             _shared = shared;
             _nonShared = nonShared;
         }
@@ -155,7 +156,7 @@ public abstract class ContextAttributes
          */
         
         @Override
-        public Object getAttribute(Object key)
+        public @Nullable Object getAttribute(Object key)
         {
             if (_nonShared != null) {
                 Object ob = _nonShared.get(key);
@@ -203,7 +204,7 @@ public abstract class ContextAttributes
          * Overridable method that creates initial non-shared instance,
          * with the first explicit set value.
          */
-        protected ContextAttributes nonSharedInstance(Object key, Object value)
+        protected ContextAttributes nonSharedInstance(Object key, @Nullable Object value)
         {
             Map<Object,Object> m = new HashMap<Object,Object>();
             if (value == null) {
