@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -36,22 +37,22 @@ public class StdDelegatingDeserializer<T>
     extends StdDeserializer<T>
     implements ContextualDeserializer, ResolvableDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Converter that was used for creating {@link #_delegateDeserializer}.
      */
-    protected final Converter<Object,T> _converter;
+    protected final @Initialized Converter<Object,T> _converter;
 
     /**
      * Fully resolved delegate type, with generic information if any available.
      */
-    protected final JavaType _delegateType;
+    protected final @Initialized JavaType _delegateType;
 
     /**
      * Underlying serializer for type <code>T</code>.
      */
-    protected final JsonDeserializer<Object> _delegateDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _delegateDeserializer;
 
     /*
     /**********************************************************
@@ -60,7 +61,7 @@ public class StdDelegatingDeserializer<T>
      */
 
     @SuppressWarnings("unchecked")
-    public StdDelegatingDeserializer(Converter<?,T> converter)
+    public StdDelegatingDeserializer(@Initialized Converter<?,T> converter)
     {
         super(Object.class);
         _converter = (Converter<Object,T>)converter;
@@ -69,8 +70,9 @@ public class StdDelegatingDeserializer<T>
     }
 
     @SuppressWarnings("unchecked")
-    public StdDelegatingDeserializer(Converter<Object,T> converter,
-            JavaType delegateType, JsonDeserializer<?> delegateDeserializer)
+    public StdDelegatingDeserializer(@Initialized Converter<Object,T> converter,
+            @Initialized
+            JavaType delegateType, @Initialized JsonDeserializer<?> delegateDeserializer)
     {
         super(delegateType);
         _converter = converter;
@@ -93,8 +95,9 @@ public class StdDelegatingDeserializer<T>
      * Method used for creating resolved contextual instances. Must be
      * overridden when sub-classing.
      */
-    protected StdDelegatingDeserializer<T> withDelegate(Converter<Object,T> converter,
-            JavaType delegateType, JsonDeserializer<?> delegateDeserializer)
+    protected StdDelegatingDeserializer<T> withDelegate(@Initialized Converter<Object,T> converter,
+            @Initialized
+            JavaType delegateType, @Initialized JsonDeserializer<?> delegateDeserializer)
     {
         ClassUtil.verifyMustOverride(StdDelegatingDeserializer.class, this, "withDelegate");
         return new StdDelegatingDeserializer<T>(converter, delegateType, delegateDeserializer);
@@ -109,7 +112,7 @@ public class StdDelegatingDeserializer<T>
     // Note: unlikely to get called since most likely instances explicitly constructed;
     // if so, caller must ensure delegating deserializer is properly resolve()d.
     @Override
-    public void resolve(DeserializationContext ctxt)
+    public void resolve(@Initialized StdDelegatingDeserializer<T> this, @Initialized DeserializationContext ctxt)
         throws JsonMappingException
     {
         if (_delegateDeserializer != null && _delegateDeserializer instanceof ResolvableDeserializer) {
@@ -118,7 +121,7 @@ public class StdDelegatingDeserializer<T>
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property)
+    public JsonDeserializer<?> createContextual(@Initialized StdDelegatingDeserializer<T> this, @Initialized DeserializationContext ctxt, @Initialized BeanProperty property)
         throws JsonMappingException
     {
         // First: if already got deserializer to delegate to, contextualize it:
@@ -143,17 +146,17 @@ public class StdDelegatingDeserializer<T>
      */
 
     @Override
-    public JsonDeserializer<?> getDelegatee() {
+    public JsonDeserializer<?> getDelegatee(@Initialized StdDelegatingDeserializer<T> this) {
         return _delegateDeserializer;
     }
 
     @Override
-    public Class<?> handledType() {
+    public Class<?> handledType(@Initialized StdDelegatingDeserializer<T> this) {
         return _delegateDeserializer.handledType();
     }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized StdDelegatingDeserializer<T> this, @Initialized DeserializationConfig config) {
         return _delegateDeserializer.supportsUpdate(config);
     }
 
@@ -164,7 +167,7 @@ public class StdDelegatingDeserializer<T>
      */
     
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public T deserialize(@Initialized StdDelegatingDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         Object delegateValue = _delegateDeserializer.deserialize(p, ctxt);
         if (delegateValue == null) {
@@ -174,7 +177,8 @@ public class StdDelegatingDeserializer<T>
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized StdDelegatingDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException
     {
         /* 12-Apr-2016, tatu: As predicted, earlier handling does not work
@@ -197,7 +201,7 @@ public class StdDelegatingDeserializer<T>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt, Object intoValue)
+    public T deserialize(@Initialized StdDelegatingDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, Object intoValue)
         throws IOException
     {
         if (_delegateType.getRawClass().isAssignableFrom(intoValue.getClass())){
@@ -216,7 +220,7 @@ public class StdDelegatingDeserializer<T>
      *
      * @since 2.6
      */
-    protected Object _handleIncompatibleUpdateValue(JsonParser p, DeserializationContext ctxt, Object intoValue)
+    protected Object _handleIncompatibleUpdateValue(@Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object intoValue)
         throws IOException
     {
         throw new UnsupportedOperationException(String.format
@@ -242,7 +246,7 @@ public class StdDelegatingDeserializer<T>
      * 
      * @return Result of conversion
      */
-    protected T convertValue(Object delegateValue) {
+    protected T convertValue(@Initialized Object delegateValue) {
         return _converter.convert(delegateValue);
     }
 }

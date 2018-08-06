@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -85,7 +86,7 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
      * Factory method for trying to find a deserializer for one of supported
      * types that have simple from-String serialization.
      */
-    public static Std findDeserializer(Class<?> rawType)
+    public static Std findDeserializer(@Initialized Class<?> rawType)
     {
         int kind = 0;
         if (rawType == File.class) {
@@ -128,7 +129,7 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public T deserialize(@Initialized FromStringDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // Let's get textual value, possibly via coercion from other scalar types
         String text = p.getValueAsString();
@@ -177,9 +178,9 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
         return (T) ctxt.handleUnexpectedToken(_valueClass, p);
     }
         
-    protected abstract T _deserialize(String value, DeserializationContext ctxt) throws IOException;
+    protected abstract T _deserialize(@Initialized String value, @Initialized DeserializationContext ctxt) throws IOException;
 
-    protected T _deserializeEmbedded(Object ob, DeserializationContext ctxt) throws IOException {
+    protected T _deserializeEmbedded(@Initialized Object ob, @Initialized DeserializationContext ctxt) throws IOException {
         // default impl: error out
         ctxt.reportInputMismatch(this,
                 "Don't know how to convert embedded Object of type %s into %s",
@@ -205,31 +206,31 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
      */
     public static class Std extends FromStringDeserializer<Object>
     {
-        private static final long serialVersionUID = 1;
+        private static final @Initialized long serialVersionUID = 1;
 
-        public final static int STD_FILE = 1;
-        public final static int STD_URL = 2;
-        public final static int STD_URI = 3;
-        public final static int STD_CLASS = 4;
-        public final static int STD_JAVA_TYPE = 5;
-        public final static int STD_CURRENCY = 6;
-        public final static int STD_PATTERN = 7;
-        public final static int STD_LOCALE = 8;
-        public final static int STD_CHARSET = 9;
-        public final static int STD_TIME_ZONE = 10;
-        public final static int STD_INET_ADDRESS = 11;
-        public final static int STD_INET_SOCKET_ADDRESS = 12;
-        public final static int STD_STRING_BUILDER = 13;
+        public final static @Initialized int STD_FILE = 1;
+        public final static @Initialized int STD_URL = 2;
+        public final static @Initialized int STD_URI = 3;
+        public final static @Initialized int STD_CLASS = 4;
+        public final static @Initialized int STD_JAVA_TYPE = 5;
+        public final static @Initialized int STD_CURRENCY = 6;
+        public final static @Initialized int STD_PATTERN = 7;
+        public final static @Initialized int STD_LOCALE = 8;
+        public final static @Initialized int STD_CHARSET = 9;
+        public final static @Initialized int STD_TIME_ZONE = 10;
+        public final static @Initialized int STD_INET_ADDRESS = 11;
+        public final static @Initialized int STD_INET_SOCKET_ADDRESS = 12;
+        public final static @Initialized int STD_STRING_BUILDER = 13;
 
-        protected final int _kind;
+        protected final @Initialized int _kind;
         
-        protected Std(Class<?> valueType, int kind) {
+        protected Std(@Initialized Class<?> valueType, @Initialized int kind) {
             super(valueType);
             _kind = kind;
         }
 
         @Override
-        protected Object _deserialize(String value, DeserializationContext ctxt) throws IOException
+        protected Object _deserialize(FromStringDeserializer.@Initialized Std this, @Initialized String value, @Initialized DeserializationContext ctxt) throws IOException
         {
             switch (_kind) {
             case STD_FILE:
@@ -305,7 +306,7 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
         }
 
         @Override
-        protected Object _deserializeFromEmptyString() throws IOException {
+        protected Object _deserializeFromEmptyString(FromStringDeserializer.@Initialized Std this) throws IOException {
             // As per [databind#398], URI requires special handling
             if (_kind == STD_URI) {
                 return URI.create("");
@@ -320,7 +321,7 @@ public abstract class FromStringDeserializer<T> extends StdScalarDeserializer<T>
             return super._deserializeFromEmptyString();
         }
 
-        protected int _firstHyphenOrUnderscore(String str)
+        protected int _firstHyphenOrUnderscore(@Initialized String str)
         {
             for (int i = 0, end = str.length(); i < end; ++i) {
                 char c = str.charAt(i);

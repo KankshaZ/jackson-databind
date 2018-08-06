@@ -1,0 +1,11 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package java.util:
+class TimeZone:
+
+    method getTimeZone(Ljava/lang/String;)Ljava/util/TimeZone;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

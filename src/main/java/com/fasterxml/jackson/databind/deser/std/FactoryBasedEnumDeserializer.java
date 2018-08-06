@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -26,25 +27,26 @@ class FactoryBasedEnumDeserializer
     extends StdDeserializer<Object>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
     // Marker type; null if String expected; otherwise numeric wrapper
-    protected final JavaType _inputType;
-    protected final boolean _hasArgs;
-    protected final AnnotatedMethod _factory;
-    protected final JsonDeserializer<?> _deser;
-    protected final ValueInstantiator _valueInstantiator;
-    protected final SettableBeanProperty[] _creatorProps;
+    protected final @Initialized JavaType _inputType;
+    protected final @Initialized boolean _hasArgs;
+    protected final @Initialized AnnotatedMethod _factory;
+    protected final @Initialized JsonDeserializer<?> _deser;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
+    protected final SettableBeanProperty @Initialized [] _creatorProps;
 
     /**
      * Lazily instantiated property-based creator.
      *
      * @since 2.8
      */
-    private transient PropertyBasedCreator _propCreator;
+    private transient @Initialized PropertyBasedCreator _propCreator;
     
-    public FactoryBasedEnumDeserializer(Class<?> cls, AnnotatedMethod f, JavaType paramType,
-            ValueInstantiator valueInstantiator, SettableBeanProperty[] creatorProps)
+    public FactoryBasedEnumDeserializer(@Initialized Class<?> cls, @Initialized AnnotatedMethod f, @Initialized JavaType paramType,
+            @Initialized
+            ValueInstantiator valueInstantiator, SettableBeanProperty @Initialized [] creatorProps)
     {
         super(cls);
         _factory = f;
@@ -59,7 +61,7 @@ class FactoryBasedEnumDeserializer
     /**
      * @since 2.8
      */
-    public FactoryBasedEnumDeserializer(Class<?> cls, AnnotatedMethod f)
+    public FactoryBasedEnumDeserializer(@Initialized Class<?> cls, @Initialized AnnotatedMethod f)
     {
         super(cls);
         _factory = f;
@@ -70,7 +72,8 @@ class FactoryBasedEnumDeserializer
         _creatorProps = null;
     }
 
-    protected FactoryBasedEnumDeserializer(FactoryBasedEnumDeserializer base,
+    protected FactoryBasedEnumDeserializer(@Initialized FactoryBasedEnumDeserializer base,
+            @Initialized
             JsonDeserializer<?> deser) {
         super(base._valueClass);
         _inputType = base._inputType;
@@ -83,7 +86,8 @@ class FactoryBasedEnumDeserializer
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized FactoryBasedEnumDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property)
         throws JsonMappingException
     {
@@ -95,12 +99,12 @@ class FactoryBasedEnumDeserializer
     }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized FactoryBasedEnumDeserializer this, @Initialized DeserializationConfig config) {
         return Boolean.FALSE;
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserialize(@Initialized FactoryBasedEnumDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         Object value = null;
         if (_deser != null) {
@@ -144,7 +148,7 @@ class FactoryBasedEnumDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+    public Object deserializeWithType(@Initialized FactoryBasedEnumDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized TypeDeserializer typeDeserializer) throws IOException {
         if (_deser == null) { // String never has type info
             return deserialize(p, ctxt);
         }
@@ -152,8 +156,8 @@ class FactoryBasedEnumDeserializer
     }
     
     // Method to deserialize the Enum using property based methodology
-    protected Object deserializeEnumUsingPropertyBased(final JsonParser p, final DeserializationContext ctxt,
-    		final PropertyBasedCreator creator) throws IOException
+    protected Object deserializeEnumUsingPropertyBased(final @Initialized JsonParser p, final @Initialized DeserializationContext ctxt,
+    		final @Initialized PropertyBasedCreator creator) throws IOException
     {
         PropertyValueBuffer buffer = creator.startBuilding(p, ctxt, null);
     
@@ -176,7 +180,8 @@ class FactoryBasedEnumDeserializer
 
     // ************ Got the below methods from BeanDeserializer ********************//
 
-    protected final Object _deserializeWithErrorWrapping(JsonParser p, DeserializationContext ctxt,
+    protected final Object _deserializeWithErrorWrapping(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             SettableBeanProperty prop) throws IOException
     {
         try {
@@ -186,13 +191,13 @@ class FactoryBasedEnumDeserializer
         }
     }
 
-    protected Object wrapAndThrow(Throwable t, Object bean, String fieldName, DeserializationContext ctxt)
+    protected Object wrapAndThrow(@Initialized Throwable t, @Initialized Object bean, @Initialized String fieldName, @Initialized DeserializationContext ctxt)
             throws IOException
     {
         throw JsonMappingException.wrapWithPath(throwOrReturnThrowable(t, ctxt), bean, fieldName);
     }
 
-    private Throwable throwOrReturnThrowable(Throwable t, DeserializationContext ctxt) throws IOException
+    private Throwable throwOrReturnThrowable(@Initialized Throwable t, @Initialized DeserializationContext ctxt) throws IOException
     {
         t = ClassUtil.getRootCause(t);
         // Errors to be passed as is

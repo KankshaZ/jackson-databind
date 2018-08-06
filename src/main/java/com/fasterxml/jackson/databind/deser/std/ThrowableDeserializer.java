@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -16,9 +17,9 @@ import com.fasterxml.jackson.databind.util.NameTransformer;
 public class ThrowableDeserializer
     extends BeanDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final static String PROP_NAME_MESSAGE = "message";
+    protected final static @Initialized String PROP_NAME_MESSAGE = "message";
 
     /*
     /************************************************************
@@ -26,7 +27,7 @@ public class ThrowableDeserializer
     /************************************************************
      */
 
-    public ThrowableDeserializer(BeanDeserializer baseDeserializer) {
+    public ThrowableDeserializer(@Initialized BeanDeserializer baseDeserializer) {
         super(baseDeserializer);
         // need to disable this, since we do post-processing
         _vanillaProcessing = false;
@@ -35,12 +36,12 @@ public class ThrowableDeserializer
     /**
      * Alternative constructor used when creating "unwrapping" deserializers
      */
-    protected ThrowableDeserializer(BeanDeserializer src, NameTransformer unwrapper) {
+    protected ThrowableDeserializer(@Initialized BeanDeserializer src, @Initialized NameTransformer unwrapper) {
         super(src, unwrapper);
     }
 
     @Override
-    public JsonDeserializer<Object> unwrappingDeserializer(NameTransformer unwrapper) {
+    public JsonDeserializer<Object> unwrappingDeserializer(@Initialized ThrowableDeserializer this, @Initialized NameTransformer unwrapper) {
         if (getClass() != ThrowableDeserializer.class) {
             return this;
         }
@@ -58,7 +59,7 @@ public class ThrowableDeserializer
      */
 
     @Override
-    public Object deserializeFromObject(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserializeFromObject(@Initialized ThrowableDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // 30-Sep-2010, tatu: Need to allow use of @JsonCreator, so:
         if (_propertyBasedCreator != null) { // proper @JsonCreator

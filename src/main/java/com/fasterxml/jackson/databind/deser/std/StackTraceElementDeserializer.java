@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -11,12 +13,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 public class StackTraceElementDeserializer
     extends StdScalarDeserializer<StackTraceElement>
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     public StackTraceElementDeserializer() { super(StackTraceElement.class); }
 
     @Override
-    public StackTraceElement deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public StackTraceElement deserialize(@Initialized StackTraceElementDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         JsonToken t = p.getCurrentToken();
         // Must get an Object
@@ -84,9 +86,12 @@ public class StackTraceElementDeserializer
      *
      * @since 2.8
      */
-    protected StackTraceElement constructValue(DeserializationContext ctxt,
-            String className, String methodName, String fileName, int lineNumber,
-            String moduleName, String moduleVersion, String classLoaderName)
+    protected StackTraceElement constructValue(@Initialized DeserializationContext ctxt,
+            @Initialized
+            String className, @Initialized String methodName, @Initialized String fileName, @Initialized int lineNumber,
+            @Initialized
+            @Nullable
+            String moduleName, @Initialized @Nullable String moduleVersion, @Initialized @Nullable String classLoaderName)
     {
         // 21-May-2016, tatu: With Java 9, need to use different constructor, probably
         //   via different module, and throw exception here if extra args passed

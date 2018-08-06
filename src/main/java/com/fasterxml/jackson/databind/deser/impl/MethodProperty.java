@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -20,24 +22,26 @@ import com.fasterxml.jackson.databind.util.Annotations;
 public final class MethodProperty
     extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
-    protected final AnnotatedMethod _annotated;
+    protected final @Initialized AnnotatedMethod _annotated;
     
     /**
      * Setter method for modifying property value; used for
      * "regular" method-accessible properties.
      */
-    protected final transient Method _setter;
+    protected final transient @Initialized Method _setter;
 
     /**
      * @since 2.9
      */
-    final protected boolean _skipNulls;
+    final protected @Initialized boolean _skipNulls;
     
-    public MethodProperty(BeanPropertyDefinition propDef,
-            JavaType type, TypeDeserializer typeDeser,
-            Annotations contextAnnotations, AnnotatedMethod method)
+    public MethodProperty(@Initialized BeanPropertyDefinition propDef,
+            @Initialized
+            JavaType type, @Initialized @Nullable TypeDeserializer typeDeser,
+            @Initialized
+            Annotations contextAnnotations, @Initialized AnnotatedMethod method)
     {
         super(propDef, type, typeDeser, contextAnnotations);
         _annotated = method;
@@ -45,7 +49,8 @@ public final class MethodProperty
         _skipNulls = NullsConstantProvider.isSkipper(_nullProvider);
     }
 
-    protected MethodProperty(MethodProperty src, JsonDeserializer<?> deser,
+    protected MethodProperty(@Initialized MethodProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva) {
         super(src, deser, nva);
         _annotated = src._annotated;
@@ -53,7 +58,7 @@ public final class MethodProperty
         _skipNulls = NullsConstantProvider.isSkipper(nva);
     }
 
-    protected MethodProperty(MethodProperty src, PropertyName newName) {
+    protected MethodProperty(@Initialized MethodProperty src, @Initialized PropertyName newName) {
         super(src, newName);
         _annotated = src._annotated;
         _setter = src._setter;
@@ -63,7 +68,7 @@ public final class MethodProperty
     /**
      * Constructor used for JDK Serialization when reading persisted object
      */
-    protected MethodProperty(MethodProperty src, Method m) {
+    protected MethodProperty(@Initialized MethodProperty src, @Initialized Method m) {
         super(src);
         _annotated = src._annotated;
         _setter = m;
@@ -71,12 +76,12 @@ public final class MethodProperty
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized MethodProperty this, @Initialized PropertyName newName) {
         return new MethodProperty(this, newName);
     }
     
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized MethodProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -84,12 +89,12 @@ public final class MethodProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized MethodProperty this, @Initialized NullValueProvider nva) {
         return new MethodProperty(this, _valueDeserializer, nva);
     }
 
     @Override
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized MethodProperty this, @Initialized DeserializationConfig config) {
         _annotated.fixAccess(
                 config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
     }
@@ -101,11 +106,11 @@ public final class MethodProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized MethodProperty this, @Initialized Class<A> acls) {
         return (_annotated == null) ? null : _annotated.getAnnotation(acls);
     }
 
-    @Override public AnnotatedMember getMember() {  return _annotated; }
+    @Override public AnnotatedMember getMember(@Initialized MethodProperty this) {  return _annotated; }
 
     /*
     /**********************************************************
@@ -114,7 +119,8 @@ public final class MethodProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+    public void deserializeAndSet(@Initialized MethodProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object instance) throws IOException
     {
         Object value;
@@ -136,8 +142,9 @@ public final class MethodProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized MethodProperty this, @Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         Object value;
         if (p.hasToken(JsonToken.VALUE_NULL)) {
@@ -160,7 +167,7 @@ public final class MethodProperty
     }
 
     @Override
-    public final void set(Object instance, Object value) throws IOException
+    public final void set(@Initialized MethodProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         try {
             _setter.invoke(instance, value);
@@ -171,7 +178,7 @@ public final class MethodProperty
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException
+    public Object setAndReturn(@Initialized MethodProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         try {
             Object result = _setter.invoke(instance, value);

@@ -1,0 +1,13 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.util:
+class ClassUtil:
+
+    method createInstance(Ljava/lang/Class;Z)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #1:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

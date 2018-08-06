@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.Set;
 
@@ -18,17 +19,17 @@ import com.fasterxml.jackson.databind.util.NameTransformer;
 public class BeanAsArrayDeserializer
     extends BeanDeserializerBase
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Deserializer we delegate operations that we cannot handle.
      */
-    protected final BeanDeserializerBase _delegate;
+    protected final @Initialized BeanDeserializerBase _delegate;
 
     /**
      * Properties in order expected to be found in JSON array.
      */
-    protected final SettableBeanProperty[] _orderedProperties;
+    protected final SettableBeanProperty @Initialized [] _orderedProperties;
     
     /*
     /**********************************************************
@@ -41,8 +42,8 @@ public class BeanAsArrayDeserializer
      * {@link BeanDeserializer#asArrayDeserializer}) and for
      * creating copies with different delegate.
      */
-    public BeanAsArrayDeserializer(BeanDeserializerBase delegate,
-            SettableBeanProperty[] ordered)
+    public BeanAsArrayDeserializer(@Initialized BeanDeserializerBase delegate,
+            SettableBeanProperty @Initialized [] ordered)
     {
         super(delegate);
         _delegate = delegate;
@@ -50,7 +51,7 @@ public class BeanAsArrayDeserializer
     }
     
     @Override
-    public JsonDeserializer<Object> unwrappingDeserializer(NameTransformer unwrapper)
+    public JsonDeserializer<Object> unwrappingDeserializer(@Initialized BeanAsArrayDeserializer this, @Initialized NameTransformer unwrapper)
     {
         /* We can't do much about this; could either replace _delegate
          * with unwrapping instance, or just replace this one. Latter seems
@@ -60,25 +61,25 @@ public class BeanAsArrayDeserializer
     }
 
     @Override
-    public BeanDeserializerBase withObjectIdReader(ObjectIdReader oir) {
+    public BeanDeserializerBase withObjectIdReader(@Initialized BeanAsArrayDeserializer this, @Initialized ObjectIdReader oir) {
         return new BeanAsArrayDeserializer(_delegate.withObjectIdReader(oir),
                 _orderedProperties);
     }
 
     @Override
-    public BeanDeserializerBase withIgnorableProperties(Set<String> ignorableProps) {
+    public BeanDeserializerBase withIgnorableProperties(@Initialized BeanAsArrayDeserializer this, @Initialized Set<String> ignorableProps) {
         return new BeanAsArrayDeserializer(_delegate.withIgnorableProperties(ignorableProps),
                 _orderedProperties);
     }
 
     @Override
-    public BeanDeserializerBase withBeanProperties(BeanPropertyMap props) {
+    public BeanDeserializerBase withBeanProperties(@Initialized BeanAsArrayDeserializer this, @Initialized BeanPropertyMap props) {
         return new BeanAsArrayDeserializer(_delegate.withBeanProperties(props),
                 _orderedProperties);
     }
     
     @Override
-    protected BeanDeserializerBase asArrayDeserializer() {
+    protected BeanDeserializerBase asArrayDeserializer(@Initialized BeanAsArrayDeserializer this) {
         return this;
     }
 
@@ -89,7 +90,7 @@ public class BeanAsArrayDeserializer
      */
     
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object deserialize(@Initialized BeanAsArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // Let's delegate just in case we got a JSON Object (could error out, alternatively?)
@@ -140,7 +141,7 @@ public class BeanAsArrayDeserializer
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt, Object bean)
+    public Object deserialize(@Initialized BeanAsArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object bean)
         throws IOException
     {
         // [databind#631]: Assign current value, to be accessible by custom serializers
@@ -195,7 +196,7 @@ public class BeanAsArrayDeserializer
 
     // needed since 2.1
     @Override
-    public Object deserializeFromObject(JsonParser p, DeserializationContext ctxt)
+    public Object deserializeFromObject(@Initialized BeanAsArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         return _deserializeFromNonArray(p, ctxt);
@@ -211,7 +212,7 @@ public class BeanAsArrayDeserializer
      * Alternate deserialization method that has to check many more configuration
      * aspects than the "vanilla" processing.
      */
-    protected Object _deserializeNonVanilla(JsonParser p, DeserializationContext ctxt)
+    protected Object _deserializeNonVanilla(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_nonStandardCreation) {
@@ -273,7 +274,7 @@ public class BeanAsArrayDeserializer
      * as well.
      */
     @Override
-    protected final Object _deserializeUsingPropertyBased(final JsonParser p, final DeserializationContext ctxt)
+    protected final Object _deserializeUsingPropertyBased(@Initialized BeanAsArrayDeserializer this, final @Initialized JsonParser p, final @Initialized DeserializationContext ctxt)
         throws IOException
     {
         final PropertyBasedCreator creator = _propertyBasedCreator;
@@ -359,7 +360,7 @@ public class BeanAsArrayDeserializer
     /**********************************************************
      */
 
-    protected Object _deserializeFromNonArray(JsonParser p, DeserializationContext ctxt)
+    protected Object _deserializeFromNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         return ctxt.handleUnexpectedToken(handledType(), p.getCurrentToken(), p,

@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -33,45 +36,45 @@ public abstract class SettableBeanProperty
      * 
      * @since 2.2
      */
-    protected static final JsonDeserializer<Object> MISSING_VALUE_DESERIALIZER = new FailingDeserializer(
+    protected static final @Initialized JsonDeserializer<Object> MISSING_VALUE_DESERIALIZER = new FailingDeserializer(
             "No _valueDeserializer assigned");
 
     /**
      * Logical name of the property (often but not always derived
      * from the setter method name)
      */
-    protected final PropertyName _propName;
+    protected final @Initialized PropertyName _propName;
 
     /**
      * Base type for property; may be a supertype of actual value.
      */
-    protected final JavaType _type;
+    protected final @Initialized JavaType _type;
 
     /**
      * @since 2.2
      */
-    protected final PropertyName _wrapperName;
+    protected final @Initialized PropertyName _wrapperName;
 
     /**
      * Class that contains this property (either class that declares
      * the property or one of its subclasses), class that is
      * deserialized using deserializer that contains this property.
      */
-    protected final transient Annotations _contextAnnotations;
+    protected final transient @Initialized Annotations _contextAnnotations;
 
     /**
      * Deserializer used for handling property value.
      *<p>
      * NOTE: has been immutable since 2.3
      */
-    protected final JsonDeserializer<Object> _valueDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /**
      * If value will contain type information (to support
      * polymorphic handling), this is the type deserializer
      * used to handle type resolution.
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     /**
      * Entity used for possible translation from `null` into non-null
@@ -80,7 +83,7 @@ public abstract class SettableBeanProperty
      *
      * @since 2.9
      */
-    protected final NullValueProvider _nullProvider;
+    protected final @Initialized NullValueProvider _nullProvider;
 
     /*
     /**********************************************************
@@ -96,14 +99,14 @@ public abstract class SettableBeanProperty
      *<p>
      * TODO: should try to make immutable.
      */
-    protected String _managedReferenceName;
+    protected @Initialized String _managedReferenceName;
 
     /**
      * This is the information for object identity associated with the property.
      * <p>
      * TODO: should try to make immutable.
      */
-    protected ObjectIdInfo _objectIdInfo;
+    protected @Initialized ObjectIdInfo _objectIdInfo;
 
     /**
      * Helper object used for checking whether this property is to
@@ -112,7 +115,7 @@ public abstract class SettableBeanProperty
      *<p>
      * TODO: should try to make immutable.
      */
-    protected ViewMatcher _viewMatcher;
+    protected @Initialized ViewMatcher _viewMatcher;
 
     /**
      * Index of property (within all property of a bean); assigned
@@ -122,7 +125,7 @@ public abstract class SettableBeanProperty
      *<p>
      * TODO: should try to make immutable if at all possible
      */
-    protected int _propertyIndex = -1;
+    protected @Initialized int _propertyIndex = -1;
 
     /*
     /**********************************************************
@@ -137,8 +140,10 @@ public abstract class SettableBeanProperty
                 contextAnnotations, propDef.getMetadata());
     }
 
-    protected SettableBeanProperty(PropertyName propName, JavaType type, PropertyName wrapper,
-            TypeDeserializer typeDeser, Annotations contextAnnotations,
+    protected SettableBeanProperty(@Initialized PropertyName propName, @Initialized JavaType type, @Initialized PropertyName wrapper,
+            @Initialized
+            TypeDeserializer typeDeser, @Initialized Annotations contextAnnotations,
+            @Initialized
             PropertyMetadata metadata)
     {
         super(metadata);
@@ -214,7 +219,7 @@ public abstract class SettableBeanProperty
      */
     @SuppressWarnings("unchecked")
     protected SettableBeanProperty(SettableBeanProperty src,
-            JsonDeserializer<?> deser, NullValueProvider nuller)
+            JsonDeserializer<?> deser, @Initialized NullValueProvider nuller)
     {
         super(src);
         _propName = src._propName;
@@ -266,7 +271,7 @@ public abstract class SettableBeanProperty
      * @return Newly constructed instance, if value deserializer differs from the
      *   one used for this instance; or 'this' if not.
      */
-    public abstract SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser);
+    public abstract SettableBeanProperty withValueDeserializer(@Initialized JsonDeserializer<?> deser);
 
     /**
      * Fluent factory method for constructing and returning a new instance
@@ -278,12 +283,12 @@ public abstract class SettableBeanProperty
      * @return Newly constructed instance, if property name differs from the
      *   one used for this instance; or 'this' if not.
      */
-    public abstract SettableBeanProperty withName(PropertyName newName);
+    public abstract SettableBeanProperty withName(@Initialized PropertyName newName);
 
     /**
      * @since 2.3
      */
-    public SettableBeanProperty withSimpleName(String simpleName) {
+    public SettableBeanProperty withSimpleName(@Initialized String simpleName) {
         PropertyName n = (_propName == null)
                 ? new PropertyName(simpleName) : _propName.withSimpleName(simpleName);
         return (n == _propName) ? this : withName(n);
@@ -292,17 +297,17 @@ public abstract class SettableBeanProperty
     /**
      * @since 2.9
      */
-    public abstract SettableBeanProperty withNullProvider(NullValueProvider nva);
+    public abstract SettableBeanProperty withNullProvider(@Initialized NullValueProvider nva);
 
-    public void setManagedReferenceName(String n) {
+    public void setManagedReferenceName(@Initialized String n) {
         _managedReferenceName = n;
     }
 
-    public void setObjectIdInfo(ObjectIdInfo objectIdInfo) {
+    public void setObjectIdInfo(@Initialized ObjectIdInfo objectIdInfo) {
         _objectIdInfo = objectIdInfo;
     }
 
-    public void setViews(Class<?>[] views) {
+    public void setViews(Class<?> @Initialized [] views) {
         if (views == null) {
             _viewMatcher = null;
         } else {
@@ -313,7 +318,7 @@ public abstract class SettableBeanProperty
     /**
      * Method used to assign index for property.
      */
-    public void assignIndex(int index) {
+    public void assignIndex(@Initialized int index) {
         if (_propertyIndex != -1) {
             throw new IllegalStateException("Property '"+getName()+"' already had index ("+_propertyIndex+"), trying to assign "+index);
         }
@@ -327,7 +332,7 @@ public abstract class SettableBeanProperty
      *
      * @since 2.8.3
      */
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized DeserializationConfig config) {
         ;
     }
 
@@ -348,20 +353,20 @@ public abstract class SettableBeanProperty
      */
     
     @Override
-    public final String getName() {
+    public final String getName(@Initialized SettableBeanProperty this) {
         return _propName.getSimpleName();
     }
 
     @Override
-    public PropertyName getFullName() {
+    public PropertyName getFullName(@Initialized SettableBeanProperty this) {
         return _propName;
     }
 
     @Override
-    public JavaType getType() { return _type; }
+    public JavaType getType(@Initialized SettableBeanProperty this) { return _type; }
 
     @Override
-    public PropertyName getWrapperName() {
+    public PropertyName getWrapperName(@Initialized SettableBeanProperty this) {
         return _wrapperName;
     }
     
@@ -369,15 +374,16 @@ public abstract class SettableBeanProperty
     public abstract AnnotatedMember getMember();
 
     @Override
-    public abstract <A extends Annotation> A getAnnotation(Class<A> acls);
+    public abstract <A extends Annotation> A getAnnotation(@Initialized Class<A> acls);
 
     @Override
-    public <A extends Annotation> A getContextAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getContextAnnotation(@Initialized SettableBeanProperty this, @Initialized Class<A> acls) {
         return _contextAnnotations.get(acls);
     }
 
     @Override
-    public void depositSchemaProperty(JsonObjectFormatVisitor objectVisitor,
+    public void depositSchemaProperty(@Initialized SettableBeanProperty this, @Initialized JsonObjectFormatVisitor objectVisitor,
+            @Initialized
             SerializerProvider provider)
         throws JsonMappingException
     {
@@ -423,7 +429,7 @@ public abstract class SettableBeanProperty
      */
     public NullValueProvider getNullValueProvider() { return _nullProvider; }
 
-    public boolean visibleInView(Class<?> activeView) {
+    public boolean visibleInView(@Initialized Class<?> activeView) {
         return (_viewMatcher == null) || _viewMatcher.isVisibleForView(activeView);
     }
 
@@ -470,8 +476,9 @@ public abstract class SettableBeanProperty
      * that should be consumed to produce the value (the only value for
      * scalars, multiple for Objects and Arrays).
      */
-    public abstract void deserializeAndSet(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException;
+    public abstract void deserializeAndSet(@Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException;
 
 	/**
 	 * Alternative to {@link #deserializeAndSet} that returns
@@ -481,8 +488,9 @@ public abstract class SettableBeanProperty
 	 *
 	 * @since 2.0
 	 */
-    public abstract Object deserializeSetAndReturn(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException;
+    public abstract Object deserializeSetAndReturn(@Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException;
 
     /**
      * Method called to assign given value to this property, on
@@ -492,7 +500,7 @@ public abstract class SettableBeanProperty
      * implementations, creator-backed properties for example do not
      * support this method.
      */
-    public abstract void set(Object instance, Object value) throws IOException;
+    public abstract void set(@Initialized Object instance, @Initialized Object value) throws IOException;
 
     /**
      * Method called to assign given value to this property, on
@@ -503,7 +511,7 @@ public abstract class SettableBeanProperty
      * implementations, creator-backed properties for example do not
      * support this method.
      */
-    public abstract Object setAndReturn(Object instance, Object value) throws IOException;
+    public abstract Object setAndReturn(@Initialized Object instance, @Initialized Object value) throws IOException;
     
     /**
      * This method is needed by some specialized bean deserializers,
@@ -518,7 +526,7 @@ public abstract class SettableBeanProperty
      * this method should also not be called directly unless you really know
      * what you are doing (and probably not even then).
      */
-    public final Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public final Object deserialize(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         if (p.hasToken(JsonToken.VALUE_NULL)) {
             return _nullProvider.getNullValue(ctxt);
@@ -532,7 +540,8 @@ public abstract class SettableBeanProperty
     /**
      * @since 2.9
      */
-    public final Object deserializeWith(JsonParser p, DeserializationContext ctxt,
+    public final Object deserializeWith(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object toUpdate) throws IOException
     {
         // 20-Oct-2016, tatu: Not 100% sure what to do; probably best to simply return
@@ -564,7 +573,7 @@ public abstract class SettableBeanProperty
      * Method that takes in exception of any type, and casts or wraps it
      * to an IOException or its subclass.
      */
-    protected void _throwAsIOE(JsonParser p, Exception e, Object value) throws IOException
+    protected void _throwAsIOE(@FBCBottom @Nullable JsonParser p, @Initialized Exception e, @Initialized Object value) throws IOException
     {
         if (e instanceof IllegalArgumentException) {
             String actType = ClassUtil.classNameOf(value);
@@ -589,7 +598,7 @@ public abstract class SettableBeanProperty
     /**
      * @since 2.7
      */
-    protected IOException _throwAsIOE(JsonParser p, Exception e) throws IOException
+    protected IOException _throwAsIOE(@Initialized @Nullable JsonParser p, @Initialized Exception e) throws IOException
     {
         ClassUtil.throwIfIOE(e);
         ClassUtil.throwIfRTE(e);
@@ -609,7 +618,7 @@ public abstract class SettableBeanProperty
         _throwAsIOE((JsonParser) null, e, value);
     }
 
-    @Override public String toString() { return "[property '"+getName()+"']"; }
+    @Override public String toString(@Initialized SettableBeanProperty this) { return "[property '"+getName()+"']"; }
 
     /*
     /**********************************************************
@@ -630,7 +639,7 @@ public abstract class SettableBeanProperty
     public static abstract class Delegating
         extends SettableBeanProperty
     {
-        protected final SettableBeanProperty delegate;
+        protected final @Initialized SettableBeanProperty delegate;
 
         protected Delegating(SettableBeanProperty d) {
             super(d);
@@ -641,9 +650,9 @@ public abstract class SettableBeanProperty
          * Method sub-classes must implement, to construct a new instance
          * with given delegate.
          */
-        protected abstract SettableBeanProperty withDelegate(SettableBeanProperty d);
+        protected abstract SettableBeanProperty withDelegate(@Initialized SettableBeanProperty d);
 
-        protected SettableBeanProperty _with(SettableBeanProperty newDelegate) {
+        protected SettableBeanProperty _with(@Initialized SettableBeanProperty newDelegate) {
             if (newDelegate == delegate) {
                 return this;
             }
@@ -651,27 +660,27 @@ public abstract class SettableBeanProperty
         }
         
         @Override
-        public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+        public SettableBeanProperty withValueDeserializer(SettableBeanProperty.@Initialized Delegating this, @Initialized JsonDeserializer<?> deser) {
             return _with(delegate.withValueDeserializer(deser));
         }
 
         @Override
-        public SettableBeanProperty withName(PropertyName newName) {
+        public SettableBeanProperty withName(SettableBeanProperty.@Initialized Delegating this, @Initialized PropertyName newName) {
             return _with(delegate.withName(newName));
         }
 
         @Override
-        public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+        public SettableBeanProperty withNullProvider(SettableBeanProperty.@Initialized Delegating this, @Initialized NullValueProvider nva) {
             return _with(delegate.withNullProvider(nva));
         }
 
         @Override
-        public void assignIndex(int index) {
+        public void assignIndex(SettableBeanProperty.@Initialized Delegating this, @Initialized int index) {
             delegate.assignIndex(index);
         }
 
         @Override
-        public void fixAccess(DeserializationConfig config) {
+        public void fixAccess(SettableBeanProperty.@Initialized Delegating this, @Initialized DeserializationConfig config) {
             delegate.fixAccess(config);
         }
 
@@ -682,48 +691,48 @@ public abstract class SettableBeanProperty
          */
 
         @Override
-        protected Class<?> getDeclaringClass() { return delegate.getDeclaringClass(); }
+        protected Class<?> getDeclaringClass(SettableBeanProperty.@Initialized Delegating this) { return delegate.getDeclaringClass(); }
 
         @Override
-        public String getManagedReferenceName() { return delegate.getManagedReferenceName(); }
+        public String getManagedReferenceName(SettableBeanProperty.@Initialized Delegating this) { return delegate.getManagedReferenceName(); }
 
         @Override
-        public ObjectIdInfo getObjectIdInfo() { return delegate.getObjectIdInfo(); }
+        public ObjectIdInfo getObjectIdInfo(SettableBeanProperty.@Initialized Delegating this) { return delegate.getObjectIdInfo(); }
 
         @Override
-        public boolean hasValueDeserializer() { return delegate.hasValueDeserializer(); }
+        public boolean hasValueDeserializer(SettableBeanProperty.@Initialized Delegating this) { return delegate.hasValueDeserializer(); }
 
         @Override
-        public boolean hasValueTypeDeserializer() { return delegate.hasValueTypeDeserializer(); }
+        public boolean hasValueTypeDeserializer(SettableBeanProperty.@Initialized Delegating this) { return delegate.hasValueTypeDeserializer(); }
         
         @Override
-        public JsonDeserializer<Object> getValueDeserializer() { return delegate.getValueDeserializer(); }
+        public JsonDeserializer<Object> getValueDeserializer(SettableBeanProperty.@Initialized Delegating this) { return delegate.getValueDeserializer(); }
 
         @Override
-        public TypeDeserializer getValueTypeDeserializer() { return delegate.getValueTypeDeserializer(); }
+        public TypeDeserializer getValueTypeDeserializer(SettableBeanProperty.@Initialized Delegating this) { return delegate.getValueTypeDeserializer(); }
 
         @Override
-        public boolean visibleInView(Class<?> activeView) { return delegate.visibleInView(activeView); }
+        public boolean visibleInView(SettableBeanProperty.@Initialized Delegating this, @Initialized Class<?> activeView) { return delegate.visibleInView(activeView); }
 
         @Override
-        public boolean hasViews() { return delegate.hasViews(); }
+        public boolean hasViews(SettableBeanProperty.@Initialized Delegating this) { return delegate.hasViews(); }
 
         @Override
-        public int getPropertyIndex() { return delegate.getPropertyIndex(); }
+        public int getPropertyIndex(SettableBeanProperty.@Initialized Delegating this) { return delegate.getPropertyIndex(); }
 
         @Override
-        public int getCreatorIndex() { return delegate.getCreatorIndex(); }
+        public int getCreatorIndex(SettableBeanProperty.@Initialized Delegating this) { return delegate.getCreatorIndex(); }
 
         @Override
-        public Object getInjectableValueId() { return delegate.getInjectableValueId(); }
+        public Object getInjectableValueId(SettableBeanProperty.@Initialized Delegating this) { return delegate.getInjectableValueId(); }
 
         @Override
-        public AnnotatedMember getMember() {
+        public AnnotatedMember getMember(SettableBeanProperty.@Initialized Delegating this) {
             return delegate.getMember();
         }
 
         @Override
-        public <A extends Annotation> A getAnnotation(Class<A> acls) {
+        public <A extends Annotation> A getAnnotation(SettableBeanProperty.@Initialized Delegating this, @Initialized Class<A> acls) {
             return delegate.getAnnotation(acls);
         }
 
@@ -744,25 +753,27 @@ public abstract class SettableBeanProperty
          */
 
         @Override
-        public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+        public void deserializeAndSet(SettableBeanProperty.@Initialized Delegating this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 Object instance) throws IOException {
             delegate.deserializeAndSet(p, ctxt, instance);
         }
 
         @Override
-        public Object deserializeSetAndReturn(JsonParser p,
-                DeserializationContext ctxt, Object instance) throws IOException
+        public Object deserializeSetAndReturn(SettableBeanProperty.@Initialized Delegating this, @Initialized JsonParser p,
+                @Initialized
+                DeserializationContext ctxt, @Initialized Object instance) throws IOException
         {
             return delegate.deserializeSetAndReturn(p, ctxt, instance);
         }
 
         @Override
-        public void set(Object instance, Object value) throws IOException {
+        public void set(SettableBeanProperty.@Initialized Delegating this, @Initialized Object instance, @Initialized Object value) throws IOException {
             delegate.set(instance, value);
         }
 
         @Override
-        public Object setAndReturn(Object instance, Object value) throws IOException {
+        public Object setAndReturn(SettableBeanProperty.@Initialized Delegating this, @Initialized Object instance, @Initialized Object value) throws IOException {
             return delegate.setAndReturn(instance, value);
         }
     }

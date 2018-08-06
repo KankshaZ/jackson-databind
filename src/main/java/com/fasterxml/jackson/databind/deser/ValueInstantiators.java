@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.databind.*;
 
 /**
@@ -28,8 +29,9 @@ public interface ValueInstantiators
      * @return Instantiator to use; either <code>defaultInstantiator</code> that was passed,
      *   or a custom variant; cannot be null.
      */
-    public ValueInstantiator findValueInstantiator(DeserializationConfig config,
-            BeanDescription beanDesc, ValueInstantiator defaultInstantiator);
+    public ValueInstantiator findValueInstantiator(@Initialized DeserializationConfig config,
+            @Initialized
+            BeanDescription beanDesc, @Initialized ValueInstantiator defaultInstantiator);
 
     /**
      * Basic "NOP" implementation that can be used as the base class for custom implementations.
@@ -39,8 +41,9 @@ public interface ValueInstantiators
     public static class Base implements ValueInstantiators
     {
         @Override
-        public ValueInstantiator findValueInstantiator(DeserializationConfig config,
-                BeanDescription beanDesc, ValueInstantiator defaultInstantiator) {
+        public ValueInstantiator findValueInstantiator(ValueInstantiators.@Initialized Base this, @Initialized DeserializationConfig config,
+                @Initialized
+                BeanDescription beanDesc, @Initialized ValueInstantiator defaultInstantiator) {
             return defaultInstantiator;
         }
     }

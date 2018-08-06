@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,13 +23,13 @@ public class EnumSetDeserializer
     extends StdDeserializer<EnumSet<?>>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1L; // since 2.5
+    private static final @Initialized long serialVersionUID = 1L; // since 2.5
 
-    protected final JavaType _enumType;
+    protected final @Initialized JavaType _enumType;
 
-    protected final Class<Enum> _enumClass;
+    protected final @Initialized Class<Enum> _enumClass;
 
-    protected JsonDeserializer<Enum<?>> _enumDeserializer;
+    protected @Initialized JsonDeserializer<Enum<?>> _enumDeserializer;
 
     /**
      * Specific override for this instance (from proper, or global per-type overrides)
@@ -35,7 +38,7 @@ public class EnumSetDeserializer
      *
      * @since 2.7
      */
-    protected final Boolean _unwrapSingle;
+    protected final @Initialized Boolean _unwrapSingle;
 
     /*
     /**********************************************************
@@ -44,7 +47,7 @@ public class EnumSetDeserializer
      */
 
     @SuppressWarnings("unchecked" )
-    public EnumSetDeserializer(JavaType enumType, JsonDeserializer<?> deser)
+    public EnumSetDeserializer(@Initialized JavaType enumType, @FBCBottom @Nullable JsonDeserializer<?> deser)
     {
         super(EnumSet.class);
         _enumType = enumType;
@@ -61,8 +64,9 @@ public class EnumSetDeserializer
      * @since 2.7
      */
     @SuppressWarnings("unchecked" )
-    protected EnumSetDeserializer(EnumSetDeserializer base,
-            JsonDeserializer<?> deser, Boolean unwrapSingle) {
+    protected EnumSetDeserializer(@Initialized EnumSetDeserializer base,
+            @Initialized
+            JsonDeserializer<?> deser, @Initialized Boolean unwrapSingle) {
         super(base);
         _enumType = base._enumType;
         _enumClass = base._enumClass;
@@ -77,7 +81,7 @@ public class EnumSetDeserializer
         return new EnumSetDeserializer(this, deser, _unwrapSingle);
     }
 
-    public EnumSetDeserializer withResolved(JsonDeserializer<?> deser, Boolean unwrapSingle) {
+    public EnumSetDeserializer withResolved(@Initialized JsonDeserializer<?> deser, @Initialized Boolean unwrapSingle) {
         if ((_unwrapSingle == unwrapSingle) && (_enumDeserializer == deser)) {
             return this;
         }
@@ -89,7 +93,7 @@ public class EnumSetDeserializer
      * let's cache instances by default.
      */
     @Override
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized EnumSetDeserializer this) {
         // One caveat: content deserializer should prevent caching
         if (_enumType.getValueHandler() != null) {
             return false;
@@ -98,12 +102,13 @@ public class EnumSetDeserializer
     }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized EnumSetDeserializer this, @Initialized DeserializationConfig config) {
         return Boolean.TRUE;
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized EnumSetDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         Boolean unwrapSingle = findFormatFeature(ctxt, property, EnumSet.class,
@@ -124,7 +129,7 @@ public class EnumSetDeserializer
      */
 
     @Override
-    public EnumSet<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public EnumSet<?> deserialize(@Initialized EnumSetDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         EnumSet result = constructSet();
         // Ok: must point to START_ARRAY (or equivalent)
@@ -135,7 +140,8 @@ public class EnumSetDeserializer
     }
 
     @Override
-    public EnumSet<?> deserialize(JsonParser p, DeserializationContext ctxt,
+    public EnumSet<?> deserialize(@Initialized EnumSetDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             EnumSet<?> result) throws IOException
     {
         // Ok: must point to START_ARRAY (or equivalent)
@@ -146,7 +152,8 @@ public class EnumSetDeserializer
     }
     
     @SuppressWarnings("unchecked") 
-    protected final EnumSet<?> _deserialize(JsonParser p, DeserializationContext ctxt,
+    protected final EnumSet<?> _deserialize(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             EnumSet result) throws IOException
     {
         JsonToken t;
@@ -176,7 +183,8 @@ public class EnumSetDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized EnumSetDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException, JsonProcessingException
     {
@@ -190,7 +198,8 @@ public class EnumSetDeserializer
     }
 
     @SuppressWarnings("unchecked") 
-    protected EnumSet<?> handleNonArray(JsonParser p, DeserializationContext ctxt,
+    protected EnumSet<?> handleNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             EnumSet result)
         throws IOException
     {

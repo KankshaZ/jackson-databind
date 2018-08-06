@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.databind.util.ClassUtil;
 
@@ -9,11 +10,11 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
  * @author pgelinas
  */
 public class UnresolvedId {
-    private final Object _id;
-    private final JsonLocation _location;
-    private final Class<?> _type;
+    private final @Initialized Object _id;
+    private final @Initialized JsonLocation _location;
+    private final @Initialized Class<?> _type;
 
-    public UnresolvedId(Object id, Class<?> type, JsonLocation where) {
+    public UnresolvedId(@Initialized Object id, @Initialized Class<?> type, @Initialized JsonLocation where) {
         _id = id;
         _type = type;
         _location = where;
@@ -31,7 +32,7 @@ public class UnresolvedId {
     public JsonLocation getLocation() { return _location; }
 
     @Override
-    public String toString() {
+    public String toString(@Initialized UnresolvedId this) {
         return String.format("Object id [%s] (for %s) at %s", _id,
                 ClassUtil.nameOf(_type), _location);
     }

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.databind.*;
 
 /**
@@ -13,5 +14,5 @@ import com.fasterxml.jackson.databind.*;
  */
 public interface KeyDeserializers
 {
-    public KeyDeserializer findKeyDeserializer(JavaType type, DeserializationConfig config, BeanDescription beanDesc) throws JsonMappingException;
+    public KeyDeserializer findKeyDeserializer(@Initialized JavaType type, @Initialized DeserializationConfig config, @Initialized BeanDescription beanDesc) throws JsonMappingException;
 }

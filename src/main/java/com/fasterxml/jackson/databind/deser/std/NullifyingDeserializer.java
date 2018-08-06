@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 public class NullifyingDeserializer
     extends StdDeserializer<Object>
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    public final static NullifyingDeserializer instance = new NullifyingDeserializer();
+    public final static @Initialized NullifyingDeserializer instance = new NullifyingDeserializer();
     
     public NullifyingDeserializer() { super(Object.class); }
 
@@ -28,12 +29,12 @@ public class NullifyingDeserializer
      */
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized NullifyingDeserializer this, @Initialized DeserializationConfig config) {
         return Boolean.FALSE;
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserialize(@Initialized NullifyingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // 29-Jan-2016, tatu: Simple skipping for all other tokens, but FIELD_NAME bit
         //    special unfortunately
@@ -52,7 +53,8 @@ public class NullifyingDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized NullifyingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException
     {
         // Not sure if we need to bother but:

@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,23 +28,23 @@ public final class StringArrayDeserializer
     extends StdDeserializer<String[]>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 2L;
+    private static final @Initialized long serialVersionUID = 2L;
 
-    private final static String[] NO_STRINGS = new String[0];
+    private final static String @Initialized [] NO_STRINGS = new String[0];
 
-    public final static StringArrayDeserializer instance = new StringArrayDeserializer();
+    public final static @Initialized StringArrayDeserializer instance = new StringArrayDeserializer();
 
     /**
      * Value serializer to use, if not the standard one (which is inlined)
      */
-    protected JsonDeserializer<String> _elementDeserializer;
+    protected @Initialized JsonDeserializer<String> _elementDeserializer;
 
     /**
      * Handler we need for dealing with nulls.
      *
      * @since 2.9
      */
-    protected final NullValueProvider _nullProvider;
+    protected final @Initialized NullValueProvider _nullProvider;
 
     /**
      * Specific override for this instance (from proper, or global per-type overrides)
@@ -51,7 +53,7 @@ public final class StringArrayDeserializer
      *
      * @since 2.7
      */
-    protected final Boolean _unwrapSingle;
+    protected final @Initialized Boolean _unwrapSingle;
 
     /**
      * Marker flag set if the <code>_nullProvider</code> indicates that all null
@@ -59,15 +61,17 @@ public final class StringArrayDeserializer
      *
      * @since 2.9
      */
-    protected final boolean _skipNullValues;
+    protected final @Initialized boolean _skipNullValues;
     
     public StringArrayDeserializer() {
         this(null, null, null);
     }
 
     @SuppressWarnings("unchecked")
-    protected StringArrayDeserializer(JsonDeserializer<?> deser,
-            NullValueProvider nuller, Boolean unwrapSingle) {
+    protected StringArrayDeserializer(@Initialized @Nullable JsonDeserializer<?> deser,
+            @Initialized
+            @Nullable
+            NullValueProvider nuller, @Initialized @Nullable Boolean unwrapSingle) {
         super(String[].class);
         _elementDeserializer = (JsonDeserializer<String>) deser;
         _nullProvider = nuller;
@@ -76,18 +80,18 @@ public final class StringArrayDeserializer
     }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized StringArrayDeserializer this, @Initialized DeserializationConfig config) {
         return Boolean.TRUE;
     }
 
     @Override // since 2.9
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized StringArrayDeserializer this) {
         // immutable, shareable so:
         return AccessPattern.CONSTANT;
     }
 
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized StringArrayDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return NO_STRINGS;
     }
 
@@ -96,7 +100,7 @@ public final class StringArrayDeserializer
      * of String values, or if we have to use separate value deserializer.
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property)
+    public JsonDeserializer<?> createContextual(@Initialized StringArrayDeserializer this, @Initialized DeserializationContext ctxt, @Initialized BeanProperty property)
             throws JsonMappingException
     {
         JsonDeserializer<?> deser = _elementDeserializer;
@@ -125,7 +129,7 @@ public final class StringArrayDeserializer
     }
 
     @Override
-    public String[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public String[] deserialize(@Initialized StringArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // Ok: must point to START_ARRAY (or equivalent)
         if (!p.isExpectedStartArrayToken()) {
@@ -174,8 +178,8 @@ public final class StringArrayDeserializer
     /**
      * Offlined version used when we do not use the default deserialization method.
      */
-    protected final String[] _deserializeCustom(JsonParser p, DeserializationContext ctxt,
-            String[] old) throws IOException
+    protected final String[] _deserializeCustom(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            String @Initialized  @Nullable [] old) throws IOException
     {
         final ObjectBuffer buffer = ctxt.leaseObjectBuffer();
         int ix;
@@ -232,13 +236,13 @@ public final class StringArrayDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+    public Object deserializeWithType(@Initialized StringArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized TypeDeserializer typeDeserializer) throws IOException {
         return typeDeserializer.deserializeTypedFromArray(p, ctxt);
     }
 
     @Override
-    public String[] deserialize(JsonParser p, DeserializationContext ctxt,
-            String[] intoValue) throws IOException
+    public String[] deserialize(@Initialized StringArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            String @Initialized [] intoValue) throws IOException
     {
         // Ok: must point to START_ARRAY (or equivalent)
         if (!p.isExpectedStartArrayToken()) {
@@ -292,7 +296,7 @@ public final class StringArrayDeserializer
         return result;
     }
 
-    private final String[] handleNonArray(JsonParser p, DeserializationContext ctxt) throws IOException
+    private final String[] handleNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // implicit arrays from single values?
         boolean canWrap = (_unwrapSingle == Boolean.TRUE) ||

@@ -1,0 +1,21 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package java.util:
+class Map:
+
+    method containsKey(Ljava/lang/Object;)Z:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method remove(Ljava/lang/Object;)LV;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method get(Ljava/lang/Object;)LV;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

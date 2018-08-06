@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -24,24 +26,26 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public final class FieldProperty
     extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    final protected AnnotatedField _annotated;
+    final protected @Initialized AnnotatedField _annotated;
 
     /**
      * Actual field to set when deserializing this property.
      * Transient since there is no need to persist; only needed during
      * construction of objects.
      */
-    final protected transient Field _field;
+    final protected transient @Initialized Field _field;
 
     /**
      * @since 2.9
      */
-    final protected boolean _skipNulls;
+    final protected @Initialized boolean _skipNulls;
 
-    public FieldProperty(BeanPropertyDefinition propDef, JavaType type,
-            TypeDeserializer typeDeser, Annotations contextAnnotations, AnnotatedField field)
+    public FieldProperty(@Initialized BeanPropertyDefinition propDef, @Initialized JavaType type,
+            @Initialized
+            @Nullable
+            TypeDeserializer typeDeser, @Initialized Annotations contextAnnotations, @Initialized AnnotatedField field)
     {
         super(propDef, type, typeDeser, contextAnnotations);
         _annotated = field;
@@ -49,7 +53,8 @@ public final class FieldProperty
         _skipNulls = NullsConstantProvider.isSkipper(_nullProvider);
     }
 
-    protected FieldProperty(FieldProperty src, JsonDeserializer<?> deser,
+    protected FieldProperty(@Initialized FieldProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva) {
         super(src, deser, nva);
         _annotated = src._annotated;
@@ -57,7 +62,7 @@ public final class FieldProperty
         _skipNulls = NullsConstantProvider.isSkipper(nva);
     }
 
-    protected FieldProperty(FieldProperty src, PropertyName newName) {
+    protected FieldProperty(@Initialized FieldProperty src, @Initialized PropertyName newName) {
         super(src, newName);
         _annotated = src._annotated;
         _field = src._field;
@@ -67,7 +72,7 @@ public final class FieldProperty
     /**
      * Constructor used for JDK Serialization when reading persisted object
      */
-    protected FieldProperty(FieldProperty src)
+    protected FieldProperty(@Initialized FieldProperty src)
     {
         super(src);
         _annotated = src._annotated;
@@ -80,12 +85,12 @@ public final class FieldProperty
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized FieldProperty this, @Initialized PropertyName newName) {
         return new FieldProperty(this, newName);
     }
 
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized FieldProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -93,12 +98,12 @@ public final class FieldProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized FieldProperty this, @Initialized NullValueProvider nva) {
         return new FieldProperty(this, _valueDeserializer, nva);
     }
 
     @Override
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized FieldProperty this, @Initialized DeserializationConfig config) {
         ClassUtil.checkAndFixAccess(_field,
                 config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
     }
@@ -110,11 +115,11 @@ public final class FieldProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized FieldProperty this, @Initialized Class<A> acls) {
         return (_annotated == null) ? null : _annotated.getAnnotation(acls);
     }
 
-    @Override public AnnotatedMember getMember() {  return _annotated; }
+    @Override public AnnotatedMember getMember(@Initialized FieldProperty this) {  return _annotated; }
 
     /*
     /**********************************************************
@@ -123,8 +128,9 @@ public final class FieldProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException
+    public void deserializeAndSet(@Initialized FieldProperty this, @Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         Object value;
         if (p.hasToken(JsonToken.VALUE_NULL)) {
@@ -145,8 +151,9 @@ public final class FieldProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized FieldProperty this, @Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         Object value;
         if (p.hasToken(JsonToken.VALUE_NULL)) {
@@ -168,7 +175,7 @@ public final class FieldProperty
     }
 
     @Override
-    public void set(Object instance, Object value) throws IOException
+    public void set(@Initialized FieldProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         try {
             _field.set(instance, value);
@@ -179,7 +186,7 @@ public final class FieldProperty
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException
+    public Object setAndReturn(@Initialized FieldProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         try {
             _field.set(instance, value);

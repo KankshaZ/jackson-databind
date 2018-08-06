@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
@@ -19,21 +20,22 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public final class InnerClassProperty
     extends SettableBeanProperty.Delegating
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Constructor used when deserializing this property.
      * Transient since there is no need to persist; only needed during
      * construction of objects.
      */
-    final protected transient Constructor<?> _creator;
+    final protected transient @Initialized Constructor<?> _creator;
     
     /**
      * Serializable version of single-arg constructor we use for value instantiation.
      */
-    protected AnnotatedConstructor _annotated;
+    protected @Initialized AnnotatedConstructor _annotated;
 
-    public InnerClassProperty(SettableBeanProperty delegate,
+    public InnerClassProperty(@Initialized SettableBeanProperty delegate,
+            @Initialized
             Constructor<?> ctor)
     {
         super(delegate);
@@ -44,7 +46,7 @@ public final class InnerClassProperty
      * Constructor used with JDK Serialization; needed to handle transient
      * Constructor, wrap/unwrap in/out-of Annotated variant.
      */
-    protected InnerClassProperty(SettableBeanProperty src, AnnotatedConstructor ann)
+    protected InnerClassProperty(@Initialized SettableBeanProperty src, @Initialized AnnotatedConstructor ann)
     {
         super(src);
         _annotated = ann;
@@ -55,7 +57,7 @@ public final class InnerClassProperty
     }
 
     @Override
-    protected SettableBeanProperty withDelegate(SettableBeanProperty d) {
+    protected SettableBeanProperty withDelegate(@Initialized InnerClassProperty this, @Initialized SettableBeanProperty d) {
         if (d == this.delegate) {
             return this;
         }
@@ -69,7 +71,7 @@ public final class InnerClassProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt, Object bean)
+    public void deserializeAndSet(@Initialized InnerClassProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object bean)
         throws IOException
     {
         JsonToken t = p.getCurrentToken();
@@ -93,7 +95,7 @@ _creator.getDeclaringClass().getName(), e.getMessage()));
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p, DeserializationContext ctxt, Object instance)
+    public Object deserializeSetAndReturn(@Initialized InnerClassProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object instance)
         throws IOException
     {
         return setAndReturn(instance, deserialize(p, ctxt));

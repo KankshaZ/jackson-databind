@@ -1,0 +1,11 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.util:
+class ArrayBuilders:
+
+    method insertInListNoDup([LT;Ljava/lang/Object;)[LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

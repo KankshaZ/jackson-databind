@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -14,18 +15,19 @@ import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
 
 public class ObjectIdReferenceProperty extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    private final SettableBeanProperty _forward;
+    private final @Initialized SettableBeanProperty _forward;
 
-    public ObjectIdReferenceProperty(SettableBeanProperty forward, ObjectIdInfo objectIdInfo)
+    public ObjectIdReferenceProperty(@Initialized SettableBeanProperty forward, @Initialized ObjectIdInfo objectIdInfo)
     {
         super(forward);
         _forward = forward;
         _objectIdInfo = objectIdInfo;
     }
 
-    public ObjectIdReferenceProperty(ObjectIdReferenceProperty src, JsonDeserializer<?> deser,
+    public ObjectIdReferenceProperty(@Initialized ObjectIdReferenceProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva)
     {
         super(src, deser, nva);
@@ -33,7 +35,7 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
         _objectIdInfo = src._objectIdInfo;
     }
 
-    public ObjectIdReferenceProperty(ObjectIdReferenceProperty src, PropertyName newName)
+    public ObjectIdReferenceProperty(@Initialized ObjectIdReferenceProperty src, @Initialized PropertyName newName)
     {
         super(src, newName);
         _forward = src._forward;
@@ -41,12 +43,12 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized ObjectIdReferenceProperty this, @Initialized PropertyName newName) {
         return new ObjectIdReferenceProperty(this, newName);
     }
 
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized ObjectIdReferenceProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -54,39 +56,39 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized ObjectIdReferenceProperty this, @Initialized NullValueProvider nva) {
         return new ObjectIdReferenceProperty(this, _valueDeserializer, nva);
     }
     
     @Override
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized ObjectIdReferenceProperty this, @Initialized DeserializationConfig config) {
         if (_forward != null) {
             _forward.fixAccess(config);
         }
     }
 
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized ObjectIdReferenceProperty this, @Initialized Class<A> acls) {
         return _forward.getAnnotation(acls);
     }
 
     @Override
-    public AnnotatedMember getMember() {
+    public AnnotatedMember getMember(@Initialized ObjectIdReferenceProperty this) {
         return _forward.getMember();
     }
 
     @Override
-    public int getCreatorIndex() {
+    public int getCreatorIndex(@Initialized ObjectIdReferenceProperty this) {
         return _forward.getCreatorIndex();
     }
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt, Object instance) throws IOException {
+    public void deserializeAndSet(@Initialized ObjectIdReferenceProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object instance) throws IOException {
         deserializeSetAndReturn(p, ctxt, instance);
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p, DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         try {
             return setAndReturn(instance, deserialize(p, ctxt));
@@ -101,21 +103,22 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public void set(Object instance, Object value) throws IOException {
+    public void set(@Initialized ObjectIdReferenceProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         _forward.set(instance, value);
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException {
+    public Object setAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         return _forward.setAndReturn(instance, value);
     }
 
     public final static class PropertyReferring extends Referring {
-        private final ObjectIdReferenceProperty _parent;
-        public final Object _pojo;
+        private final @Initialized ObjectIdReferenceProperty _parent;
+        public final @Initialized Object _pojo;
 
-        public PropertyReferring(ObjectIdReferenceProperty parent,
-                UnresolvedForwardReference ref, Class<?> type, Object ob)
+        public PropertyReferring(@Initialized ObjectIdReferenceProperty parent,
+                @Initialized
+                UnresolvedForwardReference ref, @Initialized Class<?> type, @Initialized Object ob)
         {
             super(ref, type);
             _parent = parent;
@@ -123,7 +126,7 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
         }
 
         @Override
-        public void handleResolvedForwardReference(Object id, Object value) throws IOException
+        public void handleResolvedForwardReference(ObjectIdReferenceProperty.@Initialized PropertyReferring this, @Initialized Object id, @Initialized Object value) throws IOException
         {
             if (!hasId(id)) {
                 throw new IllegalArgumentException("Trying to resolve a forward reference with id [" + id

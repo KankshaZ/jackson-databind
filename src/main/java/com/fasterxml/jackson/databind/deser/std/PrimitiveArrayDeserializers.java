@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -33,16 +35,16 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
      *
      * @since 2.7
      */
-    protected final Boolean _unwrapSingle;
+    protected final @Initialized Boolean _unwrapSingle;
 
     // since 2.9
-    private transient Object _emptyValue;
+    private transient @Initialized @Nullable Object _emptyValue;
 
     /**
      * Flag that indicates need for special handling; either failing
      * (throw exception) or skipping
      */
-    protected final NullValueProvider _nuller;
+    protected final @Initialized NullValueProvider _nuller;
 
     /*
     /********************************************************
@@ -66,7 +68,7 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         _nuller = nuller;
     }
     
-    public static JsonDeserializer<?> forType(Class<?> rawType)
+    public static JsonDeserializer<?> forType(@Initialized Class<?> rawType)
     {
         // Start with more common types...
         if (rawType == Integer.TYPE) {
@@ -98,7 +100,8 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized PrimitiveArrayDeserializers<T> this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         Boolean unwrapSingle = findFormatFeature(ctxt, property, _valueClass,
@@ -132,13 +135,15 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
      */
     protected abstract T _concat(T oldValue, T newValue);
 
-    protected abstract T handleSingleElementUnwrapped(JsonParser p,
+    protected abstract T handleSingleElementUnwrapped(@Initialized JsonParser p,
+            @Initialized
             DeserializationContext ctxt) throws IOException;
 
     /**
      * @since 2.9
      */
-    protected abstract PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+    protected abstract PrimitiveArrayDeserializers<?> withResolved(@Initialized @Nullable NullValueProvider nuller,
+            @Initialized
             Boolean unwrapSingle);
 
     // since 2.9
@@ -151,18 +156,18 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
      */
     
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized PrimitiveArrayDeserializers<T> this, @Initialized DeserializationConfig config) {
         return Boolean.TRUE;
     }
 
     @Override
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized PrimitiveArrayDeserializers<T> this) {
         // Empty values shareable freely
         return AccessPattern.CONSTANT;
     }
     
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized PrimitiveArrayDeserializers<T> this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         Object empty = _emptyValue;
         if (empty == null) {
             _emptyValue = empty = _constructEmpty();
@@ -171,7 +176,8 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized PrimitiveArrayDeserializers<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException
     {
         // Should there be separate handling for base64 stuff?
@@ -180,7 +186,7 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt, T existing) throws IOException
+    public T deserialize(@Initialized PrimitiveArrayDeserializers<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, T existing) throws IOException
     {
         T newValue = deserialize(p, ctxt);
         if (existing == null) {
@@ -255,7 +261,7 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class CharDeser
         extends PrimitiveArrayDeserializers<char[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         public CharDeser() { super(char[].class); }
         protected CharDeser(CharDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
@@ -263,19 +269,20 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized CharDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             // 11-Dec-2015, tatu: Not sure how re-wrapping would work; omit
             return this;
         }
 
         @Override
-        protected char[] _constructEmpty() {
+        protected char[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized CharDeser this) {
             return new char[0];
         }
 
         @Override
-        public char[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public char[] deserialize(PrimitiveArrayDeserializers.@Initialized CharDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             /* Won't take arrays, must get a String (could also
              * convert other tokens to Strings... but let's not bother
@@ -338,14 +345,15 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected char[] handleSingleElementUnwrapped(JsonParser p,
+        protected char[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized CharDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             // not sure how this should work...
             return (char[]) ctxt.handleUnexpectedToken(_valueClass, p);
         }
 
         @Override
-        protected char[] _concat(char[] oldValue, char[] newValue) {
+        protected char[] _concat(PrimitiveArrayDeserializers.@Initialized CharDeser this, char @Initialized [] oldValue, char @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             char[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -364,26 +372,27 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class BooleanDeser
         extends PrimitiveArrayDeserializers<boolean[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         public BooleanDeser() { super(boolean[].class); }
-        protected BooleanDeser(BooleanDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected BooleanDeser(@Initialized BooleanDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized BooleanDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new BooleanDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected boolean[] _constructEmpty() {
+        protected boolean[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized BooleanDeser this) {
             return new boolean[0];
         }
 
         @Override
-        public boolean[] deserialize(JsonParser p, DeserializationContext ctxt)
+        public boolean[] deserialize(PrimitiveArrayDeserializers.@Initialized BooleanDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
@@ -424,13 +433,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected boolean[] handleSingleElementUnwrapped(JsonParser p,
+        protected boolean[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized BooleanDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new boolean[] { _parseBooleanPrimitive(p, ctxt) };
         }
 
         @Override
-        protected boolean[] _concat(boolean[] oldValue, boolean[] newValue) {
+        protected boolean[] _concat(PrimitiveArrayDeserializers.@Initialized BooleanDeser this, boolean @Initialized [] oldValue, boolean @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             boolean[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -447,26 +457,27 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class ByteDeser
         extends PrimitiveArrayDeserializers<byte[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         public ByteDeser() { super(byte[].class); }
-        protected ByteDeser(ByteDeser base, NullValueProvider nuller,Boolean unwrapSingle) {
+        protected ByteDeser(@Initialized ByteDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized ByteDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new ByteDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected byte[] _constructEmpty() {
+        protected byte[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized ByteDeser this) {
             return new byte[0];
         }
 
         @Override
-        public byte[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public byte[] deserialize(PrimitiveArrayDeserializers.@Initialized ByteDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             JsonToken t = p.getCurrentToken();
             
@@ -534,7 +545,8 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected byte[] handleSingleElementUnwrapped(JsonParser p,
+        protected byte[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized ByteDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException
         {
             byte value;
@@ -559,7 +571,7 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected byte[] _concat(byte[] oldValue, byte[] newValue) {
+        protected byte[] _concat(PrimitiveArrayDeserializers.@Initialized ByteDeser this, byte @Initialized [] oldValue, byte @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             byte[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -572,26 +584,27 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class ShortDeser
         extends PrimitiveArrayDeserializers<short[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         public ShortDeser() { super(short[].class); }
-        protected ShortDeser(ShortDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected ShortDeser(@Initialized ShortDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized ShortDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new ShortDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected short[] _constructEmpty() {
+        protected short[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized ShortDeser this) {
             return new short[0];
         }
 
         @Override
-        public short[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public short[] deserialize(PrimitiveArrayDeserializers.@Initialized ShortDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
                 return handleNonArray(p, ctxt);
@@ -627,13 +640,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected short[] handleSingleElementUnwrapped(JsonParser p,
+        protected short[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized ShortDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new short[] { _parseShortPrimitive(p, ctxt) };
         }
 
         @Override
-        protected short[] _concat(short[] oldValue, short[] newValue) {
+        protected short[] _concat(PrimitiveArrayDeserializers.@Initialized ShortDeser this, short @Initialized [] oldValue, short @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             short[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -646,28 +660,29 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class IntDeser
         extends PrimitiveArrayDeserializers<int[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        public final static IntDeser instance = new IntDeser();
+        public final static @Initialized IntDeser instance = new IntDeser();
         
         public IntDeser() { super(int[].class); }
-        protected IntDeser(IntDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected IntDeser(@Initialized IntDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized IntDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new IntDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected int[] _constructEmpty() {
+        protected int[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized IntDeser this) {
             return new int[0];
         }
 
         @Override
-        public int[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public int[] deserialize(PrimitiveArrayDeserializers.@Initialized IntDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
                 return handleNonArray(p, ctxt);
@@ -705,13 +720,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected int[] handleSingleElementUnwrapped(JsonParser p,
+        protected int[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized IntDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new int[] { _parseIntPrimitive(p, ctxt) };
         }
 
         @Override
-        protected int[] _concat(int[] oldValue, int[] newValue) {
+        protected int[] _concat(PrimitiveArrayDeserializers.@Initialized IntDeser this, int @Initialized [] oldValue, int @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             int[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -724,28 +740,29 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class LongDeser
         extends PrimitiveArrayDeserializers<long[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        public final static LongDeser instance = new LongDeser();
+        public final static @Initialized LongDeser instance = new LongDeser();
 
         public LongDeser() { super(long[].class); }
-        protected LongDeser(LongDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected LongDeser(@Initialized LongDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized LongDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new LongDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected long[] _constructEmpty() {
+        protected long[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized LongDeser this) {
             return new long[0];
         }
 
         @Override
-        public long[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public long[] deserialize(PrimitiveArrayDeserializers.@Initialized LongDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
                 return handleNonArray(p, ctxt);
@@ -783,13 +800,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected long[] handleSingleElementUnwrapped(JsonParser p,
+        protected long[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized LongDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new long[] { _parseLongPrimitive(p, ctxt) };
         }
 
         @Override
-        protected long[] _concat(long[] oldValue, long[] newValue) {
+        protected long[] _concat(PrimitiveArrayDeserializers.@Initialized LongDeser this, long @Initialized [] oldValue, long @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             long[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -802,26 +820,27 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class FloatDeser
         extends PrimitiveArrayDeserializers<float[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         public FloatDeser() { super(float[].class); }
-        protected FloatDeser(FloatDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected FloatDeser(@Initialized FloatDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized FloatDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new FloatDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected float[] _constructEmpty() {
+        protected float[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized FloatDeser this) {
             return new float[0];
         }
 
         @Override
-        public float[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public float[] deserialize(PrimitiveArrayDeserializers.@Initialized FloatDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
                 return handleNonArray(p, ctxt);
@@ -854,13 +873,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected float[] handleSingleElementUnwrapped(JsonParser p,
+        protected float[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized FloatDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new float[] { _parseFloatPrimitive(p, ctxt) };
         }
 
         @Override
-        protected float[] _concat(float[] oldValue, float[] newValue) {
+        protected float[] _concat(PrimitiveArrayDeserializers.@Initialized FloatDeser this, float @Initialized [] oldValue, float @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             float[] result = Arrays.copyOf(oldValue, len1+len2);
@@ -873,26 +893,27 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
     final static class DoubleDeser
         extends PrimitiveArrayDeserializers<double[]>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
         
         public DoubleDeser() { super(double[].class); }
-        protected DoubleDeser(DoubleDeser base, NullValueProvider nuller, Boolean unwrapSingle) {
+        protected DoubleDeser(@Initialized DoubleDeser base, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
             super(base, nuller, unwrapSingle);
         }
 
         @Override
-        protected PrimitiveArrayDeserializers<?> withResolved(NullValueProvider nuller,
+        protected PrimitiveArrayDeserializers<?> withResolved(PrimitiveArrayDeserializers.@Initialized DoubleDeser this, @Initialized NullValueProvider nuller,
+                @Initialized
                 Boolean unwrapSingle) {
             return new DoubleDeser(this, nuller, unwrapSingle);
         }
 
         @Override
-        protected double[] _constructEmpty() {
+        protected double[] _constructEmpty(PrimitiveArrayDeserializers.@Initialized DoubleDeser this) {
             return new double[0];
         }
 
         @Override
-        public double[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public double[] deserialize(PrimitiveArrayDeserializers.@Initialized DoubleDeser this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (!p.isExpectedStartArrayToken()) {
                 return handleNonArray(p, ctxt);
@@ -924,13 +945,14 @@ public abstract class PrimitiveArrayDeserializers<T> extends StdDeserializer<T>
         }
 
         @Override
-        protected double[] handleSingleElementUnwrapped(JsonParser p,
+        protected double[] handleSingleElementUnwrapped(PrimitiveArrayDeserializers.@Initialized DoubleDeser this, @Initialized JsonParser p,
+                @Initialized
                 DeserializationContext ctxt) throws IOException {
             return new double[] { _parseDoublePrimitive(p, ctxt) };
         }
 
         @Override
-        protected double[] _concat(double[] oldValue, double[] newValue) {
+        protected double[] _concat(PrimitiveArrayDeserializers.@Initialized DoubleDeser this, double @Initialized [] oldValue, double @Initialized [] newValue) {
             int len1 = oldValue.length;
             int len2 = newValue.length;
             double[] result = Arrays.copyOf(oldValue, len1+len2);

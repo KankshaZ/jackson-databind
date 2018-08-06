@@ -1,0 +1,11 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind:
+class PropertyName:
+
+    method construct(Ljava/lang/String;)Lcom/fasterxml/jackson/databind/PropertyName;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

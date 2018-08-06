@@ -1,0 +1,102 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class MapperConfigBase:
+
+    method with([Lcom/fasterxml/jackson/databind/MapperFeature;)LT;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method without([Lcom/fasterxml/jackson/databind/MapperFeature;)LT;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method with(Lcom/fasterxml/jackson/databind/MapperFeature;Z)LT;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getAttributes()Lcom/fasterxml/jackson/databind/cfg/ContextAttributes;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getSubtypeResolver()Lcom/fasterxml/jackson/databind/jsontype/SubtypeResolver;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getActiveView()Ljava/lang/Class;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getConfigOverride(Ljava/lang/Class;)Lcom/fasterxml/jackson/databind/cfg/ConfigOverride;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method findConfigOverride(Ljava/lang/Class;)Lcom/fasterxml/jackson/databind/cfg/ConfigOverride;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultPropertyInclusion()Lcom/fasterxml/jackson/annotation/JsonInclude$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultPropertyInclusion(Ljava/lang/Class;)Lcom/fasterxml/jackson/annotation/JsonInclude$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultInclusion(Ljava/lang/Class;Ljava/lang/Class;)Lcom/fasterxml/jackson/annotation/JsonInclude$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultPropertyFormat(Ljava/lang/Class;)Lcom/fasterxml/jackson/annotation/JsonFormat$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultPropertyIgnorals(Ljava/lang/Class;)Lcom/fasterxml/jackson/annotation/JsonIgnoreProperties$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultPropertyIgnorals(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Lcom/fasterxml/jackson/annotation/JsonIgnoreProperties$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultVisibilityChecker()Lcom/fasterxml/jackson/databind/introspect/VisibilityChecker;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultVisibilityChecker(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Lcom/fasterxml/jackson/databind/introspect/VisibilityChecker;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultSetterInfo()Lcom/fasterxml/jackson/annotation/JsonSetter$Value;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultMergeable()Ljava/lang/Boolean;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getDefaultMergeable(Ljava/lang/Class;)Ljava/lang/Boolean;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method findRootName(Lcom/fasterxml/jackson/databind/JavaType;)Lcom/fasterxml/jackson/databind/PropertyName;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method findRootName(Ljava/lang/Class;)Lcom/fasterxml/jackson/databind/PropertyName;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method findMixInClassFor(Ljava/lang/Class;)Ljava/lang/Class;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method copy()Lcom/fasterxml/jackson/databind/introspect/ClassIntrospector$MixInResolver;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+

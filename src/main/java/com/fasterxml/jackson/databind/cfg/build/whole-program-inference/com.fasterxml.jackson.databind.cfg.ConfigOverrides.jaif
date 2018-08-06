@@ -1,0 +1,19 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class ConfigOverrides:
+
+    field _defaultInclusion:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _defaultSetterInfo:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method <init>(Ljava/util/Map;Lcom/fasterxml/jackson/annotation/JsonInclude$Value;Lcom/fasterxml/jackson/annotation/JsonSetter$Value;Lcom/fasterxml/jackson/databind/introspect/VisibilityChecker;Ljava/lang/Boolean;)V:
+        return:
+        parameter #1:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #2:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

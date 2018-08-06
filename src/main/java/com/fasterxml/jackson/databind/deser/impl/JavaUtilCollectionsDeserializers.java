@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -20,27 +21,27 @@ import com.fasterxml.jackson.databind.util.Converter;
  */
 public abstract class JavaUtilCollectionsDeserializers
 {
-    private final static int TYPE_SINGLETON_SET = 1;
-    private final static int TYPE_SINGLETON_LIST = 2;
-    private final static int TYPE_SINGLETON_MAP = 3;
+    private final static @Initialized int TYPE_SINGLETON_SET = 1;
+    private final static @Initialized int TYPE_SINGLETON_LIST = 2;
+    private final static @Initialized int TYPE_SINGLETON_MAP = 3;
 
-    private final static int TYPE_UNMODIFIABLE_SET = 4;
-    private final static int TYPE_UNMODIFIABLE_LIST = 5;
-    private final static int TYPE_UNMODIFIABLE_MAP = 6;
+    private final static @Initialized int TYPE_UNMODIFIABLE_SET = 4;
+    private final static @Initialized int TYPE_UNMODIFIABLE_LIST = 5;
+    private final static @Initialized int TYPE_UNMODIFIABLE_MAP = 6;
 
-    public final static int TYPE_AS_LIST = 7;
+    public final static @Initialized int TYPE_AS_LIST = 7;
 
     // 10-Jan-2018, tatu: There are a few "well-known" special containers in JDK too:
 
-    private final static Class<?> CLASS_AS_ARRAYS_LIST = Arrays.asList(null, null).getClass();
+    private final static @Initialized Class<?> CLASS_AS_ARRAYS_LIST = Arrays.asList(null, null).getClass();
 
-    private final static Class<?> CLASS_SINGLETON_SET;
-    private final static Class<?> CLASS_SINGLETON_LIST;
-    private final static Class<?> CLASS_SINGLETON_MAP;
+    private final static @Initialized Class<?> CLASS_SINGLETON_SET;
+    private final static @Initialized Class<?> CLASS_SINGLETON_LIST;
+    private final static @Initialized Class<?> CLASS_SINGLETON_MAP;
 
-    private final static Class<?> CLASS_UNMODIFIABLE_SET;
-    private final static Class<?> CLASS_UNMODIFIABLE_LIST;
-    private final static Class<?> CLASS_UNMODIFIABLE_MAP;
+    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_SET;
+    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_LIST;
+    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_MAP;
 
     static {
         Set<?> set = Collections.singleton(Boolean.TRUE);
@@ -56,7 +57,8 @@ public abstract class JavaUtilCollectionsDeserializers
         CLASS_UNMODIFIABLE_MAP = Collections.unmodifiableMap(map).getClass();
     }
 
-    public static JsonDeserializer<?> findForCollection(DeserializationContext ctxt,
+    public static JsonDeserializer<?> findForCollection(@Initialized DeserializationContext ctxt,
+            @Initialized
             JavaType type)
         throws JsonMappingException
     {
@@ -79,7 +81,8 @@ public abstract class JavaUtilCollectionsDeserializers
         return new StdDelegatingDeserializer<Object>(conv);
     }
 
-    public static JsonDeserializer<?> findForMap(DeserializationContext ctxt,
+    public static JsonDeserializer<?> findForMap(@Initialized DeserializationContext ctxt,
+            @Initialized
             JavaType type)
         throws JsonMappingException
     {
@@ -96,8 +99,9 @@ public abstract class JavaUtilCollectionsDeserializers
         return new StdDelegatingDeserializer<Object>(conv);
     }
     
-    static JavaUtilCollectionsConverter converter(int kind,
-            JavaType concreteType, Class<?> rawSuper)
+    static JavaUtilCollectionsConverter converter(@Initialized int kind,
+            @Initialized
+            JavaType concreteType, @Initialized Class<?> rawSuper)
     {
         return new JavaUtilCollectionsConverter(kind, concreteType.findSuperType(rawSuper));
     }
@@ -109,17 +113,17 @@ public abstract class JavaUtilCollectionsDeserializers
      */
     private static class JavaUtilCollectionsConverter implements Converter<Object,Object>
     {
-        private final JavaType _inputType;
+        private final @Initialized JavaType _inputType;
 
-        private final int _kind;
+        private final @Initialized int _kind;
 
-        private JavaUtilCollectionsConverter(int kind, JavaType inputType) {
+        private JavaUtilCollectionsConverter(@Initialized int kind, @Initialized JavaType inputType) {
             _inputType = inputType;
             _kind = kind;
         }
         
         @Override
-        public Object convert(Object value) {
+        public Object convert(JavaUtilCollectionsDeserializers.@Initialized JavaUtilCollectionsConverter this, @Initialized Object value) {
             if (value == null) { // is this legal to get?
                 return null;
             }
@@ -160,17 +164,17 @@ public abstract class JavaUtilCollectionsDeserializers
         }
 
         @Override
-        public JavaType getInputType(TypeFactory typeFactory) {
+        public JavaType getInputType(JavaUtilCollectionsDeserializers.@Initialized JavaUtilCollectionsConverter this, @Initialized TypeFactory typeFactory) {
             return _inputType;
         }
 
         @Override
-        public JavaType getOutputType(TypeFactory typeFactory) {
+        public JavaType getOutputType(JavaUtilCollectionsDeserializers.@Initialized JavaUtilCollectionsConverter this, @Initialized TypeFactory typeFactory) {
             // we don't actually care, so:
             return _inputType;
         }
 
-        private void _checkSingleton(int size) {
+        private void _checkSingleton(@Initialized int size) {
             if (size != 1) {
                 // not the best error ever but... has to do
                 throw new IllegalArgumentException("Can not deserialize Singleton container from "+size+" entries");

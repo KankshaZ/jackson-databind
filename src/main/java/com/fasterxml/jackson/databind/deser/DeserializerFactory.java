@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.type.*;
@@ -40,7 +41,7 @@ import com.fasterxml.jackson.databind.type.*;
  */
 public abstract class DeserializerFactory
 {
-    protected final static Deserializers[] NO_DESERIALIZERS = new Deserializers[0];
+    protected final static @Initialized Deserializers @Initialized [] NO_DESERIALIZERS = new Deserializers[0];
 
     /*
     /********************************************************
@@ -90,7 +91,7 @@ public abstract class DeserializerFactory
      * something "more concrete" (abstract class instead of interface).
      * Will either return passed type, or a more specific type.
      */
-    public abstract JavaType mapAbstractType(DeserializationConfig config, JavaType type)
+    public abstract JavaType mapAbstractType(@Initialized DeserializationConfig config, @Initialized JavaType type)
         throws JsonMappingException;
 
     /**
@@ -113,8 +114,9 @@ public abstract class DeserializerFactory
      *
      * @param type Type to be deserialized
      */
-    public abstract JsonDeserializer<Object> createBeanDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<Object> createBeanDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
     /**
@@ -122,28 +124,33 @@ public abstract class DeserializerFactory
      * class for building value instances.
      */
     public abstract JsonDeserializer<Object> createBuilderBasedDeserializer(
-    		DeserializationContext ctxt, JavaType type, BeanDescription beanDesc,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized JavaType type, @Initialized BeanDescription beanDesc,
+    		@Initialized
     		Class<?> builderClass)
         throws JsonMappingException;
 
 
-    public abstract JsonDeserializer<?> createEnumDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createEnumDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
     /**
      * @since 2.7
      */
-    public abstract JsonDeserializer<?> createReferenceDeserializer(DeserializationContext ctxt,
-            ReferenceType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createReferenceDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            ReferenceType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
     
     /**
      * Method called to create and return a deserializer that can construct
      * JsonNode(s) from JSON content.
      */
-    public abstract JsonDeserializer<?> createTreeDeserializer(DeserializationConfig config,
-            JavaType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createTreeDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
     
     /**
@@ -153,24 +160,29 @@ public abstract class DeserializerFactory
      *
      * @param type Type to be deserialized
      */
-    public abstract JsonDeserializer<?> createArrayDeserializer(DeserializationContext ctxt,
-            ArrayType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createArrayDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            ArrayType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
-    public abstract JsonDeserializer<?> createCollectionDeserializer(DeserializationContext ctxt,
-            CollectionType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createCollectionDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            CollectionType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
-    public abstract JsonDeserializer<?> createCollectionLikeDeserializer(DeserializationContext ctxt,
-            CollectionLikeType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createCollectionLikeDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            CollectionLikeType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
-    public abstract JsonDeserializer<?> createMapDeserializer(DeserializationContext ctxt,
-            MapType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createMapDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            MapType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
-    public abstract JsonDeserializer<?> createMapLikeDeserializer(DeserializationContext ctxt,
-            MapLikeType type, BeanDescription beanDesc)
+    public abstract JsonDeserializer<?> createMapLikeDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            MapLikeType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException;
 
     /**
@@ -181,7 +193,8 @@ public abstract class DeserializerFactory
      * @return Key deserializer to use for specified type, if one found; null if not
      *   (and default key deserializer should be used)
      */
-    public abstract KeyDeserializer createKeyDeserializer(DeserializationContext ctxt,
+    public abstract KeyDeserializer createKeyDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
             JavaType type)
         throws JsonMappingException;
     

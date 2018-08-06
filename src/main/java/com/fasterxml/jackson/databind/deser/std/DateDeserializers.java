@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 @SuppressWarnings("serial")
 public class DateDeserializers
 {
-    private final static HashSet<String> _classNames = new HashSet<String>();
+    private final static @Initialized HashSet<String> _classNames = new HashSet<String>();
     static {
         Class<?>[] numberTypes = new Class<?>[] {
             Calendar.class,
@@ -37,7 +38,7 @@ public class DateDeserializers
         }
     }
 
-    public static JsonDeserializer<?> find(Class<?> rawType, String clsName)
+    public static JsonDeserializer<?> find(@Initialized Class<?> rawType, @Initialized String clsName)
     {
         if (_classNames.contains(clsName)) {
             // Start with the most common type
@@ -74,12 +75,12 @@ public class DateDeserializers
          * Specific format to use, if non-null; if null will
          * just use default format.
          */
-        protected final DateFormat _customFormat;
+        protected final @Initialized DateFormat _customFormat;
 
         /**
          * Let's also keep format String for reference, to use for error messages
          */
-        protected final String _formatString;
+        protected final @Initialized String _formatString;
 
         protected DateBasedDeserializer(Class<?> clz) {
             super(clz);
@@ -94,10 +95,11 @@ public class DateDeserializers
             _formatString = formatStr;
         }
 
-        protected abstract DateBasedDeserializer<T> withDateFormat(DateFormat df, String formatStr);
+        protected abstract DateBasedDeserializer<T> withDateFormat(@Initialized DateFormat df, @Initialized String formatStr);
 
         @Override
-        public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+        public JsonDeserializer<?> createContextual(DateDeserializers.@Initialized @Initialized DateBasedDeserializer<T> this, @Initialized DeserializationContext ctxt,
+                @Initialized
                 BeanProperty property)
            throws JsonMappingException
         {
@@ -173,7 +175,7 @@ public class DateDeserializers
         }
 
         @Override
-        protected java.util.Date _parseDate(JsonParser p, DeserializationContext ctxt)
+        protected java.util.Date _parseDate(DateDeserializers.@Initialized @Initialized DateBasedDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             if (_customFormat != null) {
@@ -211,7 +213,7 @@ public class DateDeserializers
          *
          * @since 2.9
          */
-        protected final Constructor<Calendar> _defaultCtor;
+        protected final @Initialized Constructor<Calendar> _defaultCtor;
 
         public CalendarDeserializer() {
             super(Calendar.class);
@@ -219,23 +221,23 @@ public class DateDeserializers
         }
 
         @SuppressWarnings("unchecked")
-        public CalendarDeserializer(Class<? extends Calendar> cc) {
+        public CalendarDeserializer(@Initialized Class<? extends Calendar> cc) {
             super(cc);
             _defaultCtor = (Constructor<Calendar>) ClassUtil.findConstructor(cc, false);
         }
 
-        public CalendarDeserializer(CalendarDeserializer src, DateFormat df, String formatString) {
+        public CalendarDeserializer(@Initialized CalendarDeserializer src, @Initialized DateFormat df, @Initialized String formatString) {
             super(src, df, formatString);
             _defaultCtor = src._defaultCtor;
         }
 
         @Override
-        protected CalendarDeserializer withDateFormat(DateFormat df, String formatString) {
+        protected CalendarDeserializer withDateFormat(DateDeserializers.@Initialized CalendarDeserializer this, @Initialized DateFormat df, @Initialized String formatString) {
             return new CalendarDeserializer(this, df, formatString);
         }
 
         @Override
-        public Calendar deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public Calendar deserialize(DateDeserializers.@Initialized CalendarDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             Date d = _parseDate(p, ctxt);
             if (d == null) {
@@ -268,20 +270,20 @@ public class DateDeserializers
     @JacksonStdImpl
     public static class DateDeserializer extends DateBasedDeserializer<Date>
     {
-        public final static DateDeserializer instance = new DateDeserializer();
+        public final static @Initialized DateDeserializer instance = new DateDeserializer();
 
         public DateDeserializer() { super(Date.class); }
-        public DateDeserializer(DateDeserializer base, DateFormat df, String formatString) {
+        public DateDeserializer(@Initialized DateDeserializer base, @Initialized DateFormat df, @Initialized String formatString) {
             super(base, df, formatString);
         }
 
         @Override
-        protected DateDeserializer withDateFormat(DateFormat df, String formatString) {
+        protected DateDeserializer withDateFormat(DateDeserializers.@Initialized DateDeserializer this, @Initialized DateFormat df, @Initialized String formatString) {
             return new DateDeserializer(this, df, formatString);
         }
         
         @Override
-        public java.util.Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public java.util.Date deserialize(DateDeserializers.@Initialized DateDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
             return _parseDate(p, ctxt);
         }
     }
@@ -294,17 +296,17 @@ public class DateDeserializers
         extends DateBasedDeserializer<java.sql.Date>
     {
         public SqlDateDeserializer() { super(java.sql.Date.class); }
-        public SqlDateDeserializer(SqlDateDeserializer src, DateFormat df, String formatString) {
+        public SqlDateDeserializer(@Initialized SqlDateDeserializer src, @Initialized DateFormat df, @Initialized String formatString) {
             super(src, df, formatString);
         }
 
         @Override
-        protected SqlDateDeserializer withDateFormat(DateFormat df, String formatString) {
+        protected SqlDateDeserializer withDateFormat(DateDeserializers.@Initialized SqlDateDeserializer this, @Initialized DateFormat df, @Initialized String formatString) {
             return new SqlDateDeserializer(this, df, formatString);
         }
         
         @Override
-        public java.sql.Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public java.sql.Date deserialize(DateDeserializers.@Initialized SqlDateDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
             Date d = _parseDate(p, ctxt);
             return (d == null) ? null : new java.sql.Date(d.getTime());
         }
@@ -320,17 +322,17 @@ public class DateDeserializers
     public static class TimestampDeserializer extends DateBasedDeserializer<Timestamp>
     {
         public TimestampDeserializer() { super(Timestamp.class); }
-        public TimestampDeserializer(TimestampDeserializer src, DateFormat df, String formatString) {
+        public TimestampDeserializer(@Initialized TimestampDeserializer src, @Initialized DateFormat df, @Initialized String formatString) {
             super(src, df, formatString);
         }
 
         @Override
-        protected TimestampDeserializer withDateFormat(DateFormat df, String formatString) {
+        protected TimestampDeserializer withDateFormat(DateDeserializers.@Initialized TimestampDeserializer this, @Initialized DateFormat df, @Initialized String formatString) {
             return new TimestampDeserializer(this, df, formatString);
         }
         
         @Override
-        public java.sql.Timestamp deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public java.sql.Timestamp deserialize(DateDeserializers.@Initialized TimestampDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             Date d = _parseDate(p, ctxt);
             return (d == null) ? null : new Timestamp(d.getTime());

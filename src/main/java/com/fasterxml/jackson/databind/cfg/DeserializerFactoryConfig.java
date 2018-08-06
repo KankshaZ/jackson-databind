@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.databind.AbstractTypeResolver;
 import com.fasterxml.jackson.databind.deser.*;
 import com.fasterxml.jackson.databind.deser.std.StdKeyDeserializers;
@@ -14,10 +16,10 @@ public class DeserializerFactoryConfig
 {
     private static final long serialVersionUID = 1L; // since 2.5
 
-    protected final static Deserializers[] NO_DESERIALIZERS = new Deserializers[0];
-    protected final static BeanDeserializerModifier[] NO_MODIFIERS = new BeanDeserializerModifier[0];
-    protected final static AbstractTypeResolver[] NO_ABSTRACT_TYPE_RESOLVERS = new AbstractTypeResolver[0];
-    protected final static ValueInstantiators[] NO_VALUE_INSTANTIATORS = new ValueInstantiators[0];
+    protected final static @Initialized Deserializers @Initialized [] NO_DESERIALIZERS = new Deserializers[0];
+    protected final static @Initialized BeanDeserializerModifier @Initialized [] NO_MODIFIERS = new BeanDeserializerModifier[0];
+    protected final static @Initialized AbstractTypeResolver @Initialized [] NO_ABSTRACT_TYPE_RESOLVERS = new AbstractTypeResolver[0];
+    protected final static @Initialized ValueInstantiators @Initialized [] NO_VALUE_INSTANTIATORS = new ValueInstantiators[0];
 
     /**
      * By default we plug default key deserializers using as "just another" set of
@@ -25,7 +27,7 @@ public class DeserializerFactoryConfig
      * 
      * @since 2.2
      */
-    protected final static KeyDeserializers[] DEFAULT_KEY_DESERIALIZERS = new KeyDeserializers[] {
+    protected final static @Initialized KeyDeserializers @Initialized [] DEFAULT_KEY_DESERIALIZERS = new KeyDeserializers[] {
         new StdKeyDeserializers()
     };
     
@@ -33,26 +35,26 @@ public class DeserializerFactoryConfig
      * List of providers for additional deserializers, checked before considering default
      * basic or bean deserializers.
      */
-    protected final Deserializers[] _additionalDeserializers;
+    protected final @Initialized Deserializers @Initialized [] _additionalDeserializers;
 
     /**
      * List of providers for additional key deserializers, checked before considering
      * standard key deserializers.
      */
-    protected final KeyDeserializers[] _additionalKeyDeserializers;
+    protected final @Initialized KeyDeserializers @Initialized [] _additionalKeyDeserializers;
     
     /**
      * List of modifiers that can change the way {@link BeanDeserializer} instances
      * are configured and constructed.
      */
-    protected final BeanDeserializerModifier[] _modifiers;
+    protected final @Initialized BeanDeserializerModifier @Initialized [] _modifiers;
 
     /**
      * List of objects that may be able to resolve abstract types to
      * concrete types. Used by functionality like "mr Bean" to materialize
      * types as needed.
      */
-    protected final AbstractTypeResolver[] _abstractTypeResolvers;
+    protected final @Initialized AbstractTypeResolver @Initialized [] _abstractTypeResolvers;
 
     /**
      * List of objects that know how to create instances of POJO types;
@@ -61,7 +63,7 @@ public class DeserializerFactoryConfig
      * Used to support objects that are created using non-standard methods;
      * or to support post-constructor functionality.
      */
-    protected final ValueInstantiators[] _valueInstantiators;
+    protected final @Initialized ValueInstantiators @Initialized [] _valueInstantiators;
 
     /**
      * Constructor for creating basic configuration with no additional
@@ -75,11 +77,11 @@ public class DeserializerFactoryConfig
      * Copy-constructor that will create an instance that contains defined
      * set of additional deserializer providers.
      */
-    protected DeserializerFactoryConfig(Deserializers[] allAdditionalDeserializers,
-            KeyDeserializers[] allAdditionalKeyDeserializers,
-            BeanDeserializerModifier[] modifiers,
-            AbstractTypeResolver[] atr,
-            ValueInstantiators[] vi)
+    protected DeserializerFactoryConfig(Deserializers @Initialized  @Nullable [] allAdditionalDeserializers,
+            KeyDeserializers @Initialized  @Nullable [] allAdditionalKeyDeserializers,
+            BeanDeserializerModifier @Initialized  @Nullable [] modifiers,
+            AbstractTypeResolver @Initialized  @Nullable [] atr,
+            ValueInstantiators @Initialized  @Nullable [] vi)
     {
         _additionalDeserializers = (allAdditionalDeserializers == null) ?
                 NO_DESERIALIZERS : allAdditionalDeserializers;

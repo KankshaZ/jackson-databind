@@ -1,0 +1,11 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.core.io:
+class SerializedString:
+
+    method <init>(Ljava/lang/String;)V:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

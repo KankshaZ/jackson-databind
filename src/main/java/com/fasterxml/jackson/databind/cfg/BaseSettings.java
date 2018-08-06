@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.text.DateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -130,10 +131,13 @@ public final class BaseSettings
     /**********************************************************
      */
 
-    public BaseSettings(ClassIntrospector ci, AnnotationIntrospector ai,
-            PropertyNamingStrategy pns, TypeFactory tf,
-            TypeResolverBuilder<?> typer, DateFormat dateFormat, HandlerInstantiator hi,
-            Locale locale, TimeZone tz, Base64Variant defaultBase64)
+    public BaseSettings(@Initialized ClassIntrospector ci, @Initialized AnnotationIntrospector ai,
+            @Initialized
+            PropertyNamingStrategy pns, @Initialized TypeFactory tf,
+            @Initialized
+            TypeResolverBuilder<?> typer, @Initialized DateFormat dateFormat, @Initialized HandlerInstantiator hi,
+            @Initialized
+            Locale locale, @Initialized TimeZone tz, @Initialized Base64Variant defaultBase64)
     {
         _classIntrospector = ci;
         _annotationIntrospector = ai;
@@ -153,7 +157,7 @@ public final class BaseSettings
     /**********************************************************
      */
     
-    public BaseSettings withClassIntrospector(ClassIntrospector ci) {
+    public BaseSettings withClassIntrospector(@Initialized ClassIntrospector ci) {
         if (_classIntrospector == ci) {
             return this;
         }
@@ -162,7 +166,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
     
-    public BaseSettings withAnnotationIntrospector(AnnotationIntrospector ai) {
+    public BaseSettings withAnnotationIntrospector(@Initialized AnnotationIntrospector ai) {
         if (_annotationIntrospector == ai) {
             return this;
         }
@@ -171,11 +175,11 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
 
-    public BaseSettings withInsertedAnnotationIntrospector(AnnotationIntrospector ai) {
+    public BaseSettings withInsertedAnnotationIntrospector(@Initialized AnnotationIntrospector ai) {
         return withAnnotationIntrospector(AnnotationIntrospectorPair.create(ai, _annotationIntrospector));
     }
 
-    public BaseSettings withAppendedAnnotationIntrospector(AnnotationIntrospector ai) {
+    public BaseSettings withAppendedAnnotationIntrospector(@Initialized AnnotationIntrospector ai) {
         return withAnnotationIntrospector(AnnotationIntrospectorPair.create(_annotationIntrospector, ai));
     }
 
@@ -189,7 +193,7 @@ public final class BaseSettings
     }
     */
     
-    public BaseSettings withPropertyNamingStrategy(PropertyNamingStrategy pns) {
+    public BaseSettings withPropertyNamingStrategy(@Initialized PropertyNamingStrategy pns) {
         if (_propertyNamingStrategy == pns) {
             return this;
         }
@@ -198,7 +202,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
 
-    public BaseSettings withTypeFactory(TypeFactory tf) {
+    public BaseSettings withTypeFactory(@Initialized TypeFactory tf) {
         if (_typeFactory == tf) {
             return this;
         }
@@ -207,7 +211,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
 
-    public BaseSettings withTypeResolverBuilder(TypeResolverBuilder<?> typer) {
+    public BaseSettings withTypeResolverBuilder(@Initialized TypeResolverBuilder<?> typer) {
         if (_typeResolverBuilder == typer) {
             return this;
         }
@@ -216,7 +220,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
     
-    public BaseSettings withDateFormat(DateFormat df) {
+    public BaseSettings withDateFormat(@Initialized DateFormat df) {
         if (_dateFormat == df) {
             return this;
         }
@@ -230,7 +234,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
 
-    public BaseSettings withHandlerInstantiator(HandlerInstantiator hi) {
+    public BaseSettings withHandlerInstantiator(@Initialized HandlerInstantiator hi) {
         if (_handlerInstantiator == hi) {
             return this;
         }
@@ -239,7 +243,7 @@ public final class BaseSettings
                 _timeZone, _defaultBase64);
     }
 
-    public BaseSettings with(Locale l) {
+    public BaseSettings with(@Initialized Locale l) {
         if (_locale == l) {
             return this;
         }
@@ -253,7 +257,7 @@ public final class BaseSettings
      * Note that timezone used with also be assigned to configured {@link DateFormat},
      * changing time formatting defaults.
      */
-    public BaseSettings with(TimeZone tz)
+    public BaseSettings with(@Initialized TimeZone tz)
     {
         if (tz == null) {
             throw new IllegalArgumentException();
@@ -272,7 +276,7 @@ public final class BaseSettings
     /**
      * @since 2.1
      */
-    public BaseSettings with(Base64Variant base64) {
+    public BaseSettings with(@Initialized Base64Variant base64) {
         if (base64 == _defaultBase64) {
             return this;
         }
@@ -346,7 +350,7 @@ public final class BaseSettings
     /**********************************************************
      */
 
-    private DateFormat _force(DateFormat df, TimeZone tz)
+    private DateFormat _force(@Initialized DateFormat df, @Initialized TimeZone tz)
     {
         if (df instanceof StdDateFormat) {
             return ((StdDateFormat) df).withTimeZone(tz);

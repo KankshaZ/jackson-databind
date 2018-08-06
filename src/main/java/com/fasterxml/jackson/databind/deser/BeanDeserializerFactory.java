@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
@@ -30,12 +31,12 @@ public class BeanDeserializerFactory
     extends BasicDeserializerFactory
     implements java.io.Serializable // since 2.1
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
     /**
      * Signature of <b>Throwable.initCause</b> method.
      */
-    private final static Class<?>[] INIT_CAUSE_PARAMS = new Class<?>[] { Throwable.class };
+    private final static Class<?> @Initialized [] INIT_CAUSE_PARAMS = new Class<?>[] { Throwable.class };
 
     /*
     /**********************************************************
@@ -47,10 +48,10 @@ public class BeanDeserializerFactory
      * Globally shareable thread-safe instance which has no additional custom deserializers
      * registered
      */
-    public final static BeanDeserializerFactory instance = new BeanDeserializerFactory(
+    public final static @Initialized BeanDeserializerFactory instance = new BeanDeserializerFactory(
             new DeserializerFactoryConfig());
 
-    public BeanDeserializerFactory(DeserializerFactoryConfig config) {
+    public BeanDeserializerFactory(@Initialized DeserializerFactoryConfig config) {
         super(config);
     }
     
@@ -60,7 +61,7 @@ public class BeanDeserializerFactory
      * with different configuration settings.
      */
     @Override
-    public DeserializerFactory withConfig(DeserializerFactoryConfig config)
+    public DeserializerFactory withConfig(@Initialized BeanDeserializerFactory this, @Initialized DeserializerFactoryConfig config)
     {
         if (_factoryConfig == config) {
             return this;
@@ -87,8 +88,9 @@ public class BeanDeserializerFactory
      * enums.
      */
     @Override
-    public JsonDeserializer<Object> createBeanDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    public JsonDeserializer<Object> createBeanDeserializer(@Initialized BeanDeserializerFactory this, @Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         final DeserializationConfig config = ctxt.getConfig();
@@ -138,8 +140,9 @@ public class BeanDeserializerFactory
     }
 
     @Override
-    public JsonDeserializer<Object> createBuilderBasedDeserializer(DeserializationContext ctxt,
-            JavaType valueType, BeanDescription beanDesc, Class<?> builderClass)
+    public JsonDeserializer<Object> createBuilderBasedDeserializer(@Initialized BeanDeserializerFactory this, @Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType valueType, @Initialized BeanDescription beanDesc, @Initialized Class<?> builderClass)
                     throws JsonMappingException
     {
         // First: need a BeanDescription for builder class
@@ -152,8 +155,9 @@ public class BeanDeserializerFactory
      * Method called by {@link BeanDeserializerFactory} to see if there might be a standard
      * deserializer registered for given type.
      */
-    protected JsonDeserializer<?> findStdDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    protected JsonDeserializer<?> findStdDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         // note: we do NOT check for custom deserializers here, caller has already
@@ -170,8 +174,9 @@ public class BeanDeserializerFactory
         return deser;
     }
     
-    protected JavaType materializeAbstractType(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    protected JavaType materializeAbstractType(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         // May have multiple resolvers, call in precedence order until one returns non-null
@@ -199,8 +204,9 @@ public class BeanDeserializerFactory
      * deserializers.
      */
     @SuppressWarnings("unchecked")
-    public JsonDeserializer<Object> buildBeanDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    public JsonDeserializer<Object> buildBeanDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         // First: check what creators we can use, if any
@@ -263,7 +269,8 @@ public class BeanDeserializerFactory
      */
     @SuppressWarnings("unchecked")
     protected JsonDeserializer<Object> buildBuilderBasedDeserializer(
-    		DeserializationContext ctxt, JavaType valueType, BeanDescription builderDesc)
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized JavaType valueType, @Initialized BeanDescription builderDesc)
         throws JsonMappingException
     {
         // Creators, anyone? (to create builder itself)
@@ -320,8 +327,9 @@ public class BeanDeserializerFactory
         return (JsonDeserializer<Object>) deserializer;
     }
     
-    protected void addObjectIdReader(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder)
+    protected void addObjectIdReader(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder)
         throws JsonMappingException
     {
         ObjectIdInfo objectIdInfo = beanDesc.getObjectIdInfo();
@@ -358,8 +366,9 @@ public class BeanDeserializerFactory
     }
     
     @SuppressWarnings("unchecked")
-    public JsonDeserializer<Object> buildThrowableDeserializer(DeserializationContext ctxt,
-            JavaType type, BeanDescription beanDesc)
+    public JsonDeserializer<Object> buildThrowableDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         final DeserializationConfig config = ctxt.getConfig();
@@ -430,7 +439,8 @@ public class BeanDeserializerFactory
      * which is used to accumulate information needed to create deserializer
      * instance.
      */
-    protected BeanDeserializerBuilder constructBeanDeserializerBuilder(DeserializationContext ctxt,
+    protected BeanDeserializerBuilder constructBeanDeserializerBuilder(@Initialized DeserializationContext ctxt,
+            @Initialized
             BeanDescription beanDesc) {
         return new BeanDeserializerBuilder(beanDesc, ctxt);
     }
@@ -442,8 +452,9 @@ public class BeanDeserializerFactory
      * Note: designed to be overridable, and effort is made to keep interface
      * similar between versions.
      */
-    protected void addBeanProps(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder)
+    protected void addBeanProps(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder)
         throws JsonMappingException
     {
         final boolean isConcrete = !beanDesc.getType().isAbstract();
@@ -592,7 +603,7 @@ public class BeanDeserializerFactory
         }
     }
 
-    private boolean _isSetterlessType(Class<?> rawType) {
+    private boolean _isSetterlessType(@Initialized Class<?> rawType) {
         // May also need to consider getters
         // for Map/Collection properties; but with lowest precedence
         // should only consider Collections and Maps, for now?
@@ -606,9 +617,12 @@ public class BeanDeserializerFactory
      * Note that this will not remove properties that have no
      * setters.
      */
-    protected List<BeanPropertyDefinition> filterBeanProps(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder,
+    protected List<BeanPropertyDefinition> filterBeanProps(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder,
+            @Initialized
             List<BeanPropertyDefinition> propDefsIn,
+            @Initialized
             Set<String> ignored)
         throws JsonMappingException
     {
@@ -642,8 +656,9 @@ public class BeanDeserializerFactory
      *
      * @since 2.9
      */
-    protected void addBackReferenceProperties(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder)
+    protected void addBackReferenceProperties(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder)
         throws JsonMappingException
     {
         // and then back references, not necessarily found as regular properties
@@ -685,8 +700,9 @@ name, ((AnnotatedParameter) m).getIndex());
      * Method called locate all members used for value injection (if any),
      * constructor {@link com.fasterxml.jackson.databind.deser.impl.ValueInjector} instances, and add them to builder.
      */
-    protected void addInjectables(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder)
+    protected void addInjectables(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder)
         throws JsonMappingException
     {
         Map<Object, AnnotatedMember> raw = beanDesc.findInjectables();
@@ -709,8 +725,9 @@ name, ((AnnotatedParameter) m).getIndex());
      *     that contains Map; either way accessor used for passing "any values"
      */
     @SuppressWarnings("unchecked")
-    protected SettableAnyProperty constructAnySetter(DeserializationContext ctxt,
-            BeanDescription beanDesc, AnnotatedMember mutator)
+    protected SettableAnyProperty constructAnySetter(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized AnnotatedMember mutator)
         throws JsonMappingException
     {
         //find the java type based on the annotated setter method or setter field 
@@ -775,8 +792,10 @@ name, ((AnnotatedParameter) m).getIndex());
      * @return Property constructed, if any; or null to indicate that
      *   there should be no property based on given definitions.
      */
-    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanPropertyDefinition propDef,
+    protected SettableBeanProperty constructSettableProperty(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanPropertyDefinition propDef,
+            @Initialized
             JavaType propType0)
         throws JsonMappingException
     {
@@ -824,8 +843,9 @@ name, ((AnnotatedParameter) m).getIndex());
      * Method that will construct a regular bean property setter using
      * the given setter method.
      */
-    protected SettableBeanProperty constructSetterlessProperty(DeserializationContext ctxt,
-            BeanDescription beanDesc, BeanPropertyDefinition propDef)
+    protected SettableBeanProperty constructSetterlessProperty(@Initialized DeserializationContext ctxt,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanPropertyDefinition propDef)
         throws JsonMappingException
     {
         final AnnotatedMethod getter = propDef.getGetter();
@@ -858,7 +878,7 @@ name, ((AnnotatedParameter) m).getIndex());
      * Note that usually we shouldn't really be getting these sort of
      * types anyway; but better safe than sorry.
      */
-    protected boolean isPotentialBeanType(Class<?> type)
+    protected boolean isPotentialBeanType(@Initialized Class<?> type)
     {
         String typeStr = ClassUtil.canBeABeanType(type);
         if (typeStr != null) {
@@ -881,8 +901,9 @@ name, ((AnnotatedParameter) m).getIndex());
      * Helper method that will check whether given raw type is marked as always ignorable
      * (for purpose of ignoring properties with type)
      */
-    protected boolean isIgnorableType(DeserializationConfig config, BeanPropertyDefinition propDef,
-            Class<?> type, Map<Class<?>,Boolean> ignoredTypes)
+    protected boolean isIgnorableType(@Initialized DeserializationConfig config, @Initialized BeanPropertyDefinition propDef,
+            @Initialized
+            Class<?> type, @Initialized Map<Class<?>,Boolean> ignoredTypes)
     {
         Boolean status = ignoredTypes.get(type);
         if (status != null) {
@@ -910,7 +931,8 @@ name, ((AnnotatedParameter) m).getIndex());
     /**
      * @since 2.8.11
      */
-    protected void _validateSubType(DeserializationContext ctxt, JavaType type,
+    protected void _validateSubType(@Initialized DeserializationContext ctxt, @Initialized JavaType type,
+            @Initialized
             BeanDescription beanDesc)
         throws JsonMappingException
     {

@@ -1,0 +1,26 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class ContextAttributes$Impl:
+
+    method withSharedAttribute(Ljava/lang/Object;Ljava/lang/Object;)Lcom/fasterxml/jackson/databind/cfg/ContextAttributes;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withSharedAttributes(Ljava/util/Map;)Lcom/fasterxml/jackson/databind/cfg/ContextAttributes;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withoutSharedAttribute(Ljava/lang/Object;)Lcom/fasterxml/jackson/databind/cfg/ContextAttributes;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method getAttribute(Ljava/lang/Object;)Ljava/lang/Object;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withPerCallAttribute(Ljava/lang/Object;Ljava/lang/Object;)Lcom/fasterxml/jackson/databind/cfg/ContextAttributes;:
+        return:
+        receiver: @org.checkerframework.checker.initialization.qual.Initialized
+

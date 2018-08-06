@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,7 +23,7 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
  */
 public class NumberDeserializers
 {
-    private final static HashSet<String> _classNames = new HashSet<String>();
+    private final static @Initialized HashSet<String> _classNames = new HashSet<String>();
     static {
         // note: can skip primitive types; other ways to check them:
         Class<?>[] numberTypes = new Class<?>[] {
@@ -41,7 +43,7 @@ public class NumberDeserializers
         }
     }
 
-    public static JsonDeserializer<?> find(Class<?> rawType, String clsName) {
+    public static JsonDeserializer<?> find(@Initialized Class<?> rawType, @Initialized String clsName) {
         if (rawType.isPrimitive()) {
             if (rawType == Integer.TYPE) {
                 return IntegerDeserializer.primitiveInstance;
@@ -119,14 +121,14 @@ public class NumberDeserializers
     protected abstract static class PrimitiveOrWrapperDeserializer<T>
         extends StdScalarDeserializer<T>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         protected final T _nullValue;
 
         // @since 2.9
         protected final T _emptyValue;
 
-        protected final boolean _primitive;
+        protected final @Initialized boolean _primitive;
 
         protected PrimitiveOrWrapperDeserializer(Class<T> vc, T nvl, T empty) {
             super(vc);
@@ -136,7 +138,7 @@ public class NumberDeserializers
         }
 
         @Override
-        public AccessPattern getNullAccessPattern() {
+        public AccessPattern getNullAccessPattern(NumberDeserializers.@Initialized @Initialized PrimitiveOrWrapperDeserializer<T> this) {
             // 02-Feb-2017, tatu: For primitives we must dynamically check (and possibly throw
             //     exception); for wrappers not.
             if (_primitive) {
@@ -149,7 +151,7 @@ public class NumberDeserializers
         }
 
         @Override
-        public final T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+        public final T getNullValue(NumberDeserializers.@Initialized @Initialized PrimitiveOrWrapperDeserializer<T> this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
             // 01-Mar-2017, tatu: Alas, not all paths lead to `_coerceNull()`, as `SettableBeanProperty`
             //    short-circuits `null` handling. Hence need this check as well.
             if (_primitive && ctxt.isEnabled(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {
@@ -161,7 +163,7 @@ public class NumberDeserializers
         }
 
         @Override
-        public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+        public Object getEmptyValue(NumberDeserializers.@Initialized @Initialized PrimitiveOrWrapperDeserializer<T> this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
             return _emptyValue;
         }
     }
@@ -176,18 +178,18 @@ public class NumberDeserializers
     public final static class BooleanDeserializer
         extends PrimitiveOrWrapperDeserializer<Boolean>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static BooleanDeserializer primitiveInstance = new BooleanDeserializer(Boolean.TYPE, Boolean.FALSE);
-        final static BooleanDeserializer wrapperInstance = new BooleanDeserializer(Boolean.class, null);
+        final static @Initialized BooleanDeserializer primitiveInstance = new BooleanDeserializer(Boolean.TYPE, Boolean.FALSE);
+        final static @Initialized BooleanDeserializer wrapperInstance = new BooleanDeserializer(Boolean.class, null);
 
-        public BooleanDeserializer(Class<Boolean> cls, Boolean nvl)
+        public BooleanDeserializer(@Initialized Class<Boolean> cls, @Initialized @Nullable Boolean nvl)
         {
             super(cls, nvl, Boolean.FALSE);
         }
 
         @Override
-        public Boolean deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public Boolean deserialize(NumberDeserializers.@Initialized BooleanDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             JsonToken t = p.getCurrentToken();
             if (t == JsonToken.VALUE_TRUE) {
@@ -202,7 +204,8 @@ public class NumberDeserializers
         // Since we can never have type info ("natural type"; String, Boolean, Integer, Double):
         // (is it an error to even call this version?)
         @Override
-        public Boolean deserializeWithType(JsonParser p, DeserializationContext ctxt,
+        public Boolean deserializeWithType(NumberDeserializers.@Initialized BooleanDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 TypeDeserializer typeDeserializer)
             throws IOException
         {
@@ -216,7 +219,7 @@ public class NumberDeserializers
             return _parseBoolean(p, ctxt);
         }
 
-        protected final Boolean _parseBoolean(JsonParser p, DeserializationContext ctxt)
+        protected final Boolean _parseBoolean(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             JsonToken t = p.getCurrentToken();
@@ -267,18 +270,18 @@ public class NumberDeserializers
     public static class ByteDeserializer
         extends PrimitiveOrWrapperDeserializer<Byte>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static ByteDeserializer primitiveInstance = new ByteDeserializer(Byte.TYPE, (byte) 0);
-        final static ByteDeserializer wrapperInstance = new ByteDeserializer(Byte.class, null);
+        final static @Initialized ByteDeserializer primitiveInstance = new ByteDeserializer(Byte.TYPE, (byte) 0);
+        final static @Initialized ByteDeserializer wrapperInstance = new ByteDeserializer(Byte.class, null);
         
-        public ByteDeserializer(Class<Byte> cls, Byte nvl)
+        public ByteDeserializer(@Initialized Class<Byte> cls, @Initialized @Nullable Byte nvl)
         {
             super(cls, nvl, (byte) 0);
         }
 
         @Override
-        public Byte deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public Byte deserialize(NumberDeserializers.@Initialized ByteDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {
                 return p.getByteValue();
@@ -286,7 +289,7 @@ public class NumberDeserializers
             return _parseByte(p, ctxt);
         }
 
-        protected Byte _parseByte(JsonParser p, DeserializationContext ctxt) throws IOException
+        protected Byte _parseByte(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             JsonToken t = p.getCurrentToken();
             if (t == JsonToken.VALUE_STRING) { // let's do implicit re-parse
@@ -339,24 +342,24 @@ public class NumberDeserializers
     public static class ShortDeserializer
         extends PrimitiveOrWrapperDeserializer<Short>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static ShortDeserializer primitiveInstance = new ShortDeserializer(Short.TYPE, Short.valueOf((short)0));
-        final static ShortDeserializer wrapperInstance = new ShortDeserializer(Short.class, null);
+        final static @Initialized ShortDeserializer primitiveInstance = new ShortDeserializer(Short.TYPE, Short.valueOf((short)0));
+        final static @Initialized ShortDeserializer wrapperInstance = new ShortDeserializer(Short.class, null);
         
-        public ShortDeserializer(Class<Short> cls, Short nvl)
+        public ShortDeserializer(@Initialized Class<Short> cls, @Initialized @Nullable Short nvl)
         {
             super(cls, nvl, (short)0);
         }
 
         @Override
-        public Short deserialize(JsonParser p, DeserializationContext ctxt)
+        public Short deserialize(NumberDeserializers.@Initialized ShortDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             return _parseShort(p, ctxt);
         }
 
-        protected Short _parseShort(JsonParser p, DeserializationContext ctxt) throws IOException
+        protected Short _parseShort(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             JsonToken t = p.getCurrentToken();
             if (t == JsonToken.VALUE_NUMBER_INT) {
@@ -406,18 +409,18 @@ public class NumberDeserializers
     public static class CharacterDeserializer
         extends PrimitiveOrWrapperDeserializer<Character>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static CharacterDeserializer primitiveInstance = new CharacterDeserializer(Character.TYPE, '\0');
-        final static CharacterDeserializer wrapperInstance = new CharacterDeserializer(Character.class, null);
+        final static @Initialized CharacterDeserializer primitiveInstance = new CharacterDeserializer(Character.TYPE, '\0');
+        final static @Initialized CharacterDeserializer wrapperInstance = new CharacterDeserializer(Character.class, null);
         
-        public CharacterDeserializer(Class<Character> cls, Character nvl)
+        public CharacterDeserializer(@Initialized Class<Character> cls, @Initialized @Nullable Character nvl)
         {
             super(cls, nvl, '\0');
         }
 
         @Override
-        public Character deserialize(JsonParser p, DeserializationContext ctxt)
+        public Character deserialize(NumberDeserializers.@Initialized CharacterDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             switch (p.getCurrentTokenId()) {
@@ -453,21 +456,21 @@ public class NumberDeserializers
     public final static class IntegerDeserializer
         extends PrimitiveOrWrapperDeserializer<Integer>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static IntegerDeserializer primitiveInstance = new IntegerDeserializer(Integer.TYPE, 0);
-        final static IntegerDeserializer wrapperInstance = new IntegerDeserializer(Integer.class, null);
+        final static @Initialized IntegerDeserializer primitiveInstance = new IntegerDeserializer(Integer.TYPE, 0);
+        final static @Initialized IntegerDeserializer wrapperInstance = new IntegerDeserializer(Integer.class, null);
         
-        public IntegerDeserializer(Class<Integer> cls, Integer nvl) {
+        public IntegerDeserializer(@Initialized Class<Integer> cls, @Initialized @Nullable Integer nvl) {
             super(cls, nvl, 0);
         }
 
         // since 2.6, slightly faster lookups for this very common type
         @Override
-        public boolean isCachable() { return true; }
+        public boolean isCachable(NumberDeserializers.@Initialized IntegerDeserializer this) { return true; }
 
         @Override
-        public Integer deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public Integer deserialize(NumberDeserializers.@Initialized IntegerDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
             if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {
                 return p.getIntValue();
             }
@@ -477,7 +480,8 @@ public class NumberDeserializers
         // Since we can never have type info ("natural type"; String, Boolean, Integer, Double):
         // (is it an error to even call this version?)
         @Override
-        public Integer deserializeWithType(JsonParser p, DeserializationContext ctxt,
+        public Integer deserializeWithType(NumberDeserializers.@Initialized IntegerDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 TypeDeserializer typeDeserializer) throws IOException
         {
             if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {
@@ -486,7 +490,7 @@ public class NumberDeserializers
             return _parseInteger(p, ctxt);
         }
 
-        protected final Integer _parseInteger(JsonParser p, DeserializationContext ctxt) throws IOException
+        protected final Integer _parseInteger(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             switch (p.getCurrentTokenId()) {
             // NOTE: caller assumed to usually check VALUE_NUMBER_INT in fast path
@@ -536,28 +540,28 @@ public class NumberDeserializers
     public final static class LongDeserializer
         extends PrimitiveOrWrapperDeserializer<Long>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static LongDeserializer primitiveInstance = new LongDeserializer(Long.TYPE, 0L);
-        final static LongDeserializer wrapperInstance = new LongDeserializer(Long.class, null);
+        final static @Initialized LongDeserializer primitiveInstance = new LongDeserializer(Long.TYPE, 0L);
+        final static @Initialized LongDeserializer wrapperInstance = new LongDeserializer(Long.class, null);
         
-        public LongDeserializer(Class<Long> cls, Long nvl) {
+        public LongDeserializer(@Initialized Class<Long> cls, @Initialized @Nullable Long nvl) {
             super(cls, nvl, 0L);
         }
 
         // since 2.6, slightly faster lookups for this very common type
         @Override
-        public boolean isCachable() { return true; }
+        public boolean isCachable(NumberDeserializers.@Initialized LongDeserializer this) { return true; }
         
         @Override
-        public Long deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public Long deserialize(NumberDeserializers.@Initialized LongDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
             if (p.hasToken(JsonToken.VALUE_NUMBER_INT)) {
                 return p.getLongValue();
             }
             return _parseLong(p, ctxt);
         }
 
-        protected final Long _parseLong(JsonParser p, DeserializationContext ctxt) throws IOException
+        protected final Long _parseLong(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             switch (p.getCurrentTokenId()) {
             // NOTE: caller assumed to usually check VALUE_NUMBER_INT in fast path
@@ -598,22 +602,22 @@ public class NumberDeserializers
     public static class FloatDeserializer
         extends PrimitiveOrWrapperDeserializer<Float>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static FloatDeserializer primitiveInstance = new FloatDeserializer(Float.TYPE, 0.f);
-        final static FloatDeserializer wrapperInstance = new FloatDeserializer(Float.class, null);
+        final static @Initialized FloatDeserializer primitiveInstance = new FloatDeserializer(Float.TYPE, 0.f);
+        final static @Initialized FloatDeserializer wrapperInstance = new FloatDeserializer(Float.class, null);
         
-        public FloatDeserializer(Class<Float> cls, Float nvl) {
+        public FloatDeserializer(@Initialized Class<Float> cls, @Initialized @Nullable Float nvl) {
             super(cls, nvl, 0.f);
         }
 
         @Override
-        public Float deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public Float deserialize(NumberDeserializers.@Initialized FloatDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             return _parseFloat(p, ctxt);
         }
 
-        protected final Float _parseFloat(JsonParser p, DeserializationContext ctxt)
+        protected final Float _parseFloat(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             // We accept couple of different types; obvious ones first:
@@ -670,30 +674,31 @@ public class NumberDeserializers
     public static class DoubleDeserializer
         extends PrimitiveOrWrapperDeserializer<Double>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final static DoubleDeserializer primitiveInstance = new DoubleDeserializer(Double.TYPE, 0.d);
-        final static DoubleDeserializer wrapperInstance = new DoubleDeserializer(Double.class, null);
+        final static @Initialized DoubleDeserializer primitiveInstance = new DoubleDeserializer(Double.TYPE, 0.d);
+        final static @Initialized DoubleDeserializer wrapperInstance = new DoubleDeserializer(Double.class, null);
         
-        public DoubleDeserializer(Class<Double> cls, Double nvl) {
+        public DoubleDeserializer(@Initialized Class<Double> cls, @Initialized @Nullable Double nvl) {
             super(cls, nvl, 0.d);
         }
 
         @Override
-        public Double deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public Double deserialize(NumberDeserializers.@Initialized DoubleDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
             return _parseDouble(p, ctxt);
         }
 
         // Since we can never have type info ("natural type"; String, Boolean, Integer, Double):
         // (is it an error to even call this version?)
         @Override
-        public Double deserializeWithType(JsonParser p, DeserializationContext ctxt,
+        public Double deserializeWithType(NumberDeserializers.@Initialized DoubleDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 TypeDeserializer typeDeserializer) throws IOException
         {
             return _parseDouble(p, ctxt);
         }
 
-        protected final Double _parseDouble(JsonParser p, DeserializationContext ctxt) throws IOException
+        protected final Double _parseDouble(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             JsonToken t = p.getCurrentToken();
             if (t == JsonToken.VALUE_NUMBER_INT || t == JsonToken.VALUE_NUMBER_FLOAT) { // coercing should work too
@@ -757,14 +762,14 @@ public class NumberDeserializers
     public static class NumberDeserializer
         extends StdScalarDeserializer<Object>
     {
-        public final static NumberDeserializer instance = new NumberDeserializer();
+        public final static @Initialized NumberDeserializer instance = new NumberDeserializer();
         
         public NumberDeserializer() {
             super(Number.class);
         }
 
         @Override
-        public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public Object deserialize(NumberDeserializers.@Initialized NumberDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             switch (p.getCurrentTokenId()) {
             case JsonTokenId.ID_NUMBER_INT:
@@ -840,7 +845,8 @@ public class NumberDeserializers
          * calling type deserializer.
          */
         @Override
-        public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+        public Object deserializeWithType(NumberDeserializers.@Initialized NumberDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 TypeDeserializer typeDeserializer)
             throws IOException
         {
@@ -871,18 +877,18 @@ public class NumberDeserializers
     public static class BigIntegerDeserializer
         extends StdScalarDeserializer<BigInteger>
     {
-        public final static BigIntegerDeserializer instance = new BigIntegerDeserializer();
+        public final static @Initialized BigIntegerDeserializer instance = new BigIntegerDeserializer();
 
         public BigIntegerDeserializer() { super(BigInteger.class); }
 
         @Override
-        public Object getEmptyValue(DeserializationContext ctxt) {
+        public Object getEmptyValue(NumberDeserializers.@Initialized BigIntegerDeserializer this, @Initialized DeserializationContext ctxt) {
             return BigInteger.ZERO;
         }
 
         @SuppressWarnings("incomplete-switch")
         @Override
-        public BigInteger deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public BigInteger deserialize(NumberDeserializers.@Initialized BigIntegerDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             switch (p.getCurrentTokenId()) {
             case JsonTokenId.ID_NUMBER_INT:
@@ -924,17 +930,17 @@ public class NumberDeserializers
     public static class BigDecimalDeserializer
         extends StdScalarDeserializer<BigDecimal>
     {
-        public final static BigDecimalDeserializer instance = new BigDecimalDeserializer();
+        public final static @Initialized BigDecimalDeserializer instance = new BigDecimalDeserializer();
  
         public BigDecimalDeserializer() { super(BigDecimal.class); }
 
         @Override
-        public Object getEmptyValue(DeserializationContext ctxt) {
+        public Object getEmptyValue(NumberDeserializers.@Initialized BigDecimalDeserializer this, @Initialized DeserializationContext ctxt) {
             return BigDecimal.ZERO;
         }
         
         @Override
-        public BigDecimal deserialize(JsonParser p, DeserializationContext ctxt)
+        public BigDecimal deserialize(NumberDeserializers.@Initialized BigDecimalDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             switch (p.getCurrentTokenId()) {

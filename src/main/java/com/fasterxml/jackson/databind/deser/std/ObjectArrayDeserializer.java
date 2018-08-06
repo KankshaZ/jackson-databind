@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.reflect.Array;
 
@@ -23,9 +24,9 @@ public class ObjectArrayDeserializer
     extends ContainerDeserializerBase<Object[]>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final static Object[] NO_OBJECTS = new Object[0];
+    protected final static Object @Initialized [] NO_OBJECTS = new Object[0];
 
     // // Configuration
 
@@ -33,24 +34,24 @@ public class ObjectArrayDeserializer
      * Flag that indicates whether the component type is Object or not.
      * Used for minor optimization when constructing result.
      */
-    protected final boolean _untyped;
+    protected final @Initialized boolean _untyped;
 
     /**
      * Type of contained elements: needed for constructing actual
      * result array
      */
-    protected final Class<?> _elementClass;
+    protected final @Initialized Class<?> _elementClass;
 
     /**
      * Element deserializer
      */
-    protected JsonDeserializer<Object> _elementDeserializer;
+    protected @Initialized JsonDeserializer<Object> _elementDeserializer;
 
     /**
      * If element instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _elementTypeDeserializer;
+    protected final @Initialized TypeDeserializer _elementTypeDeserializer;
 
     /*
     /**********************************************************
@@ -58,8 +59,9 @@ public class ObjectArrayDeserializer
     /**********************************************************
      */
 
-    public ObjectArrayDeserializer(JavaType arrayType,
-            JsonDeserializer<Object> elemDeser, TypeDeserializer elemTypeDeser)
+    public ObjectArrayDeserializer(@Initialized JavaType arrayType,
+            @Initialized
+            JsonDeserializer<Object> elemDeser, @Initialized TypeDeserializer elemTypeDeser)
     {
         super(arrayType, null, null);
         _elementClass = arrayType.getContentType().getRawClass();
@@ -68,9 +70,11 @@ public class ObjectArrayDeserializer
         _elementTypeDeserializer = elemTypeDeser;
     }
 
-    protected ObjectArrayDeserializer(ObjectArrayDeserializer base,
-            JsonDeserializer<Object> elemDeser, TypeDeserializer elemTypeDeser,
-            NullValueProvider nuller, Boolean unwrapSingle)
+    protected ObjectArrayDeserializer(@Initialized ObjectArrayDeserializer base,
+            @Initialized
+            JsonDeserializer<Object> elemDeser, @Initialized TypeDeserializer elemTypeDeser,
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
         super(base, nuller, unwrapSingle);
         _elementClass = base._elementClass;
@@ -94,8 +98,9 @@ public class ObjectArrayDeserializer
      * @since 2.7
      */
     @SuppressWarnings("unchecked")
-    public ObjectArrayDeserializer withResolved(TypeDeserializer elemTypeDeser,
-            JsonDeserializer<?> elemDeser, NullValueProvider nuller, Boolean unwrapSingle)
+    public ObjectArrayDeserializer withResolved(@Initialized TypeDeserializer elemTypeDeser,
+            @Initialized
+            JsonDeserializer<?> elemDeser, @Initialized NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
         if ((unwrapSingle == _unwrapSingle) && (nuller == _nullProvider)
                 && (elemDeser == _elementDeserializer)
@@ -108,14 +113,15 @@ public class ObjectArrayDeserializer
     }
 
     @Override // since 2.5
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized ObjectArrayDeserializer this) {
         // Important: do NOT cache if polymorphic values, or if there are annotation-based
         // custom deserializers
         return (_elementDeserializer == null) && (_elementTypeDeserializer == null);
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized ObjectArrayDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         JsonDeserializer<?> valueDeser = _elementDeserializer;
@@ -144,19 +150,19 @@ public class ObjectArrayDeserializer
      */
 
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized ObjectArrayDeserializer this) {
         return _elementDeserializer;
     }
 
     @Override // since 2.9
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized ObjectArrayDeserializer this) {
         // immutable, shareable so:
         return AccessPattern.CONSTANT;
     }
 
     // need to override as we can't expose ValueInstantiator
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized ObjectArrayDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return NO_OBJECTS;
     }
 
@@ -167,7 +173,7 @@ public class ObjectArrayDeserializer
      */
     
     @Override
-    public Object[] deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object[] deserialize(@Initialized ObjectArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // Ok: must point to START_ARRAY (or equivalent)
@@ -218,7 +224,8 @@ public class ObjectArrayDeserializer
     }
 
     @Override
-    public Object[] deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object[] deserializeWithType(@Initialized ObjectArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -228,8 +235,8 @@ public class ObjectArrayDeserializer
     }
 
     @Override // since 2.9
-    public Object[] deserialize(JsonParser p, DeserializationContext ctxt,
-            Object[] intoValue) throws IOException
+    public Object[] deserialize(@Initialized ObjectArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            Object @Initialized [] intoValue) throws IOException
     {
         if (!p.isExpectedStartArrayToken()) {
             Object[] arr = handleNonArray(p, ctxt);
@@ -290,7 +297,7 @@ public class ObjectArrayDeserializer
     /**********************************************************
      */
     
-    protected Byte[] deserializeFromBase64(JsonParser p, DeserializationContext ctxt)
+    protected Byte[] deserializeFromBase64(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // First same as what PrimitiveArrayDeserializers.ByteDeser does:
@@ -303,7 +310,7 @@ public class ObjectArrayDeserializer
         return result;
     }
 
-    protected Object[] handleNonArray(JsonParser p, DeserializationContext ctxt)
+    protected Object[] handleNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // Empty String can become null...

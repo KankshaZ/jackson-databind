@@ -1,0 +1,16 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package java.util:
+class HashMap:
+
+    method <init>(I)V:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method <init>(Ljava/util/Map;)V:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

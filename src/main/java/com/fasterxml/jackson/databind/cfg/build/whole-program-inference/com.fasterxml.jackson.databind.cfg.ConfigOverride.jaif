@@ -1,0 +1,18 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class ConfigOverride:
+
+    field _format:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _include:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _includeAsProperty:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _ignorals:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.annotation;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.lang.annotation.*;
 
 /**
@@ -87,7 +88,7 @@ public @interface JsonPOJOBuilder
             this(ann.buildMethodName(), ann.withPrefix());
         }
 
-        public Value(String buildMethodName, String withPrefix)
+        public Value(@Initialized String buildMethodName, @Initialized String withPrefix)
         {
             this.buildMethodName = buildMethodName;
             this.withPrefix = withPrefix;

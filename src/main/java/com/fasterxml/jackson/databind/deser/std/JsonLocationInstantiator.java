@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -23,10 +24,10 @@ public class JsonLocationInstantiator
     }
 
     @Override
-    public boolean canCreateFromObjectWith() { return true; }
+    public boolean canCreateFromObjectWith(@Initialized JsonLocationInstantiator this) { return true; }
     
     @Override
-    public SettableBeanProperty[] getFromObjectArguments(DeserializationConfig config) {
+    public SettableBeanProperty[] getFromObjectArguments(@Initialized JsonLocationInstantiator this, @Initialized DeserializationConfig config) {
         JavaType intType = config.constructType(Integer.TYPE);
         JavaType longType = config.constructType(Long.TYPE);
         return new SettableBeanProperty[] {
@@ -38,22 +39,22 @@ public class JsonLocationInstantiator
         };
     }
 
-    private static CreatorProperty creatorProp(String name, JavaType type, int index) {
+    private static CreatorProperty creatorProp(@Initialized String name, @Initialized JavaType type, @Initialized int index) {
         return new CreatorProperty(PropertyName.construct(name), type, null,
                 null, null, null, index, null, PropertyMetadata.STD_REQUIRED);
     }
     
     @Override
-    public Object createFromObjectWith(DeserializationContext ctxt, Object[] args) {
+    public Object createFromObjectWith(@Initialized JsonLocationInstantiator this, @Initialized DeserializationContext ctxt, Object @Initialized [] args) {
         return new JsonLocation(args[0], _long(args[1]), _long(args[2]),
                 _int(args[3]), _int(args[4]));
     }
 
-    private final static long _long(Object o) {
+    private final static long _long(@Initialized Object o) {
         return (o == null) ? 0L : ((Number) o).longValue();
     }
 
-    private final static int _int(Object o) {
+    private final static int _int(@Initialized Object o) {
         return (o == null) ? 0 : ((Number) o).intValue();
     }
 }

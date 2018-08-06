@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.text.DateFormat;
 import java.util.*;
 
@@ -70,7 +72,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * String, will disable root-name wrapping; if null, will
      * use defaults
      */
-    protected final PropertyName _rootName;
+    protected final @Nullable PropertyName _rootName;
 
     /**
      * View to use for filtering out properties to serialize
@@ -78,7 +80,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * Null if none (will also be assigned null if <code>Object.class</code>
      * is defined), meaning that all properties are to be included.
      */
-    protected final Class<?> _view;
+    protected final @Nullable Class<?> _view;
 
     /**
      * Contextual attributes accessible (get and set) during processing,
@@ -263,12 +265,12 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     /**
      * @since 2.9 (in this case, demoted from sub-classes)
      */
-    protected abstract T _withBase(BaseSettings newBase);
+    protected abstract T _withBase(@Initialized BaseSettings newBase);
 
     /**
      * @since 2.9 (in this case, demoted from sub-classes)
      */
-    protected abstract T _withMapperFeatures(int mapperFeatures);
+    protected abstract T _withMapperFeatures(@Initialized int mapperFeatures);
 
     /*
     /**********************************************************
@@ -282,7 +284,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final T with(MapperFeature... features)
+    public final T with(@Initialized MapperConfigBase<CFG, T> this, MapperFeature @Initialized ... features)
     {
         int newMapperFlags = _mapperFeatures;
         for (MapperFeature f : features) {
@@ -300,7 +302,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final T without(MapperFeature... features)
+    public final T without(@Initialized MapperConfigBase<CFG, T> this, MapperFeature @Initialized ... features)
     {
         int newMapperFlags = _mapperFeatures;
         for (MapperFeature f : features) {
@@ -314,7 +316,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
 
     @SuppressWarnings("unchecked")
     @Override
-    public final T with(MapperFeature feature, boolean state)
+    public final T with(@Initialized MapperConfigBase<CFG, T> this, @Initialized MapperFeature feature, @Initialized boolean state)
     {
         int newMapperFlags;
         if (state) {
@@ -385,7 +387,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * 
      * @since 2.3
      */
-    public abstract T with(ContextAttributes attrs);
+    public abstract T with(@Initialized ContextAttributes attrs);
 
     /**
      * Method for constructing an instance that has only specified
@@ -521,7 +523,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      *   
      * @since 2.6
      */
-    public abstract T withRootName(PropertyName rootName);
+    public abstract T withRootName(@Initialized @Nullable PropertyName rootName);
 
     public T withRootName(String rootName) {
         if (rootName == null) {
@@ -558,7 +560,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * of class name (or custom scheme).
      */
     @Override
-    public final SubtypeResolver getSubtypeResolver() {
+    public final SubtypeResolver getSubtypeResolver(@Initialized MapperConfigBase<CFG, T> this) {
         return _subtypeResolver;
     }
 
@@ -566,24 +568,24 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * @deprecated Since 2.6 use {@link #getFullRootName} instead.
      */
     @Deprecated // since 2.6
-    public final String getRootName() {
+    public final @Nullable String getRootName() {
         return (_rootName == null) ? null : _rootName.getSimpleName();
     }
 
     /**
      * @since 2.6
      */
-    public final PropertyName getFullRootName() {
+    public final @Nullable PropertyName getFullRootName() {
         return _rootName;
     }
 
     @Override
-    public final Class<?> getActiveView() {
+    public final @Nullable Class<?> getActiveView(@Initialized MapperConfigBase<CFG, T> this) {
         return _view;
     }
 
     @Override
-    public final ContextAttributes getAttributes() {
+    public final ContextAttributes getAttributes(@Initialized MapperConfigBase<CFG, T> this) {
         return _attributes;
     }
 
@@ -594,23 +596,23 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      */
 
     @Override
-    public final ConfigOverride getConfigOverride(Class<?> type) {
+    public final ConfigOverride getConfigOverride(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> type) {
         ConfigOverride override = _configOverrides.findOverride(type);
         return (override == null) ? EMPTY_OVERRIDE : override;
     }
 
     @Override
-    public final ConfigOverride findConfigOverride(Class<?> type) {
+    public final ConfigOverride findConfigOverride(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> type) {
         return _configOverrides.findOverride(type);
     }
 
     @Override
-    public final JsonInclude.Value getDefaultPropertyInclusion() {
+    public final JsonInclude.Value getDefaultPropertyInclusion(@Initialized MapperConfigBase<CFG, T> this) {
         return _configOverrides.getDefaultInclusion();
     }
 
     @Override
-    public final JsonInclude.Value getDefaultPropertyInclusion(Class<?> baseType) {
+    public final JsonInclude.Value getDefaultPropertyInclusion(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType) {
         JsonInclude.Value v = getConfigOverride(baseType).getInclude();
         JsonInclude.Value def = getDefaultPropertyInclusion();
         if (def == null) {
@@ -620,7 +622,8 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final JsonInclude.Value getDefaultInclusion(Class<?> baseType,
+    public final JsonInclude.Value getDefaultInclusion(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType,
+            @Initialized
             Class<?> propertyType) {
         JsonInclude.Value v = getConfigOverride(propertyType).getIncludeAsProperty();
         JsonInclude.Value def = getDefaultPropertyInclusion(baseType);
@@ -631,7 +634,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final JsonFormat.Value getDefaultPropertyFormat(Class<?> type) {
+    public final JsonFormat.Value getDefaultPropertyFormat(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> type) {
         ConfigOverride overrides = _configOverrides.findOverride(type);
         if (overrides != null) {
             JsonFormat.Value v = overrides.getFormat();
@@ -643,7 +646,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final JsonIgnoreProperties.Value getDefaultPropertyIgnorals(Class<?> type) {
+    public final JsonIgnoreProperties.@Nullable Value getDefaultPropertyIgnorals(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> type) {
         ConfigOverride overrides = _configOverrides.findOverride(type);
         if (overrides != null) {
             JsonIgnoreProperties.Value v = overrides.getIgnorals();
@@ -657,7 +660,8 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final JsonIgnoreProperties.Value getDefaultPropertyIgnorals(Class<?> baseType,
+    public final JsonIgnoreProperties.@Nullable Value getDefaultPropertyIgnorals(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType,
+            @Initialized
             AnnotatedClass actualClass)
     {
         AnnotationIntrospector intr = getAnnotationIntrospector();
@@ -668,7 +672,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final VisibilityChecker<?> getDefaultVisibilityChecker()
+    public final VisibilityChecker<?> getDefaultVisibilityChecker(@Initialized MapperConfigBase<CFG, T> this)
     {
         VisibilityChecker<?> vchecker = _configOverrides.getDefaultVisibility();
         // then global overrides (disabling)
@@ -693,7 +697,8 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override // since 2.9
-    public final VisibilityChecker<?> getDefaultVisibilityChecker(Class<?> baseType,
+    public final VisibilityChecker<?> getDefaultVisibilityChecker(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType,
+            @Initialized
             AnnotatedClass actualClass) {
         VisibilityChecker<?> vc = getDefaultVisibilityChecker();
         AnnotationIntrospector intr = getAnnotationIntrospector();
@@ -708,17 +713,17 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public final JsonSetter.Value getDefaultSetterInfo() {
+    public final JsonSetter.Value getDefaultSetterInfo(@Initialized MapperConfigBase<CFG, T> this) {
         return _configOverrides.getDefaultSetterInfo();
     }
 
     @Override
-    public Boolean getDefaultMergeable() {
+    public Boolean getDefaultMergeable(@Initialized MapperConfigBase<CFG, T> this) {
         return _configOverrides.getDefaultMergeable();
     }
 
     @Override
-    public Boolean getDefaultMergeable(Class<?> baseType) {
+    public Boolean getDefaultMergeable(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType) {
         Boolean b;
         ConfigOverride cfg = _configOverrides.findOverride(baseType);
         if (cfg != null) {
@@ -737,7 +742,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      */
 
     @Override
-    public PropertyName findRootName(JavaType rootType) {
+    public PropertyName findRootName(@Initialized MapperConfigBase<CFG, T> this, @Initialized JavaType rootType) {
         if (_rootName != null) {
             return _rootName;
         }
@@ -745,7 +750,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
-    public PropertyName findRootName(Class<?> rawRootType) {
+    public PropertyName findRootName(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> rawRootType) {
         if (_rootName != null) {
             return _rootName;
         }
@@ -763,13 +768,13 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
      * annotations) for given class
      */
     @Override
-    public final Class<?> findMixInClassFor(Class<?> cls) {
+    public final Class<?> findMixInClassFor(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> cls) {
         return _mixIns.findMixInClassFor(cls);
     }
 
     // Not really relevant here (should not get called)
     @Override
-    public MixInResolver copy() {
+    public MixInResolver copy(@Initialized MapperConfigBase<CFG, T> this) {
         throw new UnsupportedOperationException();
     }
     

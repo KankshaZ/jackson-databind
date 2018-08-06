@@ -1,0 +1,36 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.introspect:
+class VisibilityChecker:
+
+    method withFieldVisibility(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withGetterVisibility(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withIsGetterVisibility(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withSetterVisibility(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withCreatorVisibility(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method withOverrides(Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Value;)LT;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,12 +23,12 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 public class MergingSettableBeanProperty
     extends SettableBeanProperty.Delegating
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Member (field, method) used for accessing existing value.
      */
-    protected final AnnotatedMember _accessor;
+    protected final @Initialized AnnotatedMember _accessor;
 
     /*
     /**********************************************************
@@ -35,7 +36,8 @@ public class MergingSettableBeanProperty
     /**********************************************************
      */
 
-    protected MergingSettableBeanProperty(SettableBeanProperty delegate,
+    protected MergingSettableBeanProperty(@Initialized SettableBeanProperty delegate,
+            @Initialized
             AnnotatedMember accessor)
     {
         super(delegate);
@@ -49,14 +51,15 @@ public class MergingSettableBeanProperty
         _accessor = src._accessor;
     }
 
-    public static MergingSettableBeanProperty construct(SettableBeanProperty delegate,
+    public static MergingSettableBeanProperty construct(@Initialized SettableBeanProperty delegate,
+            @Initialized
             AnnotatedMember accessor)
     {
         return new MergingSettableBeanProperty(delegate, accessor);
     }
 
     @Override
-    protected SettableBeanProperty withDelegate(SettableBeanProperty d) {
+    protected SettableBeanProperty withDelegate(@Initialized MergingSettableBeanProperty this, @Initialized SettableBeanProperty d) {
         return new MergingSettableBeanProperty(d, _accessor);
     }
 
@@ -67,7 +70,8 @@ public class MergingSettableBeanProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+    public void deserializeAndSet(@Initialized MergingSettableBeanProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object instance) throws IOException
     {
         Object oldValue = _accessor.getValue(instance);
@@ -87,8 +91,9 @@ public class MergingSettableBeanProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-            DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized MergingSettableBeanProperty this, @Initialized JsonParser p,
+            @Initialized
+            DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         Object oldValue = _accessor.getValue(instance);
         Object newValue;
@@ -113,7 +118,7 @@ public class MergingSettableBeanProperty
     }
 
     @Override
-    public void set(Object instance, Object value) throws IOException {
+    public void set(@Initialized MergingSettableBeanProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         // 31-Oct-2016, tatu: Basically should just ignore as null can't really
         //    contribute to merging.
         if (value != null) {
@@ -122,7 +127,7 @@ public class MergingSettableBeanProperty
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException {
+    public Object setAndReturn(@Initialized MergingSettableBeanProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         // 31-Oct-2016, tatu: Basically should just ignore as null can't really
         //    contribute to merging.
         if (value != null) {

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
  */
 public abstract class StdScalarDeserializer<T> extends StdDeserializer<T>
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     protected StdScalarDeserializer(Class<?> vc) { super(vc); }
     protected StdScalarDeserializer(JavaType valueType) { super(valueType); }
@@ -22,7 +23,7 @@ public abstract class StdScalarDeserializer<T> extends StdDeserializer<T>
     protected StdScalarDeserializer(StdScalarDeserializer<?> src) { super(src); }
     
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+    public Object deserializeWithType(@Initialized StdScalarDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized TypeDeserializer typeDeserializer) throws IOException {
         return typeDeserializer.deserializeTypedFromScalar(p, ctxt);
     }
 
@@ -31,7 +32,7 @@ public abstract class StdScalarDeserializer<T> extends StdDeserializer<T>
      * to update, since scalar values are usually non-mergeable.
      */
     @Override // since 2.9
-    public T deserialize(JsonParser p, DeserializationContext ctxt, T intoValue) throws IOException {
+    public T deserialize(@Initialized StdScalarDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, T intoValue) throws IOException {
         // 25-Oct-2016, tatu: And if attempt is made, see if we are to complain...
         ctxt.reportBadMerge(this);
         // except that it is possible to suppress this; and if so...
@@ -43,20 +44,20 @@ public abstract class StdScalarDeserializer<T> extends StdDeserializer<T>
      * values (such as primitives and wrappers)
      */
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized StdScalarDeserializer<T> this, @Initialized DeserializationConfig config) {
         return Boolean.FALSE;
     }
 
     // Typically Scalar values have default setting of "nulls as nulls"
     @Override
-    public AccessPattern getNullAccessPattern() {
+    public AccessPattern getNullAccessPattern(@Initialized StdScalarDeserializer<T> this) {
         return AccessPattern.ALWAYS_NULL;
     }
 
     // While some scalar types have non-null empty values (hence can't say "ALWAYS_NULL")
     // they are mostly immutable, shareable and so constant.
     @Override // since 2.9
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized StdScalarDeserializer<T> this) {
         return AccessPattern.CONSTANT;
     }
 }

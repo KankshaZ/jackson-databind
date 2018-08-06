@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,9 +24,9 @@ import com.fasterxml.jackson.databind.util.TokenBuffer;
 public class BuilderBasedDeserializer
     extends BeanDeserializerBase
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final AnnotatedMethod _buildMethod;
+    protected final @Initialized AnnotatedMethod _buildMethod;
 
     /**
      * Type that the builder will produce, target type; as opposed to
@@ -33,7 +34,7 @@ public class BuilderBasedDeserializer
      *
      * @since 2.9
      */
-    protected final JavaType _targetType;
+    protected final @Initialized JavaType _targetType;
 
     /*
     /**********************************************************
@@ -44,10 +45,14 @@ public class BuilderBasedDeserializer
     /**
      * Constructor used by {@link BeanDeserializerBuilder}.
      */
-    public BuilderBasedDeserializer(BeanDeserializerBuilder builder,
-            BeanDescription beanDesc, JavaType targetType,
-            BeanPropertyMap properties, Map<String, SettableBeanProperty> backRefs,
-            Set<String> ignorableProps, boolean ignoreAllUnknown,
+    public BuilderBasedDeserializer(@Initialized BeanDeserializerBuilder builder,
+            @Initialized
+            BeanDescription beanDesc, @Initialized JavaType targetType,
+            @Initialized
+            BeanPropertyMap properties, @Initialized Map<String, SettableBeanProperty> backRefs,
+            @Initialized
+            Set<String> ignorableProps, @Initialized boolean ignoreAllUnknown,
+            @Initialized
             boolean hasViews)
     {
         super(builder, beanDesc, properties, backRefs,
@@ -85,39 +90,39 @@ public class BuilderBasedDeserializer
         this(src, src._ignoreAllUnknown);
     }
 
-    protected BuilderBasedDeserializer(BuilderBasedDeserializer src, boolean ignoreAllUnknown)
+    protected BuilderBasedDeserializer(@Initialized BuilderBasedDeserializer src, @Initialized boolean ignoreAllUnknown)
     {
         super(src, ignoreAllUnknown);
         _buildMethod = src._buildMethod;
         _targetType = src._targetType;
     }
 
-    protected BuilderBasedDeserializer(BuilderBasedDeserializer src, NameTransformer unwrapper) {
+    protected BuilderBasedDeserializer(@Initialized BuilderBasedDeserializer src, @Initialized NameTransformer unwrapper) {
         super(src, unwrapper);
         _buildMethod = src._buildMethod;
         _targetType = src._targetType;
     }
 
-    public BuilderBasedDeserializer(BuilderBasedDeserializer src, ObjectIdReader oir) {
+    public BuilderBasedDeserializer(@Initialized BuilderBasedDeserializer src, @Initialized ObjectIdReader oir) {
         super(src, oir);
         _buildMethod = src._buildMethod;
         _targetType = src._targetType;
     }
 
-    public BuilderBasedDeserializer(BuilderBasedDeserializer src, Set<String> ignorableProps) {
+    public BuilderBasedDeserializer(@Initialized BuilderBasedDeserializer src, @Initialized Set<String> ignorableProps) {
         super(src, ignorableProps);
         _buildMethod = src._buildMethod;
         _targetType = src._targetType;
     }
 
-    public BuilderBasedDeserializer(BuilderBasedDeserializer src, BeanPropertyMap props) {
+    public BuilderBasedDeserializer(@Initialized BuilderBasedDeserializer src, @Initialized BeanPropertyMap props) {
         super(src, props);
         _buildMethod = src._buildMethod;
         _targetType = src._targetType;
     }
 
     @Override
-    public JsonDeserializer<Object> unwrappingDeserializer(NameTransformer unwrapper)
+    public JsonDeserializer<Object> unwrappingDeserializer(@Initialized BuilderBasedDeserializer this, @Initialized NameTransformer unwrapper)
     {
         /* main thing really is to just enforce ignoring of unknown
          * properties; since there may be multiple unwrapped values
@@ -127,22 +132,22 @@ public class BuilderBasedDeserializer
     }
 
     @Override
-    public BeanDeserializerBase withObjectIdReader(ObjectIdReader oir) {
+    public BeanDeserializerBase withObjectIdReader(@Initialized BuilderBasedDeserializer this, @Initialized ObjectIdReader oir) {
         return new BuilderBasedDeserializer(this, oir);
     }
 
     @Override
-    public BeanDeserializerBase withIgnorableProperties(Set<String> ignorableProps) {
+    public BeanDeserializerBase withIgnorableProperties(@Initialized BuilderBasedDeserializer this, @Initialized Set<String> ignorableProps) {
         return new BuilderBasedDeserializer(this, ignorableProps);
     }
 
     @Override
-    public BeanDeserializerBase withBeanProperties(BeanPropertyMap props) {
+    public BeanDeserializerBase withBeanProperties(@Initialized BuilderBasedDeserializer this, @Initialized BeanPropertyMap props) {
         return new BuilderBasedDeserializer(this, props);
     }
 
     @Override
-    protected BeanDeserializerBase asArrayDeserializer() {
+    protected BeanDeserializerBase asArrayDeserializer(@Initialized BuilderBasedDeserializer this) {
         SettableBeanProperty[] props = _beanProperties.getPropertiesInInsertionOrder();
         return new BeanAsArrayBuilderDeserializer(this, _targetType, props, _buildMethod);
     }
@@ -154,7 +159,7 @@ public class BuilderBasedDeserializer
      */
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized BuilderBasedDeserializer this, @Initialized DeserializationConfig config) {
         // 26-Oct-2016, tatu: No, we can't merge Builder-based POJOs as of now
         return Boolean.FALSE;
     }
@@ -165,7 +170,7 @@ public class BuilderBasedDeserializer
     /**********************************************************
      */
 
-    protected Object finishBuild(DeserializationContext ctxt, Object builder)
+    protected Object finishBuild(@Initialized DeserializationContext ctxt, @Initialized Object builder)
             throws IOException
     {
         // As per [databind#777], allow returning builder itself
@@ -183,7 +188,7 @@ public class BuilderBasedDeserializer
      * Main deserialization method for bean-based objects (POJOs).
      */
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object deserialize(@Initialized BuilderBasedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // common case first:
@@ -225,7 +230,8 @@ public class BuilderBasedDeserializer
      * after collecting some or all of the properties to set.
      */
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt,
+    public Object deserialize(@Initialized BuilderBasedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+    		@Initialized
     		Object value) throws IOException
     {
         // 26-Oct-2016, tatu: I cannot see any of making this actually
@@ -254,8 +260,9 @@ public class BuilderBasedDeserializer
      * Streamlined version that is only used when no "special"
      * features are enabled.
      */
-    private final Object vanillaDeserialize(JsonParser p,
-    		DeserializationContext ctxt, JsonToken t)
+    private final Object vanillaDeserialize(@Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized JsonToken t)
         throws IOException
     {
         Object bean = _valueInstantiator.createUsingDefault(ctxt);
@@ -282,7 +289,7 @@ public class BuilderBasedDeserializer
      * features.
      */
     @Override
-    public Object deserializeFromObject(JsonParser p, DeserializationContext ctxt)
+    public Object deserializeFromObject(@Initialized BuilderBasedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_nonStandardCreation) {
@@ -334,8 +341,8 @@ public class BuilderBasedDeserializer
      */
     @Override
     @SuppressWarnings("resource")
-    protected Object _deserializeUsingPropertyBased(final JsonParser p,
-            final DeserializationContext ctxt)
+    protected Object _deserializeUsingPropertyBased(@Initialized BuilderBasedDeserializer this, final @Initialized JsonParser p,
+            final @Initialized DeserializationContext ctxt)
         throws IOException
     { 
         final PropertyBasedCreator creator = _propertyBasedCreator;
@@ -426,8 +433,9 @@ public class BuilderBasedDeserializer
     }
 
     @SuppressWarnings("resource")
-    protected final Object _deserialize(JsonParser p,
-            DeserializationContext ctxt, Object builder) throws IOException
+    protected final Object _deserialize(@Initialized JsonParser p,
+            @Initialized
+            DeserializationContext ctxt, @Initialized Object builder) throws IOException
     {        
         if (_injectables != null) {
             injectValues(ctxt, builder);
@@ -479,8 +487,9 @@ public class BuilderBasedDeserializer
     /**********************************************************
      */
 
-    protected final Object deserializeWithView(JsonParser p, DeserializationContext ctxt,
-            Object bean, Class<?> activeView)
+    protected final Object deserializeWithView(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            Object bean, @Initialized Class<?> activeView)
         throws IOException
     {
         JsonToken t = p.getCurrentToken();
@@ -517,7 +526,7 @@ public class BuilderBasedDeserializer
      * which need special handling
      */
     @SuppressWarnings("resource")
-    protected Object deserializeWithUnwrapped(JsonParser p, DeserializationContext ctxt)
+    protected Object deserializeWithUnwrapped(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_delegateDeserializer != null) {
@@ -575,7 +584,8 @@ public class BuilderBasedDeserializer
     }
 
     @SuppressWarnings("resource")
-    protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+    protected Object deserializeUsingPropertyBasedWithUnwrapped(@Initialized JsonParser p,
+    		@Initialized
     		DeserializationContext ctxt)
         throws IOException
     {
@@ -641,8 +651,9 @@ public class BuilderBasedDeserializer
         return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, builder, tokens);
     }
 
-    protected Object deserializeWithUnwrapped(JsonParser p,
-            DeserializationContext ctxt, Object builder, TokenBuffer tokens)
+    protected Object deserializeWithUnwrapped(@Initialized JsonParser p,
+            @Initialized
+            DeserializationContext ctxt, @Initialized Object builder, @Initialized TokenBuffer tokens)
         throws IOException
     {
         final Class<?> activeView = _needViewProcesing ? ctxt.getActiveView() : null;
@@ -685,7 +696,7 @@ public class BuilderBasedDeserializer
     /**********************************************************
      */
 
-    protected Object deserializeWithExternalTypeId(JsonParser p, DeserializationContext ctxt)
+    protected Object deserializeWithExternalTypeId(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_propertyBasedCreator != null) {
@@ -694,8 +705,9 @@ public class BuilderBasedDeserializer
         return deserializeWithExternalTypeId(p, ctxt, _valueInstantiator.createUsingDefault(ctxt));
     }
 
-    protected Object deserializeWithExternalTypeId(JsonParser p,
-    		DeserializationContext ctxt, Object bean)
+    protected Object deserializeWithExternalTypeId(@Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object bean)
         throws IOException
     {
         final Class<?> activeView = _needViewProcesing ? ctxt.getActiveView() : null;
@@ -747,7 +759,8 @@ public class BuilderBasedDeserializer
         return ext.complete(p, ctxt, bean);
     }
 
-    protected Object deserializeUsingPropertyBasedWithExternalTypeId(JsonParser p,
+    protected Object deserializeUsingPropertyBasedWithExternalTypeId(@Initialized JsonParser p,
+    		@Initialized
     		DeserializationContext ctxt)
         throws IOException
     {

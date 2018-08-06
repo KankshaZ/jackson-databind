@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -38,7 +39,7 @@ public abstract class DeserializationProblemHandler
      *
      * @since 2.7
      */
-    public final static Object NOT_HANDLED = new Object();
+    public final static @Initialized Object NOT_HANDLED = new Object();
     
     /**
      * Method called when a JSON Object property with an unrecognized
@@ -391,8 +392,9 @@ public abstract class DeserializationProblemHandler
      * @deprecated Since 2.9: use variant that takes {@link ValueInstantiator}
      */
     @Deprecated
-    public Object handleMissingInstantiator(DeserializationContext ctxt,
-            Class<?> instClass, JsonParser p, String msg)
+    public Object handleMissingInstantiator(@Initialized DeserializationContext ctxt,
+            @Initialized
+            Class<?> instClass, @Initialized JsonParser p, @Initialized String msg)
         throws IOException
     {
         return NOT_HANDLED;

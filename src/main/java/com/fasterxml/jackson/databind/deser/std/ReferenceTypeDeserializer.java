@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -23,18 +26,18 @@ public abstract class ReferenceTypeDeserializer<T>
     extends StdDeserializer<T>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 2L; // 2.9
+    private static final @Initialized long serialVersionUID = 2L; // 2.9
 
     /**
      * Full type of property (or root value) for which this deserializer
      * has been constructed and contextualized.
      */
-    protected final JavaType _fullType;
+    protected final @Initialized JavaType _fullType;
 
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
-    protected final TypeDeserializer _valueTypeDeserializer;
-    protected final JsonDeserializer<Object> _valueDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /*
     /**********************************************************
@@ -43,8 +46,9 @@ public abstract class ReferenceTypeDeserializer<T>
      */
 
     @SuppressWarnings("unchecked")
-    public ReferenceTypeDeserializer(JavaType fullType, ValueInstantiator vi,
-            TypeDeserializer typeDeser, JsonDeserializer<?> deser)
+    public ReferenceTypeDeserializer(@Initialized JavaType fullType, @FBCBottom @Nullable ValueInstantiator vi,
+            @Initialized
+            TypeDeserializer typeDeser, @Initialized JsonDeserializer<?> deser)
     {
         super(fullType);
         _valueInstantiator = vi;
@@ -61,7 +65,7 @@ public abstract class ReferenceTypeDeserializer<T>
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property)
+    public JsonDeserializer<?> createContextual(@Initialized ReferenceTypeDeserializer<T> this, @Initialized DeserializationContext ctxt, @Initialized BeanProperty property)
             throws JsonMappingException
     {
         JsonDeserializer<?> deser = _valueDeserializer;
@@ -92,12 +96,12 @@ public abstract class ReferenceTypeDeserializer<T>
      * so let's indicate this.
      */
     @Override
-    public AccessPattern getNullAccessPattern() {
+    public AccessPattern getNullAccessPattern(@Initialized ReferenceTypeDeserializer<T> this) {
         return AccessPattern.DYNAMIC;
     }
 
     @Override
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized ReferenceTypeDeserializer<T> this) {
         return AccessPattern.DYNAMIC;
     }
 
@@ -114,18 +118,19 @@ public abstract class ReferenceTypeDeserializer<T>
      * NOTE: caller has verified that there are changes, so implementations
      * need NOT check if a new instance is needed.
      */
-    protected abstract ReferenceTypeDeserializer<T> withResolved(TypeDeserializer typeDeser,
+    protected abstract ReferenceTypeDeserializer<T> withResolved(@Initialized TypeDeserializer typeDeser,
+            @Initialized
             JsonDeserializer<?> valueDeser);
 
     @Override
-    public abstract T getNullValue(DeserializationContext ctxt);
+    public abstract T getNullValue(@Initialized DeserializationContext ctxt);
 
     @Override
-    public Object getEmptyValue(DeserializationContext ctxt) {
+    public Object getEmptyValue(@Initialized ReferenceTypeDeserializer<T> this, @Initialized DeserializationContext ctxt) {
         return getNullValue(ctxt);
     }
 
-    public abstract T referenceValue(Object contents);
+    public abstract T referenceValue(@Initialized Object contents);
 
     /**
      * Method called in case of "merging update", in which we should try
@@ -134,7 +139,7 @@ public abstract class ReferenceTypeDeserializer<T>
      *
      * @since 2.9
      */
-    public abstract T updateReference(T reference, Object contents);
+    public abstract T updateReference(T reference, @Initialized Object contents);
 
     /**
      * Method that may be called to find contents of specified reference,
@@ -153,7 +158,7 @@ public abstract class ReferenceTypeDeserializer<T>
      */
 
     @Override
-    public JavaType getValueType() { return _fullType; }
+    public JavaType getValueType(@Initialized ReferenceTypeDeserializer<T> this) { return _fullType; }
 
     /**
      * By default we assume that updateability mostly relies on value
@@ -161,7 +166,7 @@ public abstract class ReferenceTypeDeserializer<T>
      * matters. So let's just delegate.
      */
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized ReferenceTypeDeserializer<T> this, @Initialized DeserializationConfig config) {
         return (_valueDeserializer == null) ? null
                 : _valueDeserializer.supportsUpdate(config);
     }
@@ -173,7 +178,7 @@ public abstract class ReferenceTypeDeserializer<T>
      */
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public T deserialize(@Initialized ReferenceTypeDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
         // 23-Oct-2016, tatu: ValueInstantiator only defined for non-vanilla instances,
         //    but do check... might work
         if (_valueInstantiator != null) {
@@ -188,7 +193,7 @@ public abstract class ReferenceTypeDeserializer<T>
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt, T reference) throws IOException
+    public T deserialize(@Initialized ReferenceTypeDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, T reference) throws IOException
     {
         Object contents;
         // 26-Oct-2016, tatu: first things first; see if we should be able to merge:
@@ -215,7 +220,8 @@ public abstract class ReferenceTypeDeserializer<T>
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized ReferenceTypeDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException
     {
         final JsonToken t = p.getCurrentToken();

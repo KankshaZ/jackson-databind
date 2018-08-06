@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,19 +27,19 @@ public class EnumDeserializer
     extends StdScalarDeserializer<Object>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected Object[] _enumsByIndex;
+    protected Object @Initialized [] _enumsByIndex;
     
     /**
      * @since 2.8
      */
-    private final Enum<?> _enumDefaultValue;
+    private final @Initialized Enum<?> _enumDefaultValue;
 
     /**
      * @since 2.7.3
      */
-    protected final CompactStringObjectMap _lookupByName;
+    protected final @Initialized CompactStringObjectMap _lookupByName;
 
     /**
      * Alternatively, we may need a different lookup object if "use toString"
@@ -45,14 +47,14 @@ public class EnumDeserializer
      *
      * @since 2.7.3
      */
-    protected CompactStringObjectMap _lookupByToString;
+    protected @Initialized CompactStringObjectMap _lookupByToString;
 
-    protected final Boolean _caseInsensitive;
+    protected final @Initialized Boolean _caseInsensitive;
 
     /**
      * @since 2.9
      */
-    public EnumDeserializer(EnumResolver byNameResolver, Boolean caseInsensitive)
+    public EnumDeserializer(@Initialized EnumResolver byNameResolver, @Initialized @Nullable Boolean caseInsensitive)
     {
         super(byNameResolver.getEnumClass());
         _lookupByName = byNameResolver.constructLookup();
@@ -64,7 +66,7 @@ public class EnumDeserializer
     /**
      * @since 2.9
      */
-    protected EnumDeserializer(EnumDeserializer base, Boolean caseInsensitive)
+    protected EnumDeserializer(@Initialized EnumDeserializer base, @Initialized Boolean caseInsensitive)
     {
         super(base);
         _lookupByName = base._lookupByName;
@@ -98,9 +100,12 @@ public class EnumDeserializer
      *
      * @since 2.8
      */
-    public static JsonDeserializer<?> deserializerForCreator(DeserializationConfig config,
-            Class<?> enumClass, AnnotatedMethod factory,
-            ValueInstantiator valueInstantiator, SettableBeanProperty[] creatorProps)
+    public static JsonDeserializer<?> deserializerForCreator(@Initialized DeserializationConfig config,
+            @Initialized
+            Class<?> enumClass, @Initialized AnnotatedMethod factory,
+            @Initialized
+            @Nullable
+            ValueInstantiator valueInstantiator, SettableBeanProperty @Initialized  @Nullable [] creatorProps)
     {
         if (config.canOverrideAccessModifiers()) {
             ClassUtil.checkAndFixAccess(factory.getMember(),
@@ -119,8 +124,9 @@ public class EnumDeserializer
      *
      * @since 2.8
      */
-    public static JsonDeserializer<?> deserializerForNoArgsCreator(DeserializationConfig config,
-            Class<?> enumClass, AnnotatedMethod factory)
+    public static JsonDeserializer<?> deserializerForNoArgsCreator(@Initialized DeserializationConfig config,
+            @Initialized
+            Class<?> enumClass, @Initialized AnnotatedMethod factory)
     {
         if (config.canOverrideAccessModifiers()) {
             ClassUtil.checkAndFixAccess(factory.getMember(),
@@ -132,7 +138,7 @@ public class EnumDeserializer
     /**
      * @since 2.9
      */
-    public EnumDeserializer withResolved(Boolean caseInsensitive) {
+    public EnumDeserializer withResolved(@Initialized Boolean caseInsensitive) {
         if (_caseInsensitive == caseInsensitive) {
             return this;
         }
@@ -140,7 +146,8 @@ public class EnumDeserializer
     }
     
     @Override // since 2.9
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized EnumDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         Boolean caseInsensitive = findFormatFeature(ctxt, property, handledType(),
@@ -162,10 +169,10 @@ public class EnumDeserializer
      * let's cache instances by default.
      */
     @Override
-    public boolean isCachable() { return true; }
+    public boolean isCachable(@Initialized EnumDeserializer this) { return true; }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserialize(@Initialized EnumDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         JsonToken curr = p.getCurrentToken();
         
@@ -212,8 +219,9 @@ public class EnumDeserializer
     /**********************************************************
      */
     
-    private final Object _deserializeAltString(JsonParser p, DeserializationContext ctxt,
-            CompactStringObjectMap lookup, String name) throws IOException
+    private final Object _deserializeAltString(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            CompactStringObjectMap lookup, @Initialized String name) throws IOException
     {
         name = name.trim();
         if (name.length() == 0) {
@@ -258,7 +266,7 @@ public class EnumDeserializer
         return null;
     }
 
-    protected Object _deserializeOther(JsonParser p, DeserializationContext ctxt) throws IOException
+    protected Object _deserializeOther(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // [databind#381]
         if (p.hasToken(JsonToken.START_ARRAY)) {
@@ -271,7 +279,7 @@ public class EnumDeserializer
         return handledType();
     }
 
-    protected CompactStringObjectMap _getToStringLookup(DeserializationContext ctxt)
+    protected CompactStringObjectMap _getToStringLookup(@Initialized DeserializationContext ctxt)
     {
         CompactStringObjectMap lookup = _lookupByToString;
         // note: exact locking not needed; all we care for here is to try to

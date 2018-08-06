@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -10,26 +11,26 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 @JacksonStdImpl
 public class StringDeserializer extends StdScalarDeserializer<String> // non-final since 2.9
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * @since 2.2
      */
-    public final static StringDeserializer instance = new StringDeserializer();
+    public final static @Initialized StringDeserializer instance = new StringDeserializer();
 
     public StringDeserializer() { super(String.class); }
 
     // since 2.6, slightly faster lookups for this very common type
     @Override
-    public boolean isCachable() { return true; }
+    public boolean isCachable(@Initialized StringDeserializer this) { return true; }
 
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized StringDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return "";
     }
 
     @Override
-    public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public String deserialize(@Initialized StringDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         if (p.hasToken(JsonToken.VALUE_STRING)) {
             return p.getText();
@@ -66,7 +67,8 @@ public class StringDeserializer extends StdScalarDeserializer<String> // non-fin
     // Since we can never have type info ("natural type"; String, Boolean, Integer, Double):
     // (is it an error to even call this version?)
     @Override
-    public String deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public String deserializeWithType(@Initialized StringDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException {
         return deserialize(p, ctxt);
     }

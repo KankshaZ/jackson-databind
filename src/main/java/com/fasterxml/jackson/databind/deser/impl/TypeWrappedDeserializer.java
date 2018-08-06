@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -19,13 +20,13 @@ public final class TypeWrappedDeserializer
     extends JsonDeserializer<Object>
     implements java.io.Serializable // since 2.5
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    final protected TypeDeserializer _typeDeserializer;
-    final protected JsonDeserializer<Object> _deserializer;
+    final protected @Initialized TypeDeserializer _typeDeserializer;
+    final protected @Initialized JsonDeserializer<Object> _deserializer;
 
     @SuppressWarnings("unchecked")
-    public TypeWrappedDeserializer(TypeDeserializer typeDeser, JsonDeserializer<?> deser)
+    public TypeWrappedDeserializer(@Initialized TypeDeserializer typeDeser, @Initialized JsonDeserializer<?> deser)
     {
         super();
         _typeDeserializer = typeDeser;
@@ -33,43 +34,44 @@ public final class TypeWrappedDeserializer
     }
 
     @Override
-    public Class<?> handledType() {
+    public Class<?> handledType(@Initialized TypeWrappedDeserializer this) {
         return _deserializer.handledType();
     }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized TypeWrappedDeserializer this, @Initialized DeserializationConfig config) {
         return _deserializer.supportsUpdate(config);
     }
     
     @Override
-    public JsonDeserializer<?> getDelegatee() {
+    public JsonDeserializer<?> getDelegatee(@Initialized TypeWrappedDeserializer this) {
         return _deserializer.getDelegatee();
     }
 
     @Override
-    public Collection<Object> getKnownPropertyNames() {
+    public Collection<Object> getKnownPropertyNames(@Initialized TypeWrappedDeserializer this) {
         return _deserializer.getKnownPropertyNames();
     }
 
     @Override
-    public Object getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getNullValue(@Initialized TypeWrappedDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return _deserializer.getNullValue(ctxt);
     }
 
     @Override
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized TypeWrappedDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return _deserializer.getEmptyValue(ctxt);
     }
     
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserialize(@Initialized TypeWrappedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         return _deserializer.deserializeWithType(p, ctxt, _typeDeserializer);
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized TypeWrappedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+        @Initialized
         TypeDeserializer typeDeserializer) throws IOException
     {
         // should never happen? (if it can, could call on that object)
@@ -77,7 +79,8 @@ public final class TypeWrappedDeserializer
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt,
+    public Object deserialize(@Initialized TypeWrappedDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object intoValue) throws IOException
     {
         /* 01-Mar-2013, tatu: Hmmh. Tough call as to what to do... need

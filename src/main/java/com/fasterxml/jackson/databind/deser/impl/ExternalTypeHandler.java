@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.util.*;
 
@@ -18,9 +21,9 @@ import com.fasterxml.jackson.databind.util.TokenBuffer;
  */
 public class ExternalTypeHandler
 {
-    private final JavaType _beanType;
+    private final @Initialized JavaType _beanType;
 
-    private final ExtTypedProperty[] _properties;
+    private final ExtTypedProperty @Initialized [] _properties;
 
     /**
      * Mapping from external property ids to one or more indexes;
@@ -28,15 +31,16 @@ public class ExternalTypeHandler
      * occasionally same name maps to multiple ones: if so,
      * <code>List&lt;Integer&gt;</code>.
      */
-    private final Map<String, Object> _nameToPropertyIndex;
+    private final @Initialized Map<String, Object> _nameToPropertyIndex;
 
-    private final String[] _typeIds;
-    private final TokenBuffer[] _tokens;
+    private final String @Initialized [] _typeIds;
+    private final TokenBuffer @Initialized [] _tokens;
 
-    protected ExternalTypeHandler(JavaType beanType,
-            ExtTypedProperty[] properties,
+    protected ExternalTypeHandler(@Initialized JavaType beanType,
+            ExtTypedProperty @Initialized [] properties,
+            @Initialized
             Map<String, Object> nameToPropertyIndex,
-            String[] typeIds, TokenBuffer[] tokens)
+            String @FBCBottom  @Nullable [] typeIds, TokenBuffer @FBCBottom  @Nullable [] tokens)
     {
         _beanType = beanType;
         _properties = properties;
@@ -45,7 +49,7 @@ public class ExternalTypeHandler
         _tokens = tokens;
     }
 
-    protected ExternalTypeHandler(ExternalTypeHandler h)
+    protected ExternalTypeHandler(@Initialized ExternalTypeHandler h)
     {
         _beanType = h._beanType;
         _properties = h._properties;
@@ -58,7 +62,7 @@ public class ExternalTypeHandler
     /**
      * @since 2.9
      */
-    public static Builder builder(JavaType beanType) {
+    public static Builder builder(@Initialized JavaType beanType) {
         return new Builder(beanType);
     }
 
@@ -78,8 +82,9 @@ public class ExternalTypeHandler
      * otherwise {@link #handlePropertyValue} should be called instead.
      */
     @SuppressWarnings("unchecked")
-    public boolean handleTypePropertyValue(JsonParser p, DeserializationContext ctxt,
-            String propName, Object bean)
+    public boolean handleTypePropertyValue(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            String propName, @Initialized Object bean)
         throws IOException
     {
         Object ob = _nameToPropertyIndex.get(propName);
@@ -102,8 +107,9 @@ public class ExternalTypeHandler
                 typeId, ((Integer) ob).intValue());
     }
 
-    private final boolean _handleTypePropertyValue(JsonParser p, DeserializationContext ctxt,
-            String propName, Object bean, String typeId, int index)
+    private final boolean _handleTypePropertyValue(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            String propName, @Initialized Object bean, @Initialized String typeId, @Initialized int index)
         throws IOException
     {
         ExtTypedProperty prop = _properties[index];
@@ -132,8 +138,9 @@ public class ExternalTypeHandler
      * @return True, if the given property was properly handled
      */
     @SuppressWarnings("unchecked")
-    public boolean handlePropertyValue(JsonParser p, DeserializationContext ctxt,
-            String propName, Object bean) throws IOException
+    public boolean handlePropertyValue(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            String propName, @Initialized @Nullable Object bean) throws IOException
     {
         Object ob = _nameToPropertyIndex.get(propName);
         if (ob == null) {
@@ -199,7 +206,7 @@ public class ExternalTypeHandler
      * type ids have been handled.
      */
     @SuppressWarnings("resource")
-    public Object complete(JsonParser p, DeserializationContext ctxt, Object bean)
+    public Object complete(@Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object bean)
         throws IOException
     {
         for (int i = 0, len = _properties.length; i < len; ++i) {
@@ -252,8 +259,9 @@ public class ExternalTypeHandler
      * Variant called when creation of the POJO involves buffering of creator properties
      * as well as property-based creator.
      */
-    public Object complete(JsonParser p, DeserializationContext ctxt,
-            PropertyValueBuffer buffer, PropertyBasedCreator creator)
+    public Object complete(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            PropertyValueBuffer buffer, @Initialized PropertyBasedCreator creator)
         throws IOException
     {
         // first things first: deserialize all data buffered:
@@ -311,8 +319,9 @@ public class ExternalTypeHandler
     }
 
     @SuppressWarnings("resource")
-    protected final Object _deserialize(JsonParser p, DeserializationContext ctxt,
-            int index, String typeId) throws IOException
+    protected final Object _deserialize(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            int index, @Initialized String typeId) throws IOException
     {
         JsonParser p2 = _tokens[index].asParser(p);
         JsonToken t = p2.nextToken();
@@ -333,8 +342,9 @@ public class ExternalTypeHandler
     }
 
     @SuppressWarnings("resource")
-    protected final void _deserializeAndSet(JsonParser p, DeserializationContext ctxt,
-            Object bean, int index, String typeId) throws IOException
+    protected final void _deserializeAndSet(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            Object bean, @Initialized int index, @Initialized String typeId) throws IOException
     {
         /* Ok: time to mix type id, value; and we will actually use "wrapper-array"
          * style to ensure we can handle all kinds of JSON constructs.
@@ -366,16 +376,16 @@ public class ExternalTypeHandler
     
     public static class Builder
     {
-        private final JavaType _beanType;
+        private final @Initialized JavaType _beanType;
 
-        private final List<ExtTypedProperty> _properties = new ArrayList<>();
-        private final Map<String, Object> _nameToPropertyIndex = new HashMap<>();
+        private final @Initialized List<ExtTypedProperty> _properties = new ArrayList<>();
+        private final @Initialized Map<String, Object> _nameToPropertyIndex = new HashMap<>();
 
-        protected Builder(JavaType t) {
+        protected Builder(@Initialized JavaType t) {
             _beanType = t;
         }
 
-        public void addExternal(SettableBeanProperty property, TypeDeserializer typeDeser)
+        public void addExternal(@Initialized SettableBeanProperty property, @Initialized TypeDeserializer typeDeser)
         {
             Integer index = _properties.size();
             _properties.add(new ExtTypedProperty(property, typeDeser));
@@ -383,7 +393,7 @@ public class ExternalTypeHandler
             _addPropertyIndex(typeDeser.getPropertyName(), index);
         }
 
-        private void _addPropertyIndex(String name, Integer index) {
+        private void _addPropertyIndex(@Initialized String name, @Initialized Integer index) {
             Object ob = _nameToPropertyIndex.get(name);
             if (ob == null) {
                 _nameToPropertyIndex.put(name, index);
@@ -406,7 +416,7 @@ public class ExternalTypeHandler
          *
          * @since 2.8
          */
-        public ExternalTypeHandler build(BeanPropertyMap otherProps) {
+        public ExternalTypeHandler build(@Initialized BeanPropertyMap otherProps) {
             // 21-Jun-2016, tatu: as per [databind#999], may need to link type id property also
             final int len = _properties.size();
             ExtTypedProperty[] extProps = new ExtTypedProperty[len];
@@ -426,16 +436,16 @@ public class ExternalTypeHandler
 
     private final static class ExtTypedProperty
     {
-        private final SettableBeanProperty _property;
-        private final TypeDeserializer _typeDeserializer;
-        private final String _typePropertyName;
+        private final @Initialized SettableBeanProperty _property;
+        private final @Initialized TypeDeserializer _typeDeserializer;
+        private final @Initialized String _typePropertyName;
 
         /**
          * @since 2.8
          */
-        private SettableBeanProperty _typeProperty;
+        private @Initialized SettableBeanProperty _typeProperty;
 
-        public ExtTypedProperty(SettableBeanProperty property, TypeDeserializer typeDeser)
+        public ExtTypedProperty(@Initialized SettableBeanProperty property, @Initialized TypeDeserializer typeDeser)
         {
             _property = property;
             _typeDeserializer = typeDeser;
@@ -445,11 +455,11 @@ public class ExternalTypeHandler
         /**
          * @since 2.8
          */
-        public void linkTypeProperty(SettableBeanProperty p) {
+        public void linkTypeProperty(@Initialized SettableBeanProperty p) {
             _typeProperty = p;
         }
 
-        public boolean hasTypePropertyName(String n) {
+        public boolean hasTypePropertyName(@Initialized String n) {
             return n.equals(_typePropertyName);
         }
 

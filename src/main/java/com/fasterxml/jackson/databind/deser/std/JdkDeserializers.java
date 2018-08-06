@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.*;
  */
 public class JdkDeserializers
 {
-    private final static HashSet<String> _classNames = new HashSet<String>();
+    private final static @Initialized HashSet<String> _classNames = new HashSet<String>();
     static {
         // note: can skip primitive types; other ways to check them:
         Class<?>[] types = new Class<?>[] {
@@ -25,7 +26,7 @@ public class JdkDeserializers
         for (Class<?> cls : FromStringDeserializer.types()) { _classNames.add(cls.getName()); }
     }
 
-    public static JsonDeserializer<?> find(Class<?> rawType, String clsName)
+    public static JsonDeserializer<?> find(@Initialized Class<?> rawType, @Initialized String clsName)
     {
         if (_classNames.contains(clsName)) {
             JsonDeserializer<?> d = FromStringDeserializer.findDeserializer(rawType);

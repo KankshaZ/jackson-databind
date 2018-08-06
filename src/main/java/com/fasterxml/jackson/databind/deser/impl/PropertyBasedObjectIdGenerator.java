@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -7,29 +8,29 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class PropertyBasedObjectIdGenerator
 	extends ObjectIdGenerators.PropertyGenerator
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    public PropertyBasedObjectIdGenerator(Class<?> scope) {
+    public PropertyBasedObjectIdGenerator(@Initialized Class<?> scope) {
         super(scope);
     }
     
     @Override
-    public Object generateId(Object forPojo) {
+    public Object generateId(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Object forPojo) {
     	throw new UnsupportedOperationException();
     }
 
     @Override
-    public ObjectIdGenerator<Object> forScope(Class<?> scope) {
+    public ObjectIdGenerator<Object> forScope(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Class<?> scope) {
         return (scope == _scope) ? this : new PropertyBasedObjectIdGenerator(scope);
     }
 
     @Override
-    public ObjectIdGenerator<Object> newForSerialization(Object context) {
+    public ObjectIdGenerator<Object> newForSerialization(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Object context) {
         return this;
     }
 
     @Override
-    public com.fasterxml.jackson.annotation.ObjectIdGenerator.IdKey key(Object key) {
+    public com.fasterxml.jackson.annotation.ObjectIdGenerator.IdKey key(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Object key) {
         if (key == null) {
             return null;
         }

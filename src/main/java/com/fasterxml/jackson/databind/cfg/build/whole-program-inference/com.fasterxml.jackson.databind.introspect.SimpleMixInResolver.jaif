@@ -1,0 +1,11 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.introspect:
+class SimpleMixInResolver:
+
+    method findMixInClassFor(Ljava/lang/Class;)Ljava/lang/Class;:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

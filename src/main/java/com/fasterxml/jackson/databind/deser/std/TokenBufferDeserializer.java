@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,16 +23,16 @@ import com.fasterxml.jackson.databind.util.TokenBuffer;
  */
 @JacksonStdImpl
 public class TokenBufferDeserializer extends StdScalarDeserializer<TokenBuffer> {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
     
     public TokenBufferDeserializer() { super(TokenBuffer.class); }
 
     @Override
-    public TokenBuffer deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public TokenBuffer deserialize(@Initialized TokenBufferDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
         return createBufferInstance(p).deserialize(p, ctxt);
     }
 
-    protected TokenBuffer createBufferInstance(JsonParser p) {
+    protected TokenBuffer createBufferInstance(@Initialized JsonParser p) {
         return new TokenBuffer(p);
     }
 }

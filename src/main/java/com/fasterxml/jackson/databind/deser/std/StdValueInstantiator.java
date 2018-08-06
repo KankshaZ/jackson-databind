@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,18 +21,18 @@ public class StdValueInstantiator
     extends ValueInstantiator
     implements java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Type of values that are instantiated; used
      * for error reporting purposes.
      */
-    protected final String _valueTypeDesc;
+    protected final @Initialized String _valueTypeDesc;
 
     /**
      * @since 2.8
      */
-    protected final Class<?> _valueClass;
+    protected final @Initialized Class<?> _valueClass;
 
     // // // Default (no-args) construction
 
@@ -39,35 +40,35 @@ public class StdValueInstantiator
      * Default (no-argument) constructor to use for instantiation
      * (with {@link #createUsingDefault})
      */
-    protected AnnotatedWithParams _defaultCreator;
+    protected @Initialized AnnotatedWithParams _defaultCreator;
 
     // // // With-args (property-based) construction
 
-    protected AnnotatedWithParams _withArgsCreator;
-    protected SettableBeanProperty[] _constructorArguments;
+    protected @Initialized AnnotatedWithParams _withArgsCreator;
+    protected SettableBeanProperty @Initialized [] _constructorArguments;
 
     // // // Delegate construction
     
-    protected JavaType _delegateType;
-    protected AnnotatedWithParams _delegateCreator;
-    protected SettableBeanProperty[] _delegateArguments;
+    protected @Initialized JavaType _delegateType;
+    protected @Initialized AnnotatedWithParams _delegateCreator;
+    protected SettableBeanProperty @Initialized [] _delegateArguments;
 
     // // // Array delegate construction
 
-    protected JavaType _arrayDelegateType;
-    protected AnnotatedWithParams _arrayDelegateCreator;
-    protected SettableBeanProperty[] _arrayDelegateArguments;
+    protected @Initialized JavaType _arrayDelegateType;
+    protected @Initialized AnnotatedWithParams _arrayDelegateCreator;
+    protected SettableBeanProperty @Initialized [] _arrayDelegateArguments;
     
     // // // Scalar construction
 
-    protected AnnotatedWithParams _fromStringCreator;
-    protected AnnotatedWithParams _fromIntCreator;
-    protected AnnotatedWithParams _fromLongCreator;
-    protected AnnotatedWithParams _fromDoubleCreator;
-    protected AnnotatedWithParams _fromBooleanCreator;
+    protected @Initialized AnnotatedWithParams _fromStringCreator;
+    protected @Initialized AnnotatedWithParams _fromIntCreator;
+    protected @Initialized AnnotatedWithParams _fromLongCreator;
+    protected @Initialized AnnotatedWithParams _fromDoubleCreator;
+    protected @Initialized AnnotatedWithParams _fromBooleanCreator;
 
     // // // Incomplete creator
-    protected AnnotatedParameter  _incompleteParameter;
+    protected @Initialized AnnotatedParameter  _incompleteParameter;
     
     /*
     /**********************************************************
@@ -84,7 +85,7 @@ public class StdValueInstantiator
         _valueClass = (valueType == null) ? Object.class : valueType;
     }
 
-    public StdValueInstantiator(DeserializationConfig config, JavaType valueType) {
+    public StdValueInstantiator(@Initialized DeserializationConfig config, @Initialized JavaType valueType) {
         _valueTypeDesc = (valueType == null) ? "UNKNOWN TYPE" : valueType.toString();
         _valueClass = (valueType == null) ? Object.class : valueType.getRawClass();
     }
@@ -123,9 +124,11 @@ public class StdValueInstantiator
      * from JSON Object. We will choose basically only one approach (out of possible
      * three), and clear other properties
      */
-    public void configureFromObjectSettings(AnnotatedWithParams defaultCreator,
-            AnnotatedWithParams delegateCreator, JavaType delegateType, SettableBeanProperty[] delegateArgs,
-            AnnotatedWithParams withArgsCreator, SettableBeanProperty[] constructorArgs)
+    public void configureFromObjectSettings(@Initialized AnnotatedWithParams defaultCreator,
+            @Initialized
+            AnnotatedWithParams delegateCreator, @Initialized JavaType delegateType, SettableBeanProperty @Initialized [] delegateArgs,
+            @Initialized
+            AnnotatedWithParams withArgsCreator, SettableBeanProperty @Initialized [] constructorArgs)
     {
         _defaultCreator = defaultCreator;
         _delegateCreator = delegateCreator;
@@ -136,36 +139,38 @@ public class StdValueInstantiator
     }
 
     public void configureFromArraySettings(
+            @Initialized
             AnnotatedWithParams arrayDelegateCreator,
+            @Initialized
             JavaType arrayDelegateType,
-            SettableBeanProperty[] arrayDelegateArgs)
+            SettableBeanProperty @Initialized [] arrayDelegateArgs)
     {
         _arrayDelegateCreator = arrayDelegateCreator;
         _arrayDelegateType = arrayDelegateType;
         _arrayDelegateArguments = arrayDelegateArgs;
     }
 
-    public void configureFromStringCreator(AnnotatedWithParams creator) {
+    public void configureFromStringCreator(@Initialized AnnotatedWithParams creator) {
         _fromStringCreator = creator;
     }
 
-    public void configureFromIntCreator(AnnotatedWithParams creator) {
+    public void configureFromIntCreator(@Initialized AnnotatedWithParams creator) {
         _fromIntCreator = creator;
     }
 
-    public void configureFromLongCreator(AnnotatedWithParams creator) {
+    public void configureFromLongCreator(@Initialized AnnotatedWithParams creator) {
         _fromLongCreator = creator;
     }
 
-    public void configureFromDoubleCreator(AnnotatedWithParams creator) {
+    public void configureFromDoubleCreator(@Initialized AnnotatedWithParams creator) {
         _fromDoubleCreator = creator;
     }
 
-    public void configureFromBooleanCreator(AnnotatedWithParams creator) {
+    public void configureFromBooleanCreator(@Initialized AnnotatedWithParams creator) {
         _fromBooleanCreator = creator;
     }
 
-    public void configureIncompleteParameter(AnnotatedParameter parameter) {
+    public void configureIncompleteParameter(@Initialized AnnotatedParameter parameter) {
         _incompleteParameter = parameter;
     }
     
@@ -176,62 +181,62 @@ public class StdValueInstantiator
      */
 
     @Override
-    public String getValueTypeDesc() {
+    public String getValueTypeDesc(@Initialized StdValueInstantiator this) {
         return _valueTypeDesc;
     }
 
     @Override
-    public Class<?> getValueClass() {
+    public Class<?> getValueClass(@Initialized StdValueInstantiator this) {
         return _valueClass;
     }
 
     @Override
-    public boolean canCreateFromString() {
+    public boolean canCreateFromString(@Initialized StdValueInstantiator this) {
         return (_fromStringCreator != null);
     }
 
     @Override
-    public boolean canCreateFromInt() {
+    public boolean canCreateFromInt(@Initialized StdValueInstantiator this) {
         return (_fromIntCreator != null);
     }
 
     @Override
-    public boolean canCreateFromLong() {
+    public boolean canCreateFromLong(@Initialized StdValueInstantiator this) {
         return (_fromLongCreator != null);
     }
 
     @Override
-    public boolean canCreateFromDouble() {
+    public boolean canCreateFromDouble(@Initialized StdValueInstantiator this) {
         return (_fromDoubleCreator != null);
     }
 
     @Override
-    public boolean canCreateFromBoolean() {
+    public boolean canCreateFromBoolean(@Initialized StdValueInstantiator this) {
         return (_fromBooleanCreator != null);
     }
 
     @Override
-    public boolean canCreateUsingDefault() {
+    public boolean canCreateUsingDefault(@Initialized StdValueInstantiator this) {
         return (_defaultCreator != null);
     }
 
     @Override
-    public boolean canCreateUsingDelegate() {
+    public boolean canCreateUsingDelegate(@Initialized StdValueInstantiator this) {
         return (_delegateType != null);
     }
 
     @Override
-    public boolean canCreateUsingArrayDelegate() {
+    public boolean canCreateUsingArrayDelegate(@Initialized StdValueInstantiator this) {
         return (_arrayDelegateType != null);
     }
 
     @Override
-    public boolean canCreateFromObjectWith() {
+    public boolean canCreateFromObjectWith(@Initialized StdValueInstantiator this) {
         return (_withArgsCreator != null);
     }
 
     @Override
-    public boolean canInstantiate() {
+    public boolean canInstantiate(@Initialized StdValueInstantiator this) {
         return canCreateUsingDefault()
                 || canCreateUsingDelegate() || canCreateUsingArrayDelegate()
                 || canCreateFromObjectWith() || canCreateFromString()
@@ -240,17 +245,17 @@ public class StdValueInstantiator
     }
 
     @Override
-    public JavaType getDelegateType(DeserializationConfig config) {
+    public JavaType getDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _delegateType;
     }
 
     @Override
-    public JavaType getArrayDelegateType(DeserializationConfig config) {
+    public JavaType getArrayDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _arrayDelegateType;
     }
 
     @Override
-    public SettableBeanProperty[] getFromObjectArguments(DeserializationConfig config) {
+    public SettableBeanProperty[] getFromObjectArguments(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _constructorArguments;
     }
     
@@ -261,7 +266,7 @@ public class StdValueInstantiator
      */
     
     @Override
-    public Object createUsingDefault(DeserializationContext ctxt) throws IOException
+    public Object createUsingDefault(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt) throws IOException
     {
         if (_defaultCreator == null) { // sanity-check; caller should check
             return super.createUsingDefault(ctxt);
@@ -274,7 +279,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createFromObjectWith(DeserializationContext ctxt, Object[] args) throws IOException
+    public Object createFromObjectWith(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, Object @Initialized [] args) throws IOException
     {
         if (_withArgsCreator == null) { // sanity-check; caller should check
             return super.createFromObjectWith(ctxt, args);
@@ -287,7 +292,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createUsingDelegate(DeserializationContext ctxt, Object delegate) throws IOException
+    public Object createUsingDelegate(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException
     {
         // 04-Oct-2016, tatu: Need delegation to work around [databind#1392]...
         if (_delegateCreator == null) {
@@ -299,7 +304,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createUsingArrayDelegate(DeserializationContext ctxt, Object delegate) throws IOException
+    public Object createUsingArrayDelegate(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException
     {
         if (_arrayDelegateCreator == null) {
             if (_delegateCreator != null) { // sanity-check; caller should check
@@ -317,7 +322,7 @@ public class StdValueInstantiator
      */
 
     @Override
-    public Object createFromString(DeserializationContext ctxt, String value) throws IOException
+    public Object createFromString(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized String value) throws IOException
     {
         if (_fromStringCreator == null) {
             return _createFromStringFallbacks(ctxt, value);
@@ -331,7 +336,7 @@ public class StdValueInstantiator
     }
     
     @Override
-    public Object createFromInt(DeserializationContext ctxt, int value) throws IOException
+    public Object createFromInt(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized int value) throws IOException
     {
         // First: "native" int methods work best:
         if (_fromIntCreator != null) {
@@ -357,7 +362,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createFromLong(DeserializationContext ctxt, long value) throws IOException
+    public Object createFromLong(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized long value) throws IOException
     {
         if (_fromLongCreator == null) {
             return super.createFromLong(ctxt, value);
@@ -372,7 +377,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createFromDouble(DeserializationContext ctxt, double value) throws IOException
+    public Object createFromDouble(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized double value) throws IOException
     {
         if (_fromDoubleCreator == null) {
             return super.createFromDouble(ctxt, value);
@@ -387,7 +392,7 @@ public class StdValueInstantiator
     }
 
     @Override
-    public Object createFromBoolean(DeserializationContext ctxt, boolean value) throws IOException
+    public Object createFromBoolean(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized boolean value) throws IOException
     {
         if (_fromBooleanCreator == null) {
             return super.createFromBoolean(ctxt, value);
@@ -408,27 +413,27 @@ public class StdValueInstantiator
      */
 
     @Override
-    public AnnotatedWithParams getDelegateCreator() {
+    public AnnotatedWithParams getDelegateCreator(@Initialized StdValueInstantiator this) {
         return _delegateCreator;
     }
 
     @Override
-    public AnnotatedWithParams getArrayDelegateCreator() {
+    public AnnotatedWithParams getArrayDelegateCreator(@Initialized StdValueInstantiator this) {
         return _arrayDelegateCreator;
     }
 
     @Override
-    public AnnotatedWithParams getDefaultCreator() {
+    public AnnotatedWithParams getDefaultCreator(@Initialized StdValueInstantiator this) {
         return _defaultCreator;
     }
 
     @Override
-    public AnnotatedWithParams getWithArgsCreator() {
+    public AnnotatedWithParams getWithArgsCreator(@Initialized StdValueInstantiator this) {
         return _withArgsCreator;
     }
 
     @Override
-    public AnnotatedParameter getIncompleteParameter() {
+    public AnnotatedParameter getIncompleteParameter(@Initialized StdValueInstantiator this) {
         return _incompleteParameter;
     }
 
@@ -474,7 +479,8 @@ public class StdValueInstantiator
     /**
      * @since 2.7
      */
-    protected JsonMappingException wrapAsJsonMappingException(DeserializationContext ctxt,
+    protected JsonMappingException wrapAsJsonMappingException(@Initialized DeserializationContext ctxt,
+            @Initialized
             Throwable t)
     {
         // 05-Nov-2015, tatu: Only avoid wrapping if already a JsonMappingException
@@ -487,7 +493,8 @@ public class StdValueInstantiator
     /**
      * @since 2.7
      */
-    protected JsonMappingException rewrapCtorProblem(DeserializationContext ctxt,
+    protected JsonMappingException rewrapCtorProblem(@Initialized DeserializationContext ctxt,
+            @Initialized
             Throwable t)
     {
         // 05-Nov-2015, tatu: Seems like there are really only 2 useless wrapper errors/exceptions,
@@ -510,9 +517,12 @@ public class StdValueInstantiator
      */
 
     private Object _createUsingDelegate(
+            @Initialized
             AnnotatedWithParams delegateCreator,
-            SettableBeanProperty[] delegateArguments,
+            SettableBeanProperty @Initialized [] delegateArguments,
+            @Initialized
             DeserializationContext ctxt,
+            @Initialized
             Object delegate)
             throws IOException
     {

@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,26 +25,26 @@ public final class PropertyBasedCreator
      * Number of properties: usually same as size of {@link #_propertyLookup},
      * but not necessarily, when we have unnamed injectable properties.
      */
-    protected final int _propertyCount;
+    protected final @Initialized int _propertyCount;
 
     /**
      * Helper object that knows how to actually construct the instance by
      * invoking creator method with buffered arguments.
      */
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Map that contains property objects for either constructor or factory
      * method (whichever one is null: one property for each
      * parameter for that one), keyed by logical property name
      */
-    protected final HashMap<String, SettableBeanProperty> _propertyLookup;
+    protected final @Initialized HashMap<String, SettableBeanProperty> _propertyLookup;
 
     /**
      * Array that contains properties that expect value to inject, if any;
      * null if no injectable values are expected.
      */
-    protected final SettableBeanProperty[] _allProperties;
+    protected final SettableBeanProperty @Initialized [] _allProperties;
 
     /*
     /**********************************************************
@@ -50,10 +52,13 @@ public final class PropertyBasedCreator
     /**********************************************************
      */
 
-    protected PropertyBasedCreator(DeserializationContext ctxt,
+    protected PropertyBasedCreator(@Initialized DeserializationContext ctxt,
+            @Initialized
             ValueInstantiator valueInstantiator,
-            SettableBeanProperty[] creatorProps,
+            SettableBeanProperty @Initialized [] creatorProps,
+            @Initialized
             boolean caseInsensitive,
+            @Initialized
             boolean addAliases)
     {
         _valueInstantiator = valueInstantiator;
@@ -98,8 +103,10 @@ public final class PropertyBasedCreator
      *
      * @since 2.9
      */
-    public static PropertyBasedCreator construct(DeserializationContext ctxt,
-            ValueInstantiator valueInstantiator, SettableBeanProperty[] srcCreatorProps,
+    public static PropertyBasedCreator construct(@Initialized DeserializationContext ctxt,
+            @Initialized
+            ValueInstantiator valueInstantiator, SettableBeanProperty @Initialized [] srcCreatorProps,
+            @Initialized
             BeanPropertyMap allProperties)
         throws JsonMappingException
     {
@@ -124,8 +131,10 @@ public final class PropertyBasedCreator
      *
      * @since 2.9
      */
-    public static PropertyBasedCreator construct(DeserializationContext ctxt,
-            ValueInstantiator valueInstantiator, SettableBeanProperty[] srcCreatorProps,
+    public static PropertyBasedCreator construct(@Initialized DeserializationContext ctxt,
+            @Initialized
+            ValueInstantiator valueInstantiator, SettableBeanProperty @Initialized [] srcCreatorProps,
+            @Initialized
             boolean caseInsensitive)
         throws JsonMappingException
     {
@@ -161,11 +170,11 @@ public final class PropertyBasedCreator
         return _propertyLookup.values();
     }
 
-    public SettableBeanProperty findCreatorProperty(String name) {
+    public SettableBeanProperty findCreatorProperty(@Initialized String name) {
         return _propertyLookup.get(name);
     }
 
-    public SettableBeanProperty findCreatorProperty(int propertyIndex) {
+    public SettableBeanProperty findCreatorProperty(@Initialized int propertyIndex) {
         for (SettableBeanProperty prop : _propertyLookup.values()) {
             if (prop.getPropertyIndex() == propertyIndex) {
                 return prop;
@@ -185,12 +194,14 @@ public final class PropertyBasedCreator
      * 
      * @since 2.1 (added ObjectIdReader parameter -- existed in previous versions without)
      */
-    public PropertyValueBuffer startBuilding(JsonParser p, DeserializationContext ctxt,
+    public PropertyValueBuffer startBuilding(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            @Nullable
             ObjectIdReader oir) {
         return new PropertyValueBuffer(p, ctxt, _propertyCount, oir);
     }
 
-    public Object build(DeserializationContext ctxt, PropertyValueBuffer buffer) throws IOException
+    public Object build(@Initialized DeserializationContext ctxt, @Initialized PropertyValueBuffer buffer) throws IOException
     {
         Object bean = _valueInstantiator.createFromObjectWith(ctxt,
                 _allProperties, buffer);
@@ -221,15 +232,15 @@ public final class PropertyBasedCreator
      */
     static class CaseInsensitiveMap extends HashMap<String, SettableBeanProperty>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         @Override
-        public SettableBeanProperty get(Object key0) {
+        public SettableBeanProperty get(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized @Nullable Object key0) {
             return super.get(((String) key0).toLowerCase());
         }
 
         @Override
-        public SettableBeanProperty put(String key, SettableBeanProperty value) {
+        public SettableBeanProperty put(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized String key, @Initialized SettableBeanProperty value) {
             key = key.toLowerCase();
             return super.put(key, value);
         }

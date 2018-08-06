@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.text.DateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -42,12 +44,12 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
     /**
      * @since 2.7
      */
-    protected final static JsonInclude.Value EMPTY_INCLUDE = JsonInclude.Value.empty();
+    protected final static JsonInclude.@Initialized Value EMPTY_INCLUDE = JsonInclude.Value.empty();
 
     /**
      * @since 2.7
      */
-    protected final static JsonFormat.Value EMPTY_FORMAT = JsonFormat.Value.empty();
+    protected final static JsonFormat.@Initialized Value EMPTY_FORMAT = JsonFormat.Value.empty();
 
     /**
      * Set of shared mapper features enabled.
@@ -93,6 +95,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * Method that calculates bit set (flags) of all features that
      * are enabled by default.
      */
+    @SuppressWarnings("nullness") //NOT-SURE-YET
     public static <F extends Enum<F> & ConfigFeature> int collectFeatureDefaults(Class<F> enumClass)
     {
         int flags = 0;
@@ -137,7 +140,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * Accessor for simple mapper features (which are shared for
      * serialization, deserialization)
      */
-    public final boolean isEnabled(MapperFeature f) {
+    public final boolean isEnabled(@Initialized MapperFeature f) {
         return (_mapperFeatures & f.getMask()) != 0;
     }
 
@@ -277,7 +280,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      *    getTypeFactory().constructType(cls);
      *</pre>
      */
-    public final JavaType constructType(Class<?> cls) {
+    public final JavaType constructType(@Initialized Class<?> cls) {
         return getTypeFactory().constructType(cls);
     }
 
@@ -315,7 +318,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * Accessor for getting bean description that only contains class
      * annotations: useful if no getter/setter/creator information is needed.
      */
-    public BeanDescription introspectClassAnnotations(JavaType type) {
+    public BeanDescription introspectClassAnnotations(@Initialized JavaType type) {
         return getClassIntrospector().forClassAnnotations(this, type, this);
     }
 
@@ -333,7 +336,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * annotations: ones from the class, and its direct mix-in, if any, but
      * not from super types.
      */
-    public final BeanDescription introspectDirectClassAnnotations(JavaType type) {
+    public final BeanDescription introspectDirectClassAnnotations(@Initialized JavaType type) {
         return getClassIntrospector().forDirectClassAnnotations(this, type, this);
     }
 
@@ -368,7 +371,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * 
      * @return Override object to use for the type, never null (but may be empty)
      */
-    public abstract ConfigOverride getConfigOverride(Class<?> type);
+    public abstract ConfigOverride getConfigOverride(@Initialized Class<?> type);
 
     /**
      * Accessor for default property inclusion to use for serialization,
@@ -459,7 +462,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      *
      * @since 2.8
      */
-    public abstract JsonIgnoreProperties.Value getDefaultPropertyIgnorals(Class<?> baseType);
+    public abstract JsonIgnoreProperties.@Nullable Value getDefaultPropertyIgnorals(Class<?> baseType);
 
     /**
      * Helper method that may be called to see if there are property ignoral
@@ -469,7 +472,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      *
      * @since 2.8
      */
-    public abstract JsonIgnoreProperties.Value getDefaultPropertyIgnorals(Class<?> baseType,
+    public abstract JsonIgnoreProperties.@Nullable Value getDefaultPropertyIgnorals(Class<?> baseType,
             AnnotatedClass actualClass);
 
     /**
@@ -569,7 +572,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
     /**
      * Accessor for finding currently active view, if any (null if none)
      */
-    public abstract Class<?> getActiveView();
+    public abstract @Nullable Class<?> getActiveView();
 
     /**
      * Method called during deserialization if Base64 encoded content

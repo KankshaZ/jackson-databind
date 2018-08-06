@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -21,14 +24,14 @@ public abstract class ContainerDeserializerBase<T>
     extends StdDeserializer<T>
     implements ValueInstantiator.Gettable // since 2.9
 {
-    protected final JavaType _containerType;
+    protected final @Initialized JavaType _containerType;
 
     /**
      * Handler we need for dealing with nulls.
      *
      * @since 2.9
      */
-    protected final NullValueProvider _nullProvider;
+    protected final @Initialized NullValueProvider _nullProvider;
 
     /**
      * Specific override for this instance (from proper, or global per-type overrides)
@@ -37,7 +40,7 @@ public abstract class ContainerDeserializerBase<T>
      *
      * @since 2.9 (demoted from sub-classes where added in 2.7)
      */
-    protected final Boolean _unwrapSingle;
+    protected final @Initialized Boolean _unwrapSingle;
 
     /**
      * Marker flag set if the <code>_nullProvider</code> indicates that all null
@@ -45,10 +48,12 @@ public abstract class ContainerDeserializerBase<T>
      *
      * @since 2.9
      */
-    protected final boolean _skipNullValues;
+    protected final @Initialized boolean _skipNullValues;
 
-    protected ContainerDeserializerBase(JavaType selfType,
-            NullValueProvider nuller, Boolean unwrapSingle) {
+    protected ContainerDeserializerBase(@Initialized JavaType selfType,
+            @FBCBottom
+            @Nullable
+            NullValueProvider nuller, @FBCBottom @Nullable Boolean unwrapSingle) {
         super(selfType);
         _containerType = selfType;
         _unwrapSingle = unwrapSingle;
@@ -70,8 +75,9 @@ public abstract class ContainerDeserializerBase<T>
     /**
      * @since 2.9
      */
-    protected ContainerDeserializerBase(ContainerDeserializerBase<?> base,
-            NullValueProvider nuller, Boolean unwrapSingle) {
+    protected ContainerDeserializerBase(@Initialized ContainerDeserializerBase<?> base,
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle) {
         super(base._containerType);
         _containerType = base._containerType;
         _nullProvider = nuller;
@@ -86,15 +92,15 @@ public abstract class ContainerDeserializerBase<T>
      */
 
     @Override // since 2.9
-    public JavaType getValueType() { return _containerType; }
+    public JavaType getValueType(@Initialized ContainerDeserializerBase<T> this) { return _containerType; }
     
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized ContainerDeserializerBase<T> this, @Initialized DeserializationConfig config) {
         return Boolean.TRUE;
     }
 
     @Override
-    public SettableBeanProperty findBackReference(String refName) {
+    public SettableBeanProperty findBackReference(@Initialized ContainerDeserializerBase<T> this, @Initialized String refName) {
         JsonDeserializer<Object> valueDeser = getContentDeserializer();
         if (valueDeser == null) {
             throw new IllegalArgumentException(String.format(
@@ -130,19 +136,19 @@ public abstract class ContainerDeserializerBase<T>
      * @since 2.9
      */
     @Override
-    public ValueInstantiator getValueInstantiator() {
+    public ValueInstantiator getValueInstantiator(@Initialized ContainerDeserializerBase<T> this) {
         return null;
     }
 
     @Override // since 2.9
-    public AccessPattern getEmptyAccessPattern() {
+    public AccessPattern getEmptyAccessPattern(@Initialized ContainerDeserializerBase<T> this) {
         // 02-Feb-2017, tatu: Empty containers are usually constructed as needed
         //   and may not be shared; for some deserializers this may be further refined.
         return AccessPattern.DYNAMIC;
     }
     
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized ContainerDeserializerBase<T> this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         ValueInstantiator vi = getValueInstantiator();
         if (vi == null || !vi.canCreateUsingDefault()) {
             JavaType type = getValueType();
@@ -165,7 +171,7 @@ public abstract class ContainerDeserializerBase<T>
     /**
      * Helper method called by various Map(-like) deserializers.
      */
-    protected <BOGUS> BOGUS wrapAndThrow(Throwable t, Object ref, String key) throws IOException
+    protected <BOGUS> BOGUS wrapAndThrow(@Initialized Throwable t, Object ref, String key) throws IOException
     {
         // to handle StackOverflow:
         while (t instanceof InvocationTargetException && t.getCause() != null) {

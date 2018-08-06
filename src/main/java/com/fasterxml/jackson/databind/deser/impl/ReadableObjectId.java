@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
@@ -21,19 +23,19 @@ public class ReadableObjectId
     /**
      * @since 2.8 (with this name, formerly `public Object item`)
      */
-    protected Object _item;
+    protected @Initialized Object _item;
 
-    protected final ObjectIdGenerator.IdKey _key;
+    protected final ObjectIdGenerator.@Initialized IdKey _key;
 
-    protected LinkedList<Referring> _referringProperties;
+    protected @Initialized @Nullable LinkedList<Referring> _referringProperties;
 
-    protected ObjectIdResolver _resolver;
+    protected @Initialized ObjectIdResolver _resolver;
 
-    public ReadableObjectId(ObjectIdGenerator.IdKey key) {
+    public ReadableObjectId(ObjectIdGenerator.@Initialized IdKey key) {
         _key = key;
     }
 
-    public void setResolver(ObjectIdResolver resolver) {
+    public void setResolver(@Initialized ObjectIdResolver resolver) {
         _resolver = resolver;
     }
 
@@ -52,7 +54,7 @@ public class ReadableObjectId
      * Method called to assign actual POJO to which ObjectId refers to: will
      * also handle referring properties, if any, by assigning POJO.
      */
-    public void bindItem(Object ob) throws IOException
+    public void bindItem(@Initialized Object ob) throws IOException
     {
         _resolver.bindItem(_key, ob);
         _item = ob;
@@ -96,7 +98,7 @@ public class ReadableObjectId
      *
      * @since 2.6
      */
-    public boolean tryToResolveUnresolved(DeserializationContext ctxt)
+    public boolean tryToResolveUnresolved(@Initialized DeserializationContext ctxt)
     {
         return false;
     }
@@ -115,7 +117,7 @@ public class ReadableObjectId
     }
 
     @Override
-    public String toString() {
+    public String toString(@Initialized ReadableObjectId this) {
         return String.valueOf(_key);
     }
 
@@ -126,8 +128,8 @@ public class ReadableObjectId
      */
 
     public static abstract class Referring {
-        private final UnresolvedForwardReference _reference;
-        private final Class<?> _beanType;
+        private final @Initialized UnresolvedForwardReference _reference;
+        private final @Initialized Class<?> _beanType;
 
         public Referring(UnresolvedForwardReference ref, Class<?> beanType) {
             _reference = ref;

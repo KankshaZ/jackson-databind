@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.*;
@@ -14,15 +15,16 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 public class ValueInjector
     extends BeanProperty.Std
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Identifier used for looking up value to inject
      */
-    protected final Object _valueId;
+    protected final @Initialized Object _valueId;
 
-    public ValueInjector(PropertyName propName, JavaType type,
-            AnnotatedMember mutator, Object valueId)
+    public ValueInjector(@Initialized PropertyName propName, @Initialized JavaType type,
+            @Initialized
+            AnnotatedMember mutator, @Initialized Object valueId)
     {
         super(propName, type, null, mutator, PropertyMetadata.STD_OPTIONAL);
         _valueId = valueId;
@@ -39,13 +41,13 @@ public class ValueInjector
         this(propName, type, mutator, valueId);
     }
 
-    public Object findValue(DeserializationContext context, Object beanInstance)
+    public Object findValue(@Initialized DeserializationContext context, @Initialized Object beanInstance)
         throws JsonMappingException
     {
         return context.findInjectableValue(_valueId, this, beanInstance);
     }
     
-    public void inject(DeserializationContext context, Object beanInstance)
+    public void inject(@Initialized DeserializationContext context, @Initialized Object beanInstance)
         throws IOException
     {
         _member.setValue(beanInstance, findValue(context, beanInstance));

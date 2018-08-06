@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 /**
@@ -45,7 +47,7 @@ public abstract class ContextAttributes
     /**
      * Accessor for value of specified attribute
      */
-    public abstract Object getAttribute(Object key);
+    public abstract @Nullable Object getAttribute(Object key);
 
     /**
      * Mutator used during call (via context) to set value of "non-shared"
@@ -81,7 +83,7 @@ public abstract class ContextAttributes
          * we need to be able to modify contents, and wildcard type would
          * complicate that access.
          */
-        protected transient Map<Object,Object> _nonShared;
+        protected transient @Nullable Map<Object,Object> _nonShared;
         
         /*
         /**********************************************************
@@ -89,12 +91,12 @@ public abstract class ContextAttributes
         /**********************************************************
          */
         
-        protected Impl(Map<?,?> shared) {
+        protected Impl(@Initialized Map<?,?> shared) {
             _shared = shared;
             _nonShared = null;
         }
 
-        protected Impl(Map<?,?> shared, Map<Object,Object> nonShared) {
+        protected Impl(@Initialized Map<?,?> shared, @Initialized Map<Object,Object> nonShared) {
             _shared = shared;
             _nonShared = nonShared;
         }
@@ -110,7 +112,7 @@ public abstract class ContextAttributes
          */
         
         @Override
-        public ContextAttributes withSharedAttribute(Object key, Object value)
+        public ContextAttributes withSharedAttribute(ContextAttributes.@Initialized Impl this, @Initialized Object key, @Initialized Object value)
         {
             Map<Object,Object> m;
             // need to cover one special case, since EMPTY uses Immutable map:
@@ -124,12 +126,12 @@ public abstract class ContextAttributes
         }
 
         @Override
-        public ContextAttributes withSharedAttributes(Map<?,?> shared) {
+        public ContextAttributes withSharedAttributes(ContextAttributes.@Initialized Impl this, @Initialized Map<?,?> shared) {
             return new Impl(shared);
         }
 
         @Override
-        public ContextAttributes withoutSharedAttribute(Object key)
+        public ContextAttributes withoutSharedAttribute(ContextAttributes.@Initialized Impl this, @Initialized Object key)
         {
             // first couple of trivial optimizations
             if (_shared.isEmpty()) {
@@ -155,7 +157,7 @@ public abstract class ContextAttributes
          */
         
         @Override
-        public Object getAttribute(Object key)
+        public @Nullable Object getAttribute(ContextAttributes.@Initialized Impl this, @Initialized Object key)
         {
             if (_nonShared != null) {
                 Object ob = _nonShared.get(key);
@@ -170,7 +172,7 @@ public abstract class ContextAttributes
         }
         
         @Override
-        public ContextAttributes withPerCallAttribute(Object key, Object value)
+        public ContextAttributes withPerCallAttribute(ContextAttributes.@Initialized Impl this, @Initialized Object key, @Initialized Object value)
         {
             // First: null value may need masking
             if (value == null) {
@@ -203,7 +205,7 @@ public abstract class ContextAttributes
          * Overridable method that creates initial non-shared instance,
          * with the first explicit set value.
          */
-        protected ContextAttributes nonSharedInstance(Object key, Object value)
+        protected ContextAttributes nonSharedInstance(@Initialized Object key, @Initialized Object value)
         {
             Map<Object,Object> m = new HashMap<Object,Object>();
             if (value == null) {
@@ -213,7 +215,8 @@ public abstract class ContextAttributes
             return new Impl(_shared, m);
         }
         
-        private Map<Object,Object> _copy(Map<?,?> src)
+        @SuppressWarnings("nullness") // _copy is only called when src is non-null
+        private Map<Object,Object> _copy(@Initialized Map<?,?> src)
         {
             return new HashMap<Object,Object>(src);
         }

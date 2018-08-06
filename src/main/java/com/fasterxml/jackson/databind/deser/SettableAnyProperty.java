@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.Map;
 
@@ -23,31 +25,31 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public class SettableAnyProperty
     implements java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
     
     /**
      * Method used for setting "any" properties, along with annotation
      * information. Retained to allow contextualization of any properties.
      */
-    protected final BeanProperty _property;
+    protected final @Initialized BeanProperty _property;
 
     /**
      * Annotated variant is needed for JDK serialization only
      */
-    final protected AnnotatedMember _setter;
+    final protected @Initialized AnnotatedMember _setter;
 
-    final boolean _setterIsField;
+    final @Initialized boolean _setterIsField;
     
-    protected final JavaType _type;
+    protected final @Initialized JavaType _type;
 
-    protected JsonDeserializer<Object> _valueDeserializer;
+    protected @Initialized JsonDeserializer<Object> _valueDeserializer;
 
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     /**
      * @since 2.9
      */
-    protected final KeyDeserializer _keyDeserializer;
+    protected final @Initialized KeyDeserializer _keyDeserializer;
 
     /*
     /**********************************************************
@@ -55,9 +57,13 @@ public class SettableAnyProperty
     /**********************************************************
      */
 
-    public SettableAnyProperty(BeanProperty property, AnnotatedMember setter, JavaType type,
+    public SettableAnyProperty(@Initialized BeanProperty property, @Initialized AnnotatedMember setter, @Initialized JavaType type,
+            @Initialized
+            @Nullable
             KeyDeserializer keyDeser,
-            JsonDeserializer<Object> valueDeser, TypeDeserializer typeDeser)
+            @Initialized
+            @Nullable
+            JsonDeserializer<Object> valueDeser, @Initialized @Nullable TypeDeserializer typeDeser)
     {
         _property = property;
         _setter = setter;
@@ -75,12 +81,12 @@ public class SettableAnyProperty
         this(property, setter, type, null, valueDeser, typeDeser);
     }
 
-    public SettableAnyProperty withValueDeserializer(JsonDeserializer<Object> deser) {
+    public SettableAnyProperty withValueDeserializer(@Initialized JsonDeserializer<Object> deser) {
         return new SettableAnyProperty(_property, _setter, _type,
                 _keyDeserializer, deser, _valueTypeDeserializer);
     }
 
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized DeserializationConfig config) {
         _setter.fixAccess(
                 config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
     }
@@ -124,8 +130,10 @@ public class SettableAnyProperty
      * Method called to deserialize appropriate value, given parser (and
      * context), and set it using appropriate method (a setter method).
      */
-    public final void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
-            Object instance, String propName)
+    public final void deserializeAndSet(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            @Nullable
+            Object instance, @Initialized String propName)
         throws IOException
     {
         try {
@@ -142,7 +150,7 @@ public class SettableAnyProperty
         }
     }
 
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserialize(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         JsonToken t = p.getCurrentToken();
         if (t == JsonToken.VALUE_NULL) {
@@ -155,7 +163,7 @@ public class SettableAnyProperty
     }
 
     @SuppressWarnings("unchecked")
-    public void set(Object instance, Object propName, Object value) throws IOException
+    public void set(@Initialized Object instance, @Initialized Object propName, @Initialized Object value) throws IOException
     {
         try {
             // if annotation in the field (only map is supported now)
@@ -191,7 +199,7 @@ public class SettableAnyProperty
      * @param propName Name of property (from Json input) to set
      * @param value Value of the property
      */
-    protected void _throwAsIOE(Exception e, Object propName, Object value)
+    protected void _throwAsIOE(@Initialized Exception e, @Initialized Object propName, @Initialized Object value)
         throws IOException
     {
         if (e instanceof IllegalArgumentException) {
@@ -216,15 +224,16 @@ public class SettableAnyProperty
 
     private String getClassName() { return _setter.getDeclaringClass().getName(); }
 
-    @Override public String toString() { return "[any property on class "+getClassName()+"]"; }
+    @Override public String toString(@Initialized SettableAnyProperty this) { return "[any property on class "+getClassName()+"]"; }
 
     private static class AnySetterReferring extends Referring {
-        private final SettableAnyProperty _parent;
-        private final Object _pojo;
-        private final String _propName;
+        private final @Initialized SettableAnyProperty _parent;
+        private final @Initialized Object _pojo;
+        private final @Initialized String _propName;
 
-        public AnySetterReferring(SettableAnyProperty parent,
-                UnresolvedForwardReference reference, Class<?> type, Object instance, String propName)
+        public AnySetterReferring(@Initialized SettableAnyProperty parent,
+                @Initialized
+                UnresolvedForwardReference reference, @Initialized Class<?> type, @Initialized Object instance, @Initialized String propName)
         {
             super(reference, type);
             _parent = parent;
@@ -233,7 +242,7 @@ public class SettableAnyProperty
         }
 
         @Override
-        public void handleResolvedForwardReference(Object id, Object value)
+        public void handleResolvedForwardReference(SettableAnyProperty.@Initialized AnySetterReferring this, @Initialized Object id, @Initialized Object value)
             throws IOException
         {
             if (!hasId(id)) {

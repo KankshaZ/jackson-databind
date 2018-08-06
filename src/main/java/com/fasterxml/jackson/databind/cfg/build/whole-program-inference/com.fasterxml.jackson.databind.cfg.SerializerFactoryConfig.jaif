@@ -1,0 +1,30 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class SerializerFactoryConfig:
+
+    field NO_SERIALIZERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field NO_MODIFIERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _additionalSerializers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _additionalKeySerializers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _modifiers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method <init>([Lcom/fasterxml/jackson/databind/ser/Serializers;[Lcom/fasterxml/jackson/databind/ser/Serializers;[Lcom/fasterxml/jackson/databind/ser/BeanSerializerModifier;)V:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #1:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #2:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

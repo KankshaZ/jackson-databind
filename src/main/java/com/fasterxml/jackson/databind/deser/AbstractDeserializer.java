@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,11 +35,11 @@ public class AbstractDeserializer
 
     protected final JavaType _baseType;
 
-    protected final ObjectIdReader _objectIdReader;
+    protected final @Nullable ObjectIdReader _objectIdReader;
 
-    protected final Map<String, SettableBeanProperty> _backRefProperties;
+    protected final @Nullable Map<String, SettableBeanProperty> _backRefProperties;
 
-    protected transient Map<String,SettableBeanProperty> _properties;
+    protected transient @Nullable Map<String,SettableBeanProperty> _properties;
 
     // support for "native" types, which require special care:
     
@@ -58,8 +61,11 @@ public class AbstractDeserializer
      *    Object Id handling with property inclusion (needed for determining type of Object Id
      *    to bind)
      */
-    public AbstractDeserializer(BeanDeserializerBuilder builder,
-            BeanDescription beanDesc, Map<String, SettableBeanProperty> backRefProps,
+    public AbstractDeserializer(@Initialized BeanDeserializerBuilder builder,
+            @Initialized
+            BeanDescription beanDesc, @Initialized Map<String, SettableBeanProperty> backRefProps,
+            @Initialized
+            @Nullable
             Map<String, SettableBeanProperty> props)
     {
         _baseType = beanDesc.getType();
@@ -79,7 +85,7 @@ public class AbstractDeserializer
         this(builder, beanDesc, backRefProps, null);
     }
 
-    protected AbstractDeserializer(BeanDescription beanDesc)
+    protected AbstractDeserializer(@Initialized BeanDescription beanDesc)
     {
         _baseType = beanDesc.getType();
         _objectIdReader = null;
@@ -94,8 +100,9 @@ public class AbstractDeserializer
     /**
      * @since 2.9
      */
-    protected AbstractDeserializer(AbstractDeserializer base,
-            ObjectIdReader objectIdReader, Map<String, SettableBeanProperty> props)
+    protected AbstractDeserializer(@Initialized AbstractDeserializer base,
+            @Initialized @Nullable
+            ObjectIdReader objectIdReader, @FBCBottom @Nullable Map<String, SettableBeanProperty> props)
     {
         _baseType = base._baseType;
         _backRefProperties = base._backRefProperties;
@@ -114,12 +121,14 @@ public class AbstractDeserializer
      * 
      * @since 2.3
      */
-    public static AbstractDeserializer constructForNonPOJO(BeanDescription beanDesc) {
+    public static AbstractDeserializer constructForNonPOJO(@Initialized BeanDescription beanDesc) {
         return new AbstractDeserializer(beanDesc);
     }
 
+    @SuppressWarnings("nullness") // idProp.getType() only called when non-null. no dereference of null.
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized AbstractDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         final AnnotationIntrospector intr = ctxt.getAnnotationIntrospector();
@@ -130,7 +139,7 @@ public class AbstractDeserializer
                 if (objectIdInfo != null) { // some code duplication here as well (from BeanDeserializerFactory)
                     JavaType idType;
                     ObjectIdGenerator<?> idGen;
-                    SettableBeanProperty idProp = null;
+                    @Nullable SettableBeanProperty idProp = null;
                     ObjectIdResolver resolver = ctxt.objectIdResolverInstance(accessor, objectIdInfo);
 
                     // 2.1: allow modifications by "id ref" annotations as well:
@@ -180,15 +189,15 @@ handledType().getName()));
      */
 
     @Override
-    public Class<?> handledType() {
+    public Class<?> handledType(@Initialized AbstractDeserializer this) {
         return _baseType.getRawClass();
     }
     
     @Override
-    public boolean isCachable() { return true; }
+    public boolean isCachable(@Initialized AbstractDeserializer this) { return true; }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public @Nullable Boolean supportsUpdate(@Initialized AbstractDeserializer this, @Initialized DeserializationConfig config) {
         /* 23-Oct-2016, tatu: Not exactly sure what to do with this; polymorphic
          *   type handling seems bit risky so for now claim it "may or may not be"
          *   possible, which does allow explicit per-type/per-property merging attempts,
@@ -203,7 +212,7 @@ handledType().getName()));
      * (either via value type or referring property).
      */
     @Override
-    public ObjectIdReader getObjectIdReader() {
+    public @Nullable ObjectIdReader getObjectIdReader(@Initialized AbstractDeserializer this) {
         return _objectIdReader;
     }
 
@@ -212,7 +221,7 @@ handledType().getName()));
      * part of managed references.
      */
     @Override
-    public SettableBeanProperty findBackReference(String logicalName) {
+    public @Nullable SettableBeanProperty findBackReference(@Initialized AbstractDeserializer this, @Initialized String logicalName) {
         return (_backRefProperties == null) ? null : _backRefProperties.get(logicalName);
     }
     
@@ -223,7 +232,8 @@ handledType().getName()));
      */
     
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized AbstractDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -255,7 +265,7 @@ handledType().getName()));
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object deserialize(@Initialized AbstractDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // 16-Oct-2016, tatu: Let's pass non-null value instantiator so that we will
@@ -272,7 +282,7 @@ handledType().getName()));
     /**********************************************************
      */
 
-    protected Object _deserializeIfNatural(JsonParser p, DeserializationContext ctxt) throws IOException
+    protected @Nullable Object _deserializeIfNatural(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         /* There is a chance we might be "natural" types
          * (String, Boolean, Integer, Double), which do not include any type information...
@@ -314,7 +324,8 @@ handledType().getName()));
      * Method called in cases where it looks like we got an Object Id
      * to parse and use as a reference.
      */
-    protected Object _deserializeFromObjectId(JsonParser p, DeserializationContext ctxt) throws IOException
+    @SuppressWarnings("nullness") // method only gets called when _objectIdReader is non-null
+    protected Object _deserializeFromObjectId(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         Object id = _objectIdReader.readObjectReference(p, ctxt);
         ReadableObjectId roid = ctxt.findObjectId(id, _objectIdReader.generator, _objectIdReader.resolver);

@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,7 +25,7 @@ public class MapEntryDeserializer
     extends ContainerDeserializerBase<Map.Entry<Object,Object>>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
     // // Configuration: typing, deserializers
 
@@ -32,18 +34,18 @@ public class MapEntryDeserializer
      * (when indicated by annotations), or resolved when
      * {@link #createContextual} is called;
      */
-    protected final KeyDeserializer _keyDeserializer;
+    protected final @Initialized KeyDeserializer _keyDeserializer;
 
     /**
      * Value deserializer.
      */
-    protected final JsonDeserializer<Object> _valueDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /**
      * If value instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     /*
     /**********************************************************
@@ -51,8 +53,10 @@ public class MapEntryDeserializer
     /**********************************************************
      */
 
-    public MapEntryDeserializer(JavaType type,
-            KeyDeserializer keyDeser, JsonDeserializer<Object> valueDeser,
+    public MapEntryDeserializer(@Initialized JavaType type,
+            @Initialized
+            KeyDeserializer keyDeser, @Initialized @Nullable JsonDeserializer<Object> valueDeser,
+            @Initialized
             TypeDeserializer valueTypeDeser)
     {
         super(type);
@@ -76,8 +80,10 @@ public class MapEntryDeserializer
         _valueTypeDeserializer = src._valueTypeDeserializer;
     }
 
-    protected MapEntryDeserializer(MapEntryDeserializer src,
-            KeyDeserializer keyDeser, JsonDeserializer<Object> valueDeser,
+    protected MapEntryDeserializer(@Initialized MapEntryDeserializer src,
+            @Initialized
+            KeyDeserializer keyDeser, @Initialized JsonDeserializer<Object> valueDeser,
+            @Initialized
             TypeDeserializer valueTypeDeser)
     {
         super(src);
@@ -91,8 +97,9 @@ public class MapEntryDeserializer
      * different settings. When sub-classing, MUST be overridden.
      */
     @SuppressWarnings("unchecked")
-    protected MapEntryDeserializer withResolved(KeyDeserializer keyDeser,
-            TypeDeserializer valueTypeDeser, JsonDeserializer<?> valueDeser)
+    protected MapEntryDeserializer withResolved(@Initialized KeyDeserializer keyDeser,
+            @Initialized
+            TypeDeserializer valueTypeDeser, @Initialized JsonDeserializer<?> valueDeser)
     {
         
         if ((_keyDeserializer == keyDeser) && (_valueDeserializer == valueDeser)
@@ -114,7 +121,8 @@ public class MapEntryDeserializer
      * when it is known for which property deserializer is needed for.
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized MapEntryDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         KeyDeserializer kd = _keyDeserializer;
@@ -147,12 +155,12 @@ public class MapEntryDeserializer
      */
 
     @Override
-    public JavaType getContentType() {
+    public JavaType getContentType(@Initialized MapEntryDeserializer this) {
         return _containerType.containedType(1);
     }
 
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized MapEntryDeserializer this) {
         return _valueDeserializer;
     }
     
@@ -164,7 +172,7 @@ public class MapEntryDeserializer
 
     @SuppressWarnings("unchecked")
     @Override
-    public Map.Entry<Object,Object> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Map.Entry<Object,Object> deserialize(@Initialized MapEntryDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         // Ok: must point to START_OBJECT, FIELD_NAME or END_OBJECT
         JsonToken t = p.getCurrentToken();
@@ -224,14 +232,15 @@ public class MapEntryDeserializer
     }
 
     @Override
-    public Map.Entry<Object,Object> deserialize(JsonParser p, DeserializationContext ctxt,
-            Map.Entry<Object,Object> result) throws IOException
+    public Map.Entry<Object,Object> deserialize(@Initialized MapEntryDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            Map.@Initialized Entry<Object,Object> result) throws IOException
     {
         throw new IllegalStateException("Cannot update Map.Entry values");
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized MapEntryDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {

@@ -1,0 +1,12 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class MapperConfig:
+
+    field EMPTY_INCLUDE:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field EMPTY_FORMAT:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+

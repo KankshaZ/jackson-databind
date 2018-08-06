@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -22,9 +23,9 @@ public abstract class DelegatingDeserializer
     extends StdDeserializer<Object>
     implements ContextualDeserializer, ResolvableDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final JsonDeserializer<?> _delegatee;
+    protected final @Initialized JsonDeserializer<?> _delegatee;
     
     /*
     /**********************************************************************
@@ -44,7 +45,7 @@ public abstract class DelegatingDeserializer
     /**********************************************************************
      */
     
-    protected abstract JsonDeserializer<?> newDelegatingInstance(JsonDeserializer<?> newDelegatee);
+    protected abstract JsonDeserializer<?> newDelegatingInstance(@Initialized JsonDeserializer<?> newDelegatee);
     
     /*
     /**********************************************************************
@@ -53,14 +54,15 @@ public abstract class DelegatingDeserializer
      */
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(@Initialized DelegatingDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         if (_delegatee instanceof ResolvableDeserializer) {
             ((ResolvableDeserializer) _delegatee).resolve(ctxt);
         }
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized DelegatingDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property)
         throws JsonMappingException
     {
@@ -74,7 +76,7 @@ public abstract class DelegatingDeserializer
     }
 
     @Override
-    public JsonDeserializer<?> replaceDelegatee(JsonDeserializer<?> delegatee)
+    public JsonDeserializer<?> replaceDelegatee(@Initialized DelegatingDeserializer this, @Initialized JsonDeserializer<?> delegatee)
     {
         if (delegatee == _delegatee) {
             return this;
@@ -89,7 +91,7 @@ public abstract class DelegatingDeserializer
      */
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object deserialize(@Initialized DelegatingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         return _delegatee.deserialize(p,  ctxt);
@@ -97,7 +99,8 @@ public abstract class DelegatingDeserializer
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt,
+    public Object deserialize(@Initialized DelegatingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object intoValue)
         throws IOException
     {
@@ -105,7 +108,8 @@ public abstract class DelegatingDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized DelegatingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -119,42 +123,42 @@ public abstract class DelegatingDeserializer
      */
 
     @Override
-    public boolean isCachable() { return _delegatee.isCachable(); }
+    public boolean isCachable(@Initialized DelegatingDeserializer this) { return _delegatee.isCachable(); }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized DelegatingDeserializer this, @Initialized DeserializationConfig config) {
         return _delegatee.supportsUpdate(config);
     }
 
     @Override
-    public JsonDeserializer<?> getDelegatee() {
+    public JsonDeserializer<?> getDelegatee(@Initialized DelegatingDeserializer this) {
         return _delegatee;
     }
 
     @Override
-    public SettableBeanProperty findBackReference(String logicalName) {
+    public SettableBeanProperty findBackReference(@Initialized DelegatingDeserializer this, @Initialized String logicalName) {
         // [databind#253]: Hope this works....
         return _delegatee.findBackReference(logicalName);
     }
 
     @Override
-    public AccessPattern getNullAccessPattern() {
+    public AccessPattern getNullAccessPattern(@Initialized DelegatingDeserializer this) {
         return _delegatee.getNullAccessPattern();
     }
 
     @Override
-    public Object getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getNullValue(@Initialized DelegatingDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return _delegatee.getNullValue(ctxt);
     }
 
     @Override
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized DelegatingDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return _delegatee.getEmptyValue(ctxt);
     }
 
     @Override
-    public Collection<Object> getKnownPropertyNames() { return _delegatee.getKnownPropertyNames(); }
+    public Collection<Object> getKnownPropertyNames(@Initialized DelegatingDeserializer this) { return _delegatee.getKnownPropertyNames(); }
 
     @Override
-    public ObjectIdReader getObjectIdReader() { return _delegatee.getObjectIdReader(); }
+    public ObjectIdReader getObjectIdReader(@Initialized DelegatingDeserializer this) { return _delegatee.getObjectIdReader(); }
 }

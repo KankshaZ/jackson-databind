@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -29,11 +30,11 @@ public abstract class DefaultDeserializationContext
     extends DeserializationContext
     implements java.io.Serializable // since 2.1
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected transient LinkedHashMap<ObjectIdGenerator.IdKey, ReadableObjectId> _objectIds;
+    protected transient @Initialized LinkedHashMap<ObjectIdGenerator.IdKey, ReadableObjectId> _objectIds;
 
-    private List<ObjectIdResolver> _objectIdResolvers;
+    private @Initialized List<ObjectIdResolver> _objectIdResolvers;
 
     /**
      * Constructor that will pass specified deserializer factory and
@@ -80,7 +81,7 @@ public abstract class DefaultDeserializationContext
      */
 
     @Override
-    public ReadableObjectId findObjectId(Object id, ObjectIdGenerator<?> gen, ObjectIdResolver resolverType)
+    public ReadableObjectId findObjectId(@Initialized DefaultDeserializationContext this, @Initialized Object id, @Initialized ObjectIdGenerator<?> gen, @Initialized ObjectIdResolver resolverType)
     {
         /* 02-Apr-2015, tatu: As per [databind#742] should allow 'null', similar to how
          *   missing id already works.
@@ -137,12 +138,12 @@ public abstract class DefaultDeserializationContext
      *
      * @since 2.7
      */
-    protected ReadableObjectId createReadableObjectId(IdKey key) {
+    protected ReadableObjectId createReadableObjectId(@Initialized IdKey key) {
         return new ReadableObjectId(key);
     }
 
     @Override
-    public void checkUnresolvedObjectId() throws UnresolvedForwardReference
+    public void checkUnresolvedObjectId(@Initialized DefaultDeserializationContext this) throws UnresolvedForwardReference
     {
         if (_objectIds == null) {
             return;
@@ -185,7 +186,7 @@ public abstract class DefaultDeserializationContext
      *
      * @since 2.6
      */
-    protected boolean tryToResolveUnresolvedObjectId(ReadableObjectId roid)
+    protected boolean tryToResolveUnresolvedObjectId(@Initialized ReadableObjectId roid)
     {
         return roid.tryToResolveUnresolved(this);
     }
@@ -198,7 +199,7 @@ public abstract class DefaultDeserializationContext
     
     @SuppressWarnings("unchecked")
     @Override
-    public JsonDeserializer<Object> deserializerInstance(Annotated ann, Object deserDef)
+    public JsonDeserializer<Object> deserializerInstance(@Initialized DefaultDeserializationContext this, @Initialized Annotated ann, @Initialized Object deserDef)
         throws JsonMappingException
     {
         if (deserDef == null) {
@@ -238,7 +239,7 @@ public abstract class DefaultDeserializationContext
     }
 
     @Override
-    public final KeyDeserializer keyDeserializerInstance(Annotated ann, Object deserDef)
+    public final KeyDeserializer keyDeserializerInstance(@Initialized DefaultDeserializationContext this, @Initialized Annotated ann, @Initialized Object deserDef)
         throws JsonMappingException
     {
         if (deserDef == null) {
@@ -308,7 +309,7 @@ public abstract class DefaultDeserializationContext
      */
     public final static class Impl extends DefaultDeserializationContext
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
         /**
          * Default constructor for a blueprint object, which will use the standard
@@ -318,31 +319,33 @@ public abstract class DefaultDeserializationContext
             super(df, null);
         }
 
-        protected Impl(Impl src,
-                DeserializationConfig config, JsonParser jp, InjectableValues values) {
+        protected Impl(@Initialized Impl src,
+                @Initialized
+                DeserializationConfig config, @Initialized JsonParser jp, @Initialized InjectableValues values) {
             super(src, config, jp, values);
         }
 
-        protected Impl(Impl src) { super(src); }
+        protected Impl(@Initialized Impl src) { super(src); }
         
-        protected Impl(Impl src, DeserializerFactory factory) {
+        protected Impl(@Initialized Impl src, @Initialized DeserializerFactory factory) {
             super(src, factory);
         }
 
         @Override
-        public DefaultDeserializationContext copy() {
+        public DefaultDeserializationContext copy(DefaultDeserializationContext.@Initialized Impl this) {
             ClassUtil.verifyMustOverride(Impl.class, this, "copy");
            return new Impl(this);
         }
         
         @Override
-        public DefaultDeserializationContext createInstance(DeserializationConfig config,
-                JsonParser p, InjectableValues values) {
+        public DefaultDeserializationContext createInstance(DefaultDeserializationContext.@Initialized Impl this, @Initialized DeserializationConfig config,
+                @Initialized
+                JsonParser p, @Initialized InjectableValues values) {
             return new Impl(this, config, p, values);
         }
 
         @Override
-        public DefaultDeserializationContext with(DeserializerFactory factory) {
+        public DefaultDeserializationContext with(DefaultDeserializationContext.@Initialized Impl this, @Initialized DeserializerFactory factory) {
             return new Impl(this, factory);
         }        
     }

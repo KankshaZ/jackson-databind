@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.PropertyName;
@@ -9,21 +11,23 @@ import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 
 public final class CreatorCandidate
 {
-    protected final AnnotationIntrospector _intr;
-    protected final AnnotatedWithParams _creator;
-    protected final int _paramCount;
-    protected final Param[] _params;
+    protected final @Initialized AnnotationIntrospector _intr;
+    protected final @Initialized AnnotatedWithParams _creator;
+    protected final @Initialized int _paramCount;
+    protected final Param @Initialized [] _params;
 
-    protected CreatorCandidate(AnnotationIntrospector intr,
-            AnnotatedWithParams ct, Param[] params, int count) {
+    protected CreatorCandidate(@Initialized AnnotationIntrospector intr,
+            @Initialized
+            AnnotatedWithParams ct, Param @Initialized [] params, @Initialized int count) {
         _intr = intr;
         _creator = ct;
         _params = params;
         _paramCount = count;
     }
 
-    public static CreatorCandidate construct(AnnotationIntrospector intr,
-            AnnotatedWithParams creator, BeanPropertyDefinition[] propDefs)
+    public static CreatorCandidate construct(@Initialized AnnotationIntrospector intr,
+            @Initialized
+            AnnotatedWithParams creator, BeanPropertyDefinition @Initialized  @Nullable [] propDefs)
     {
         final int pcount = creator.getParameterCount();
         Param[] params = new Param[pcount];
@@ -37,11 +41,11 @@ public final class CreatorCandidate
 
     public AnnotatedWithParams creator() { return _creator; }
     public int paramCount() { return _paramCount; }
-    public JacksonInject.Value injection(int i) { return _params[i].injection; }
-    public AnnotatedParameter parameter(int i) { return _params[i].annotated; }
-    public BeanPropertyDefinition propertyDef(int i) { return _params[i].propDef; }
+    public JacksonInject.Value injection(@Initialized int i) { return _params[i].injection; }
+    public AnnotatedParameter parameter(@Initialized int i) { return _params[i].annotated; }
+    public BeanPropertyDefinition propertyDef(@Initialized int i) { return _params[i].propDef; }
 
-    public PropertyName paramName(int i) {
+    public PropertyName paramName(@Initialized int i) {
         BeanPropertyDefinition propDef = _params[i].propDef;
         if (propDef != null) {
             return propDef.getFullName();
@@ -49,7 +53,7 @@ public final class CreatorCandidate
         return null;
     }
 
-    public PropertyName explicitParamName(int i) {
+    public PropertyName explicitParamName(@Initialized int i) {
         BeanPropertyDefinition propDef = _params[i].propDef;
         if (propDef != null) {
             if (propDef.isExplicitlyNamed()) {
@@ -59,7 +63,7 @@ public final class CreatorCandidate
         return null;
     }
     
-    public PropertyName findImplicitParamName(int i) {
+    public PropertyName findImplicitParamName(@Initialized int i) {
         String str = _intr.findImplicitPropertyName(_params[i].annotated);
         if (str != null && !str.isEmpty()) {
             return PropertyName.construct(str);
@@ -87,17 +91,17 @@ public final class CreatorCandidate
     }
 
     @Override
-    public String toString() {
+    public String toString(@Initialized CreatorCandidate this) {
         return _creator.toString();
     }
 
     public final static class Param {
-        public final AnnotatedParameter annotated;
-        public final BeanPropertyDefinition propDef;
-        public final JacksonInject.Value injection;
+        public final @Initialized AnnotatedParameter annotated;
+        public final @Initialized BeanPropertyDefinition propDef;
+        public final JacksonInject.@Initialized Value injection;
 
-        public Param(AnnotatedParameter p, BeanPropertyDefinition pd,
-                JacksonInject.Value i)
+        public Param(@Initialized AnnotatedParameter p, @Initialized @Nullable BeanPropertyDefinition pd,
+                JacksonInject.@Initialized Value i)
         {
             annotated = p;
             propDef = pd;

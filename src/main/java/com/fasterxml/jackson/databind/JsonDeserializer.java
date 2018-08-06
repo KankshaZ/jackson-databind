@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -352,7 +353,7 @@ public abstract class JsonDeserializer<T>
      * 
      * @since 2.0
      */
-    public ObjectIdReader getObjectIdReader() { return null; }
+    public @Nullable ObjectIdReader getObjectIdReader() { return null; }
 
     /**
      * Method needed by {@link BeanDeserializerFactory} to properly link
@@ -360,7 +361,7 @@ public abstract class JsonDeserializer<T>
      * 
      * @since 2.2 (was moved out of <code>BeanDeserializerBase</code>)
      */
-    public SettableBeanProperty findBackReference(String refName)
+    public @Nullable SettableBeanProperty findBackReference(String refName)
     {
         throw new IllegalArgumentException("Cannot handle managed/back reference '"+refName
                 +"': type: value deserializer of type "+getClass().getName()+" does not support them");
@@ -385,7 +386,7 @@ public abstract class JsonDeserializer<T>
      *
      * @since 2.9
      */
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public @Nullable Boolean supportsUpdate(DeserializationConfig config) {
         return null;
     }
 

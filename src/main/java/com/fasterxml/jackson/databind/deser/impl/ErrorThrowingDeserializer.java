@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -16,14 +17,14 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  */
 public class ErrorThrowingDeserializer extends JsonDeserializer<Object>
 {
-    private final Error _cause;
+    private final @Initialized Error _cause;
 
-    public ErrorThrowingDeserializer(NoClassDefFoundError cause) {
+    public ErrorThrowingDeserializer(@Initialized NoClassDefFoundError cause) {
         _cause = cause;
     }
 
     @Override
-    public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public Object deserialize(@Initialized ErrorThrowingDeserializer this, @Initialized JsonParser jp, @Initialized DeserializationContext ctxt) throws IOException {
         throw _cause;
     }
 }

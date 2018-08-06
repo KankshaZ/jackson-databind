@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,14 +22,14 @@ public abstract class ConfigOverride
     /**
      * Definitions of format overrides, if any.
      */
-    protected JsonFormat.Value _format;
+    protected JsonFormat.@Initialized Value _format;
 
     /**
      * Definitions of inclusion defaults to use for properties included in this POJO type.
      * Overrides global defaults, may be overridden by per-property-type (see
      * {@link #_includeAsProperty}) and per-property overrides (annotations).
      */
-    protected JsonInclude.Value _include;
+    protected JsonInclude.@Initialized Value _include;
 
     /**
      * Definitions of inclusion defaults for properties of this specified type (regardless
@@ -37,27 +39,27 @@ public abstract class ConfigOverride
      *
      * @since 2.9
      */
-    protected JsonInclude.Value _includeAsProperty;
+    protected JsonInclude.@Initialized Value _includeAsProperty;
 
     /**
      * Definitions of property ignoral (whether to serialize, deserialize
      * given logical property) overrides, if any.
      */
-    protected JsonIgnoreProperties.Value _ignorals;
+    protected JsonIgnoreProperties.@Initialized Value _ignorals;
 
     /**
      * Definitions of setter overrides regarding null handling
      *
      * @since 2.9
      */
-    protected JsonSetter.Value _setterInfo;
+    protected JsonSetter.@Nullable Value _setterInfo;
 
     /**
      * Overrides for auto-detection visibility rules for this type.
      *
      * @since 2.9
      */
-    protected JsonAutoDetect.Value _visibility;
+    protected JsonAutoDetect.@Nullable Value _visibility;
 
     /**
      * Flag that indicates whether "is ignorable type" is specified for this type;
@@ -73,6 +75,7 @@ public abstract class ConfigOverride
      */
     protected Boolean _mergeable;
     
+    @SuppressWarnings("initialization") // default constructor. objects initialized in the other constructor
     protected ConfigOverride() { }
     protected ConfigOverride(ConfigOverride src) {
         _format = src._format;
@@ -109,12 +112,12 @@ public abstract class ConfigOverride
     /**
      * @since 2.9
      */
-    public JsonSetter.Value getSetterInfo() { return _setterInfo; }
+    public JsonSetter.@Nullable Value getSetterInfo() { return _setterInfo; }
 
     /**
      * @since 2.9
      */
-    public JsonAutoDetect.Value getVisibility() { return _visibility; }
+    public JsonAutoDetect.@Nullable Value getVisibility() { return _visibility; }
 
     /**
      * @since 2.9

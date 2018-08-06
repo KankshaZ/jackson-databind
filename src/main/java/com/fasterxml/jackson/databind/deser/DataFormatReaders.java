@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,28 +26,28 @@ public class DataFormatReaders
      * much less (4 bytes or so) is needed, but we will allow bit more
      * leniency to support data formats that need more complex heuristics.
      */
-    public final static int DEFAULT_MAX_INPUT_LOOKAHEAD = 64;
+    public final static @Initialized int DEFAULT_MAX_INPUT_LOOKAHEAD = 64;
     
     /**
      * Ordered list of readers which both represent data formats to
      * detect (in precedence order, starting with highest) and contain
      * factories used for actual detection.
      */
-    protected final ObjectReader[] _readers;
+    protected final ObjectReader @Initialized [] _readers;
 
     /**
      * Strength of match we consider to be good enough to be used
      * without checking any other formats.
      * Default value is {@link MatchStrength#SOLID_MATCH}, 
      */
-    protected final MatchStrength _optimalMatch;
+    protected final @Initialized MatchStrength _optimalMatch;
 
     /**
      * Strength of minimal match we accept as the answer, unless
      * better matches are found. 
      * Default value is {@link MatchStrength#WEAK_MATCH}, 
      */
-    protected final MatchStrength _minimalMatch;
+    protected final @Initialized MatchStrength _minimalMatch;
 
     /**
      * Maximum number of leading bytes of the input that we can read
@@ -53,7 +55,7 @@ public class DataFormatReaders
      *<p>
      * Default value is {@link #DEFAULT_MAX_INPUT_LOOKAHEAD}.
      */
-    protected final int _maxInputLookahead;
+    protected final @Initialized int _maxInputLookahead;
     
     /*
     /**********************************************************
@@ -61,7 +63,7 @@ public class DataFormatReaders
     /**********************************************************
      */
     
-    public DataFormatReaders(ObjectReader... detectors) {
+    public DataFormatReaders(ObjectReader @Initialized ... detectors) {
         this(detectors, MatchStrength.SOLID_MATCH, MatchStrength.WEAK_MATCH,
             DEFAULT_MAX_INPUT_LOOKAHEAD);
     }
@@ -70,8 +72,10 @@ public class DataFormatReaders
         this(detectors.toArray(new ObjectReader[detectors.size()]));
     }
 
-    private DataFormatReaders(ObjectReader[] detectors,
-            MatchStrength optMatch, MatchStrength minMatch,
+    private DataFormatReaders(ObjectReader @Initialized [] detectors,
+            @Initialized
+            MatchStrength optMatch, @Initialized MatchStrength minMatch,
+            @Initialized
             int maxInputLookahead)
     {
         _readers = detectors;
@@ -190,7 +194,7 @@ public class DataFormatReaders
      */
 
     @Override
-    public String toString()
+    public String toString(@Initialized DataFormatReaders this)
     {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
@@ -212,7 +216,7 @@ public class DataFormatReaders
     /**********************************************************
      */
 
-    private Match _findFormat(AccessorForReader acc) throws IOException
+    private Match _findFormat(@Initialized AccessorForReader acc) throws IOException
     {
         ObjectReader bestMatch = null;
         MatchStrength bestMatchStrength = null;
@@ -250,17 +254,17 @@ public class DataFormatReaders
      */
     protected class AccessorForReader extends InputAccessor.Std
     {
-        public AccessorForReader(InputStream in, byte[] buffer) {
+        public AccessorForReader(@Initialized InputStream in, byte @Initialized [] buffer) {
             super(in, buffer);
         }
-        public AccessorForReader(byte[] inputDocument) {
+        public AccessorForReader(byte @Initialized [] inputDocument) {
             super(inputDocument);
         }
-        public AccessorForReader(byte[] inputDocument, int start, int len) {
+        public AccessorForReader(byte @Initialized [] inputDocument, @Initialized int start, @Initialized int len) {
             super(inputDocument, start, len);
         }
 
-        public Match createMatcher(ObjectReader match, MatchStrength matchStrength)
+        public Match createMatcher(@Initialized @Nullable ObjectReader match, @Initialized @Nullable MatchStrength matchStrength)
         {
             return new Match(_in, _buffer, _bufferedStart, (_bufferedEnd - _bufferedStart),
                     match, matchStrength);
@@ -272,36 +276,38 @@ public class DataFormatReaders
      */
     public static class Match
     {
-        protected final InputStream _originalStream;
+        protected final @Initialized InputStream _originalStream;
 
         /**
          * Content read during format matching process
          */
-        protected final byte[] _bufferedData;
+        protected final byte @Initialized [] _bufferedData;
 
         /**
          * Pointer to the first byte in buffer available for reading
          */
-        protected final int _bufferedStart;
+        protected final @Initialized int _bufferedStart;
         
         /**
          * Number of bytes available in buffer.
          */
-        protected final int _bufferedLength;
+        protected final @Initialized int _bufferedLength;
 
         /**
          * Factory that produced sufficient match (if any)
          */
-        protected final ObjectReader _match;
+        protected final @Initialized ObjectReader _match;
 
         /**
          * Strength of match with {@link #_match}
          */
-        protected final MatchStrength _matchStrength;
+        protected final @Initialized MatchStrength _matchStrength;
         
-        protected Match(InputStream in, byte[] buffered,
-                int bufferedStart, int bufferedLength,
-                ObjectReader match, MatchStrength strength)
+        protected Match(@Initialized InputStream in, byte @Initialized [] buffered,
+                @Initialized
+                int bufferedStart, @Initialized int bufferedLength,
+                @Initialized
+                ObjectReader match, @Initialized MatchStrength strength)
         {
             _originalStream = in;
             _bufferedData = buffered;

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.databind.util.Converter;
 public final class DeserializerCache
     implements java.io.Serializable // since 2.1 -- needs to be careful tho
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /*
     /**********************************************************
@@ -39,7 +40,7 @@ public final class DeserializerCache
      * (should very quickly converge to zero after startup), let's
      * define a relatively low concurrency setting.
      */
-    final protected ConcurrentHashMap<JavaType, JsonDeserializer<Object>> _cachedDeserializers
+    final protected @Initialized ConcurrentHashMap<JavaType, JsonDeserializer<Object>> _cachedDeserializers
         = new ConcurrentHashMap<JavaType, JsonDeserializer<Object>>(64, 0.75f, 4);
 
     /**
@@ -47,7 +48,7 @@ public final class DeserializerCache
      * completed deserializers, to resolve cyclic dependencies. This is the
      * map used for storing deserializers before they are fully complete.
      */
-    final protected HashMap<JavaType, JsonDeserializer<Object>> _incompleteDeserializers
+    final protected @Initialized HashMap<JavaType, JsonDeserializer<Object>> _incompleteDeserializers
         = new HashMap<JavaType, JsonDeserializer<Object>>(8);
 
     /*
@@ -199,7 +200,7 @@ public final class DeserializerCache
     /**********************************************************
      */
 
-    protected JsonDeserializer<Object> _findCachedDeserializer(JavaType type)
+    protected JsonDeserializer<Object> _findCachedDeserializer(@Initialized JavaType type)
     {
         if (type == null) {
             throw new IllegalArgumentException("Null JavaType passed");
@@ -217,8 +218,9 @@ public final class DeserializerCache
      * @param ctxt Currently active deserialization context
      * @param type Type of property to deserialize
      */
-    protected JsonDeserializer<Object> _createAndCacheValueDeserializer(DeserializationContext ctxt,
-            DeserializerFactory factory, JavaType type)
+    protected JsonDeserializer<Object> _createAndCacheValueDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            DeserializerFactory factory, @Initialized JavaType type)
         throws JsonMappingException
     {
         /* Only one thread to construct deserializers at any given point in time;
@@ -255,8 +257,9 @@ public final class DeserializerCache
      * Method that handles actual construction (via factory) and caching (both
      * intermediate and eventual)
      */
-    protected JsonDeserializer<Object> _createAndCache2(DeserializationContext ctxt,
-            DeserializerFactory factory, JavaType type)
+    protected JsonDeserializer<Object> _createAndCache2(@Initialized DeserializationContext ctxt,
+            @Initialized
+            DeserializerFactory factory, @Initialized JavaType type)
         throws JsonMappingException
     {
         JsonDeserializer<Object> deser;
@@ -311,8 +314,9 @@ public final class DeserializerCache
      * to call.
      */
     @SuppressWarnings("unchecked")
-    protected JsonDeserializer<Object> _createDeserializer(DeserializationContext ctxt,
-            DeserializerFactory factory, JavaType type)
+    protected JsonDeserializer<Object> _createDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            DeserializerFactory factory, @Initialized JavaType type)
         throws JsonMappingException
     {
         final DeserializationConfig config = ctxt.getConfig();
@@ -358,8 +362,9 @@ public final class DeserializerCache
                 _createDeserializer2(ctxt, factory, delegateType, beanDesc));
     }
 
-    protected JsonDeserializer<?> _createDeserializer2(DeserializationContext ctxt,
-            DeserializerFactory factory, JavaType type, BeanDescription beanDesc)
+    protected JsonDeserializer<?> _createDeserializer2(@Initialized DeserializationContext ctxt,
+            @Initialized
+            DeserializerFactory factory, @Initialized JavaType type, @Initialized BeanDescription beanDesc)
         throws JsonMappingException
     {
         final DeserializationConfig config = ctxt.getConfig();
@@ -416,7 +421,8 @@ public final class DeserializerCache
      * has annotation that tells which class to use for deserialization.
      * Returns null if no such annotation found.
      */
-    protected JsonDeserializer<Object> findDeserializerFromAnnotation(DeserializationContext ctxt,
+    protected JsonDeserializer<Object> findDeserializerFromAnnotation(@Initialized DeserializationContext ctxt,
+            @Initialized
             Annotated ann)
         throws JsonMappingException
     {
@@ -435,8 +441,9 @@ public final class DeserializerCache
      * be used; and if so, to construct and return suitable serializer for it.
      * If not, will simply return given serializer as is.
      */
-    protected JsonDeserializer<Object> findConvertingDeserializer(DeserializationContext ctxt,
-            Annotated a, JsonDeserializer<Object> deser)
+    protected JsonDeserializer<Object> findConvertingDeserializer(@Initialized DeserializationContext ctxt,
+            @Initialized
+            Annotated a, @Initialized JsonDeserializer<Object> deser)
         throws JsonMappingException
     {
         Converter<Object,Object> conv = findConverter(ctxt, a);
@@ -447,7 +454,8 @@ public final class DeserializerCache
         return (JsonDeserializer<Object>) new StdDelegatingDeserializer<Object>(conv, delegateType, deser);
     }
 
-    protected Converter<Object,Object> findConverter(DeserializationContext ctxt,
+    protected Converter<Object,Object> findConverter(@Initialized DeserializationContext ctxt,
+            @Initialized
             Annotated a)
         throws JsonMappingException
     {
@@ -473,8 +481,9 @@ public final class DeserializerCache
      *
      * @throws JsonMappingException if invalid annotation is found
      */
-    private JavaType modifyTypeByAnnotation(DeserializationContext ctxt,
-            Annotated a, JavaType type)
+    private JavaType modifyTypeByAnnotation(@Initialized DeserializationContext ctxt,
+            @Initialized
+            Annotated a, @Initialized JavaType type)
         throws JsonMappingException
     {
         AnnotationIntrospector intr = ctxt.getAnnotationIntrospector();
@@ -541,7 +550,7 @@ public final class DeserializerCache
      *
      * @since 2.8.11
      */
-    private boolean _hasCustomHandlers(JavaType t) {
+    private boolean _hasCustomHandlers(@Initialized JavaType t) {
         if (t.isContainerType()) {
             // First: value types may have both value and type handlers
             JavaType ct = t.getContentType();
@@ -561,7 +570,7 @@ public final class DeserializerCache
         return false;
     }
 
-    private Class<?> _verifyAsClass(Object src, String methodName, Class<?> noneClass)
+    private Class<?> _verifyAsClass(@Initialized Object src, @Initialized String methodName, @Initialized Class<?> noneClass)
     {
         if (src == null) {
             return null;
@@ -582,7 +591,7 @@ public final class DeserializerCache
     /**********************************************************
      */
 
-    protected JsonDeserializer<Object> _handleUnknownValueDeserializer(DeserializationContext ctxt, JavaType type)
+    protected JsonDeserializer<Object> _handleUnknownValueDeserializer(@Initialized DeserializationContext ctxt, @Initialized JavaType type)
         throws JsonMappingException
     {
         // Let's try to figure out the reason, to give better error messages
@@ -593,7 +602,7 @@ public final class DeserializerCache
         return ctxt.reportBadDefinition(type, "Cannot find a Value deserializer for type "+type);
     }
 
-    protected KeyDeserializer _handleUnknownKeyDeserializer(DeserializationContext ctxt, JavaType type)
+    protected KeyDeserializer _handleUnknownKeyDeserializer(@Initialized DeserializationContext ctxt, @Initialized JavaType type)
         throws JsonMappingException
     {
         return ctxt.reportBadDefinition(type, "Cannot find a (Map) Key deserializer for type "+type);

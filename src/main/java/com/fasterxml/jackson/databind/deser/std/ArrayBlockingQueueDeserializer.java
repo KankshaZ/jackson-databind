@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 public class ArrayBlockingQueueDeserializer
     extends CollectionDeserializer
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
     /*
     /**********************************************************
@@ -26,8 +27,10 @@ public class ArrayBlockingQueueDeserializer
     /**********************************************************
      */
 
-     public ArrayBlockingQueueDeserializer(JavaType containerType,
-            JsonDeserializer<Object> valueDeser, TypeDeserializer valueTypeDeser,
+     public ArrayBlockingQueueDeserializer(@Initialized JavaType containerType,
+            @Initialized
+            JsonDeserializer<Object> valueDeser, @Initialized TypeDeserializer valueTypeDeser,
+            @Initialized
             ValueInstantiator valueInstantiator)
     {
         super(containerType, valueDeser, valueTypeDeser, valueInstantiator);
@@ -36,11 +39,15 @@ public class ArrayBlockingQueueDeserializer
     /**
      * Constructor used when creating contextualized instances.
      */
-     protected ArrayBlockingQueueDeserializer(JavaType containerType,
-            JsonDeserializer<Object> valueDeser, TypeDeserializer valueTypeDeser,
+     protected ArrayBlockingQueueDeserializer(@Initialized JavaType containerType,
+            @Initialized
+            JsonDeserializer<Object> valueDeser, @Initialized TypeDeserializer valueTypeDeser,
+            @Initialized
             ValueInstantiator valueInstantiator,
+            @Initialized
             JsonDeserializer<Object> delegateDeser,
-            NullValueProvider nuller, Boolean unwrapSingle)
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
         super(containerType, valueDeser, valueTypeDeser, valueInstantiator, delegateDeser,
                 nuller, unwrapSingle);
@@ -59,9 +66,11 @@ public class ArrayBlockingQueueDeserializer
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected ArrayBlockingQueueDeserializer withResolved(JsonDeserializer<?> dd,
-            JsonDeserializer<?> vd, TypeDeserializer vtd,
-            NullValueProvider nuller, Boolean unwrapSingle)
+    protected ArrayBlockingQueueDeserializer withResolved(@Initialized ArrayBlockingQueueDeserializer this, @Initialized JsonDeserializer<?> dd,
+            @Initialized
+            JsonDeserializer<?> vd, @Initialized TypeDeserializer vtd,
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
         return new ArrayBlockingQueueDeserializer(_containerType,
                 (JsonDeserializer<Object>) vd, vtd,
@@ -76,7 +85,7 @@ public class ArrayBlockingQueueDeserializer
      */
 
     @Override
-    protected Collection<Object> createDefaultInstance(DeserializationContext ctxt)
+    protected Collection<Object> createDefaultInstance(@Initialized ArrayBlockingQueueDeserializer this, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // 07-Nov-2016, tatu: Important: cannot create using default ctor (one
@@ -86,7 +95,8 @@ public class ArrayBlockingQueueDeserializer
     }
 
     @Override
-    public Collection<Object> deserialize(JsonParser p, DeserializationContext ctxt,
+    public Collection<Object> deserialize(@Initialized ArrayBlockingQueueDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<Object> result0) throws IOException
     {
         if (result0 != null) {
@@ -101,7 +111,7 @@ public class ArrayBlockingQueueDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+    public Object deserializeWithType(@Initialized ArrayBlockingQueueDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized TypeDeserializer typeDeserializer) throws IOException {
         // In future could check current token... for now this should be enough:
         return typeDeserializer.deserializeTypedFromArray(p, ctxt);
     }

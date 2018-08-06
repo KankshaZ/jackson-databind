@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
@@ -16,27 +18,27 @@ import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 public class ObjectIdReader
     implements java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final JavaType _idType;
+    protected final @Initialized JavaType _idType;
 
-    public final PropertyName propertyName;
+    public final @Initialized PropertyName propertyName;
     
     /**
      * Blueprint generator instance: actual instance will be
      * fetched from {@link SerializerProvider} using this as
      * the key.
      */
-    public final ObjectIdGenerator<?> generator;
+    public final @Initialized ObjectIdGenerator<?> generator;
 
-    public final ObjectIdResolver resolver;
+    public final @Initialized ObjectIdResolver resolver;
 
     /**
      * Deserializer used for deserializing id values.
      */
-    protected final JsonDeserializer<Object> _deserializer;
+    protected final @Initialized JsonDeserializer<Object> _deserializer;
 
-    public final SettableBeanProperty idProperty;
+    public final @Initialized SettableBeanProperty idProperty;
     
     /*
     /**********************************************************
@@ -45,8 +47,9 @@ public class ObjectIdReader
      */
     
     @SuppressWarnings("unchecked")
-    protected ObjectIdReader(JavaType t, PropertyName propName, ObjectIdGenerator<?> gen,
-            JsonDeserializer<?> deser, SettableBeanProperty idProp, ObjectIdResolver resolver)
+    protected ObjectIdReader(@Initialized JavaType t, @Initialized PropertyName propName, @Initialized ObjectIdGenerator<?> gen,
+            @Initialized
+            JsonDeserializer<?> deser, @Initialized SettableBeanProperty idProp, @Initialized ObjectIdResolver resolver)
     {
         _idType = t;
         propertyName = propName;
@@ -61,9 +64,10 @@ public class ObjectIdReader
      * with the initial information based on standard settings for the type
      * for which serializer is being built.
      */
-    public static ObjectIdReader construct(JavaType idType, PropertyName propName,
-            ObjectIdGenerator<?> generator, JsonDeserializer<?> deser,
-            SettableBeanProperty idProp, ObjectIdResolver resolver)
+    public static ObjectIdReader construct(@Initialized JavaType idType, @Initialized PropertyName propName,
+            @Initialized
+            ObjectIdGenerator<?> generator, @Initialized JsonDeserializer<?> deser,
+            @Initialized @Nullable SettableBeanProperty idProp, @Initialized ObjectIdResolver resolver)
     {
         return new ObjectIdReader(idType, propName, generator, deser, idProp, resolver);
     }
@@ -108,7 +112,7 @@ public class ObjectIdReader
      * 
      * @since 2.5
      */
-    public boolean isValidReferencePropertyName(String name, JsonParser parser) {
+    public boolean isValidReferencePropertyName(@Initialized String name, @Initialized JsonParser parser) {
         return generator.isValidReferencePropertyName(name, parser);
     }
     
@@ -118,7 +122,7 @@ public class ObjectIdReader
      * 
      * @since 2.3
      */
-    public Object readObjectReference(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public Object readObjectReference(@Initialized JsonParser jp, @Initialized DeserializationContext ctxt) throws IOException {
         return _deserializer.deserialize(jp, ctxt);
     }
 }

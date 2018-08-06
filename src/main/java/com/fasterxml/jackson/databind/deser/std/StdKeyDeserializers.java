@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -28,24 +29,27 @@ import com.fasterxml.jackson.databind.util.EnumResolver;
 public class StdKeyDeserializers
     implements KeyDeserializers, java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
     
-    public static KeyDeserializer constructEnumKeyDeserializer(EnumResolver enumResolver) {
+    public static KeyDeserializer constructEnumKeyDeserializer(@Initialized EnumResolver enumResolver) {
         return new StdKeyDeserializer.EnumKD(enumResolver, null);
     }
 
-    public static KeyDeserializer constructEnumKeyDeserializer(EnumResolver enumResolver,
+    public static KeyDeserializer constructEnumKeyDeserializer(@Initialized EnumResolver enumResolver,
+            @Initialized
             AnnotatedMethod factory) {
         return new StdKeyDeserializer.EnumKD(enumResolver, factory);
     }
     
-    public static KeyDeserializer constructDelegatingKeyDeserializer(DeserializationConfig config,
-            JavaType type, JsonDeserializer<?> deser)
+    public static KeyDeserializer constructDelegatingKeyDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            JavaType type, @Initialized JsonDeserializer<?> deser)
     {
         return new StdKeyDeserializer.DelegatingKD(type.getRawClass(), deser);
     }
     
-    public static KeyDeserializer findStringBasedKeyDeserializer(DeserializationConfig config,
+    public static KeyDeserializer findStringBasedKeyDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
             JavaType type)
     {
         /* We don't need full deserialization information, just need to
@@ -81,8 +85,9 @@ public class StdKeyDeserializers
      */
     
     @Override
-    public KeyDeserializer findKeyDeserializer(JavaType type,
-            DeserializationConfig config, BeanDescription beanDesc) throws JsonMappingException
+    public KeyDeserializer findKeyDeserializer(@Initialized StdKeyDeserializers this, @Initialized JavaType type,
+            @Initialized
+            DeserializationConfig config, @Initialized BeanDescription beanDesc) throws JsonMappingException
     {
         Class<?> raw = type.getRawClass();
         // 23-Apr-2013, tatu: Map primitive types, just in case one was given

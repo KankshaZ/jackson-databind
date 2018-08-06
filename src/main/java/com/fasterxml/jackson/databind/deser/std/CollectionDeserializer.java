@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -29,30 +31,30 @@ public class CollectionDeserializer
     extends ContainerDeserializerBase<Collection<Object>>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = -1L; // since 2.5
+    private static final @Initialized long serialVersionUID = -1L; // since 2.5
 
     // // Configuration
 
     /**
      * Value deserializer.
      */
-    protected final JsonDeserializer<Object> _valueDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /**
      * If element instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     // // Instance construction settings:
 
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Deserializer that is used iff delegate-based creator is
      * to be used for deserializing from JSON Object.
      */
-    protected final JsonDeserializer<Object> _delegateDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _delegateDeserializer;
 
     // NOTE: no PropertyBasedCreator, as JSON Arrays have no properties
 
@@ -66,9 +68,11 @@ public class CollectionDeserializer
      * Constructor for context-free instances, where we do not yet know
      * which property is using this deserializer.
      */
-    public CollectionDeserializer(JavaType collectionType,
+    public CollectionDeserializer(@Initialized JavaType collectionType,
+            @Initialized
             JsonDeserializer<Object> valueDeser,
-            TypeDeserializer valueTypeDeser, ValueInstantiator valueInstantiator)
+            @Initialized
+            TypeDeserializer valueTypeDeser, @Initialized ValueInstantiator valueInstantiator)
     {
         this(collectionType, valueDeser, valueTypeDeser, valueInstantiator, null, null, null);
     }
@@ -78,10 +82,14 @@ public class CollectionDeserializer
      *
      * @since 2.9
      */
-    protected CollectionDeserializer(JavaType collectionType,
-            JsonDeserializer<Object> valueDeser, TypeDeserializer valueTypeDeser,
-            ValueInstantiator valueInstantiator, JsonDeserializer<Object> delegateDeser,
-            NullValueProvider nuller, Boolean unwrapSingle)
+    protected CollectionDeserializer(@Initialized JavaType collectionType,
+            @Initialized
+            JsonDeserializer<Object> valueDeser, @Initialized TypeDeserializer valueTypeDeser,
+            @Initialized
+            ValueInstantiator valueInstantiator, @Initialized @Nullable JsonDeserializer<Object> delegateDeser,
+            @Initialized
+            @Nullable
+            NullValueProvider nuller, @Initialized @Nullable Boolean unwrapSingle)
     {
         super(collectionType, nuller, unwrapSingle);
         _valueDeserializer = valueDeser;
@@ -109,9 +117,11 @@ public class CollectionDeserializer
      * @since 2.9
      */
     @SuppressWarnings("unchecked")
-    protected CollectionDeserializer withResolved(JsonDeserializer<?> dd,
-            JsonDeserializer<?> vd, TypeDeserializer vtd,
-            NullValueProvider nuller, Boolean unwrapSingle)
+    protected CollectionDeserializer withResolved(@Initialized @Nullable JsonDeserializer<?> dd,
+            @Initialized
+            JsonDeserializer<?> vd, @Initialized TypeDeserializer vtd,
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
 //if (true) throw new Error();
         return new CollectionDeserializer(_containerType,
@@ -122,7 +132,7 @@ public class CollectionDeserializer
 
     // Important: do NOT cache if polymorphic values
     @Override // since 2.5
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized CollectionDeserializer this) {
         // 26-Mar-2015, tatu: As per [databind#735], need to be careful
         return (_valueDeserializer == null)
                 && (_valueTypeDeserializer == null)
@@ -142,7 +152,8 @@ public class CollectionDeserializer
      * for.
      */
     @Override
-    public CollectionDeserializer createContextual(DeserializationContext ctxt,
+    public CollectionDeserializer createContextual(@Initialized CollectionDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         // May need to resolve types for delegate-based creators:
@@ -209,12 +220,12 @@ _containerType,
      */
 
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized CollectionDeserializer this) {
         return _valueDeserializer;
     }
 
     @Override
-    public ValueInstantiator getValueInstantiator() {
+    public ValueInstantiator getValueInstantiator(@Initialized CollectionDeserializer this) {
         return _valueInstantiator;
     }
 
@@ -226,7 +237,7 @@ _containerType,
 
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<Object> deserialize(JsonParser p, DeserializationContext ctxt)
+    public Collection<Object> deserialize(@Initialized CollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_delegateDeserializer != null) {
@@ -249,14 +260,15 @@ _containerType,
      * @since 2.9
      */
     @SuppressWarnings("unchecked")
-    protected Collection<Object> createDefaultInstance(DeserializationContext ctxt)
+    protected Collection<Object> createDefaultInstance(@Initialized DeserializationContext ctxt)
         throws IOException
     {
         return (Collection<Object>) _valueInstantiator.createUsingDefault(ctxt);
     }
     
     @Override
-    public Collection<Object> deserialize(JsonParser p, DeserializationContext ctxt,
+    public Collection<Object> deserialize(@Initialized CollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<Object> result)
         throws IOException
     {
@@ -306,7 +318,8 @@ _containerType,
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized CollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -320,7 +333,8 @@ _containerType,
      * array, depending on configuration.
      */
     @SuppressWarnings("unchecked")
-    protected final Collection<Object> handleNonArray(JsonParser p, DeserializationContext ctxt,
+    protected final Collection<Object> handleNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<Object> result)
         throws IOException
     {
@@ -357,7 +371,8 @@ _containerType,
         return result;
     }
 
-    protected Collection<Object> _deserializeWithObjectId(JsonParser p, DeserializationContext ctxt,
+    protected Collection<Object> _deserializeWithObjectId(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<Object> result)
         throws IOException
     {
@@ -407,20 +422,20 @@ _containerType,
      * collections being deserialized.
      */
     public static class CollectionReferringAccumulator {
-        private final Class<?> _elementType;
-        private final Collection<Object> _result;
+        private final @Initialized Class<?> _elementType;
+        private final @Initialized Collection<Object> _result;
 
         /**
          * A list of {@link CollectionReferring} to maintain ordering.
          */
-        private List<CollectionReferring> _accumulator = new ArrayList<CollectionReferring>();
+        private @Initialized List<CollectionReferring> _accumulator = new ArrayList<CollectionReferring>();
 
-        public CollectionReferringAccumulator(Class<?> elementType, Collection<Object> result) {
+        public CollectionReferringAccumulator(@Initialized Class<?> elementType, @Initialized Collection<Object> result) {
             _elementType = elementType;
             _result = result;
         }
 
-        public void add(Object value)
+        public void add(@Initialized Object value)
         {
             if (_accumulator.isEmpty()) {
                 _result.add(value);
@@ -430,14 +445,14 @@ _containerType,
             }
         }
 
-        public Referring handleUnresolvedReference(UnresolvedForwardReference reference)
+        public Referring handleUnresolvedReference(@Initialized UnresolvedForwardReference reference)
         {
             CollectionReferring id = new CollectionReferring(this, reference, _elementType);
             _accumulator.add(id);
             return id;
         }
 
-        public void resolveForwardReference(Object id, Object value) throws IOException
+        public void resolveForwardReference(@Initialized Object id, @Initialized Object value) throws IOException
         {
             Iterator<CollectionReferring> iterator = _accumulator.iterator();
             // Resolve ordering after resolution of an id. This mean either:
@@ -466,18 +481,19 @@ _containerType,
      * {@link #next}.
      */
     private final static class CollectionReferring extends Referring {
-        private final CollectionReferringAccumulator _parent;
-        public final List<Object> next = new ArrayList<Object>();
+        private final @Initialized CollectionReferringAccumulator _parent;
+        public final @Initialized List<Object> next = new ArrayList<Object>();
         
-        CollectionReferring(CollectionReferringAccumulator parent,
-                UnresolvedForwardReference reference, Class<?> contentType)
+        CollectionReferring(@Initialized CollectionReferringAccumulator parent,
+                @Initialized
+                UnresolvedForwardReference reference, @Initialized Class<?> contentType)
         {
             super(reference, contentType);
             _parent = parent;
         }
         
         @Override
-        public void handleResolvedForwardReference(Object id, Object value) throws IOException {
+        public void handleResolvedForwardReference(CollectionDeserializer.@Initialized CollectionReferring this, @Initialized Object id, @Initialized Object value) throws IOException {
             _parent.resolveForwardReference(id, value);
         }
     }

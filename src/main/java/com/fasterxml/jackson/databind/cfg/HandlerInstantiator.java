@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdResolver;
 import com.fasterxml.jackson.databind.*;
@@ -89,8 +91,9 @@ public abstract class HandlerInstantiator
      * 
      * @return TypeResolverBuilder instance to use
      */
-    public abstract TypeResolverBuilder<?> typeResolverBuilderInstance(MapperConfig<?> config,
-            Annotated annotated, Class<?> builderClass);
+    public abstract TypeResolverBuilder<?> typeResolverBuilderInstance(@Initialized MapperConfig<?> config,
+            @Initialized
+            Annotated annotated, @Initialized Class<?> builderClass);
 
     /**
      * Method called to get an instance of TypeIdResolver of specified type.
@@ -104,13 +107,14 @@ public abstract class HandlerInstantiator
      * 
      * @return TypeResolverBuilder instance to use
      */
-    public abstract TypeIdResolver typeIdResolverInstance(MapperConfig<?> config,
-            Annotated annotated, Class<?> resolverClass);
+    public abstract TypeIdResolver typeIdResolverInstance(@Initialized MapperConfig<?> config,
+            @Initialized
+            Annotated annotated, @Initialized Class<?> resolverClass);
 
     /**
      * Method called to construct an instance of ValueInstantiator of specified type.
      */
-    public ValueInstantiator valueInstantiatorInstance(MapperConfig<?> config,
+    public @Nullable ValueInstantiator valueInstantiatorInstance(MapperConfig<?> config,
             Annotated annotated, Class<?> resolverClass) {
         return null;
     }
@@ -121,12 +125,12 @@ public abstract class HandlerInstantiator
      * 
      * @since 2.0
      */
-    public ObjectIdGenerator<?> objectIdGeneratorInstance(MapperConfig<?> config,
+    public @Nullable ObjectIdGenerator<?> objectIdGeneratorInstance(MapperConfig<?> config,
             Annotated annotated, Class<?> implClass) {
         return null;
     }
 
-    public ObjectIdResolver resolverIdGeneratorInstance(MapperConfig<?> config, Annotated annotated, Class<?> implClass) {
+    public @Nullable ObjectIdResolver resolverIdGeneratorInstance(MapperConfig<?> config, Annotated annotated, Class<?> implClass) {
         return null;
     }
 
@@ -136,7 +140,7 @@ public abstract class HandlerInstantiator
      * 
      * @since 2.1
      */
-    public PropertyNamingStrategy namingStrategyInstance(MapperConfig<?> config,
+    public @Nullable PropertyNamingStrategy namingStrategyInstance(MapperConfig<?> config,
             Annotated annotated, Class<?> implClass) {
         return null;
     }
@@ -146,7 +150,7 @@ public abstract class HandlerInstantiator
      * 
      * @since 2.2
      */
-    public Converter<?,?> converterInstance(MapperConfig<?> config,
+    public @Nullable Converter<?,?> converterInstance(MapperConfig<?> config,
             Annotated annotated, Class<?> implClass) {
         return null;
     }
@@ -157,7 +161,7 @@ public abstract class HandlerInstantiator
      *
      * @since 2.5
      */
-    public VirtualBeanPropertyWriter virtualPropertyWriterInstance(MapperConfig<?> config,
+    public @Nullable VirtualBeanPropertyWriter virtualPropertyWriterInstance(MapperConfig<?> config,
             Class<?> implClass) {
         return null;
     }
@@ -175,7 +179,7 @@ public abstract class HandlerInstantiator
      *
      * @since 2.9
      */
-    public Object includeFilterInstance(SerializationConfig config,
+    public @Nullable Object includeFilterInstance(SerializationConfig config,
             BeanPropertyDefinition forProperty, Class<?> filterClass) {
         return null;
     }

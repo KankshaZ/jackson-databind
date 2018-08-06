@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -28,20 +31,20 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public class CreatorProperty
     extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     /**
      * Placeholder that represents constructor parameter, when it is created
      * from actual constructor.
      * May be null when a synthetic instance is created.
      */
-    protected final AnnotatedParameter _annotated;
+    protected final @Initialized AnnotatedParameter _annotated;
 
     /**
      * Id of value to inject, if value injection should be used for this parameter
      * (in addition to, or instead of, regular deserialization).
      */
-    protected final Object _injectableValueId;
+    protected final @Initialized Object _injectableValueId;
 
     /**
      * In special cases, when implementing "updateValue", we cannot use
@@ -54,12 +57,12 @@ public class CreatorProperty
      * 
      * @since 2.3
      */
-    protected SettableBeanProperty _fallbackSetter;
+    protected @Initialized SettableBeanProperty _fallbackSetter;
 
     /**
      * @since 2.1
      */
-    protected final int _creatorIndex;
+    protected final @Initialized int _creatorIndex;
 
     /**
      * Marker flag that may have to be set during construction, to indicate that
@@ -70,7 +73,7 @@ public class CreatorProperty
      *
      * @since 2.9.4
      */
-    protected boolean _ignorable;
+    protected @Initialized boolean _ignorable;
 
     /**
      * @param name Name of the logical property
@@ -86,10 +89,16 @@ public class CreatorProperty
      * 
      * @since 2.3
      */
-    public CreatorProperty(PropertyName name, JavaType type, PropertyName wrapperName,
+    public CreatorProperty(@Initialized PropertyName name, @Initialized JavaType type, @Initialized @Nullable PropertyName wrapperName,
+            @Initialized
+            @Nullable
             TypeDeserializer typeDeser,
-            Annotations contextAnnotations, AnnotatedParameter param,
-            int index, Object injectableValueId,
+            @Initialized
+            @Nullable
+            Annotations contextAnnotations, @Initialized @Nullable AnnotatedParameter param,
+            @Initialized
+            int index, @Initialized @Nullable Object injectableValueId,
+            @Initialized
             PropertyMetadata metadata)
     {
         super(name, type, wrapperName, typeDeser, contextAnnotations, metadata);
@@ -102,7 +111,7 @@ public class CreatorProperty
     /**
      * @since 2.3
      */
-    protected CreatorProperty(CreatorProperty src, PropertyName newName) {
+    protected CreatorProperty(@Initialized CreatorProperty src, @Initialized PropertyName newName) {
         super(src, newName);
         _annotated = src._annotated;
         _injectableValueId = src._injectableValueId;
@@ -111,7 +120,8 @@ public class CreatorProperty
         _ignorable = src._ignorable;
     }
 
-    protected CreatorProperty(CreatorProperty src, JsonDeserializer<?> deser,
+    protected CreatorProperty(@Initialized CreatorProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva) {
         super(src, deser, nva);
         _annotated = src._annotated;
@@ -122,12 +132,12 @@ public class CreatorProperty
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized CreatorProperty this, @Initialized PropertyName newName) {
         return new CreatorProperty(this, newName);
     }
     
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized CreatorProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -135,12 +145,12 @@ public class CreatorProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized CreatorProperty this, @Initialized NullValueProvider nva) {
         return new CreatorProperty(this, _valueDeserializer, nva);
     }
     
     @Override
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized CreatorProperty this, @Initialized DeserializationConfig config) {
         if (_fallbackSetter != null) {
             _fallbackSetter.fixAccess(config);
         }
@@ -152,17 +162,17 @@ public class CreatorProperty
      * 
      * @since 2.6
      */
-    public void setFallbackSetter(SettableBeanProperty fallbackSetter) {
+    public void setFallbackSetter(@Initialized SettableBeanProperty fallbackSetter) {
         _fallbackSetter = fallbackSetter;
     }
 
     @Override
-    public void markAsIgnorable() {
+    public void markAsIgnorable(@Initialized CreatorProperty this) {
         _ignorable = true;
     }
 
     @Override
-    public boolean isIgnorable() {
+    public boolean isIgnorable(@Initialized CreatorProperty this) {
         return _ignorable;
     }
 
@@ -176,7 +186,7 @@ public class CreatorProperty
      * Method that can be called to locate value to be injected for this
      * property, if it is configured for this.
      */
-    public Object findInjectableValue(DeserializationContext context, Object beanInstance)
+    public Object findInjectableValue(@Initialized DeserializationContext context, @Initialized Object beanInstance)
         throws JsonMappingException
     {
         if (_injectableValueId == null) {
@@ -203,16 +213,16 @@ public class CreatorProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized CreatorProperty this, @Initialized Class<A> acls) {
         if (_annotated == null) {
             return null;
         }
         return _annotated.getAnnotation(acls);
     }
 
-    @Override public AnnotatedMember getMember() {  return _annotated; }
+    @Override public AnnotatedMember getMember(@Initialized CreatorProperty this) {  return _annotated; }
 
-    @Override public int getCreatorIndex() {
+    @Override public int getCreatorIndex(@Initialized CreatorProperty this) {
         return _creatorIndex;
     }
     
@@ -223,7 +233,8 @@ public class CreatorProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+    public void deserializeAndSet(@Initialized CreatorProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object instance) throws IOException
     {
         _verifySetter();
@@ -231,34 +242,35 @@ public class CreatorProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-            DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized CreatorProperty this, @Initialized JsonParser p,
+            @Initialized
+            DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         _verifySetter();
         return _fallbackSetter.setAndReturn(instance, deserialize(p, ctxt));
     }
     
     @Override
-    public void set(Object instance, Object value) throws IOException
+    public void set(@Initialized CreatorProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         _verifySetter();
         _fallbackSetter.set(instance, value);
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException
+    public Object setAndReturn(@Initialized CreatorProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         _verifySetter();
         return _fallbackSetter.setAndReturn(instance, value);
     }
     
     @Override
-    public Object getInjectableValueId() {
+    public Object getInjectableValueId(@Initialized CreatorProperty this) {
         return _injectableValueId;
     }
 
     @Override
-    public String toString() { return "[creator property, name '"+getName()+"'; inject id '"+_injectableValueId+"']"; }
+    public String toString(@Initialized CreatorProperty this) { return "[creator property, name '"+getName()+"'; inject id '"+_injectableValueId+"']"; }
 
     // since 2.9
     private final void _verifySetter() throws IOException {
@@ -268,7 +280,7 @@ public class CreatorProperty
     }
 
     // since 2.9
-    private void _reportMissingSetter(JsonParser p, DeserializationContext ctxt) throws IOException
+    private void _reportMissingSetter(@FBCBottom @Nullable JsonParser p, @FBCBottom @Nullable DeserializationContext ctxt) throws IOException
     {
         final String msg = "No fallback setter/field defined for creator property '"+getName()+"'";
         // Hmmmh. Should we return quietly (NOP), or error?

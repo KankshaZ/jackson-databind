@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -31,7 +33,7 @@ public class MapDeserializer
     extends ContainerDeserializerBase<Map<Object,Object>>
     implements ContextualDeserializer, ResolvableDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     // // Configuration: typing, deserializers
 
@@ -40,7 +42,7 @@ public class MapDeserializer
      * (when indicated by annotations), or resolved when
      * {@link #resolve} is called;
      */
-    protected final KeyDeserializer _keyDeserializer;
+    protected final @Initialized KeyDeserializer _keyDeserializer;
 
     /**
      * Flag set to indicate that the key type is
@@ -49,28 +51,28 @@ public class MapDeserializer
      * default Jackson key deserializer would be used.
      * If both are true, can optimize handling.
      */
-    protected boolean _standardStringKey;
+    protected @Initialized boolean _standardStringKey;
 
     /**
      * Value deserializer.
      */
-    protected final JsonDeserializer<Object> _valueDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /**
      * If value instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     // // Instance construction settings:
 
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Deserializer that is used iff delegate-based creator is
      * to be used for deserializing from JSON Object.
      */
-    protected JsonDeserializer<Object> _delegateDeserializer;
+    protected @Initialized JsonDeserializer<Object> _delegateDeserializer;
 
     /**
      * If the Map is to be instantiated using non-default constructor
@@ -78,13 +80,13 @@ public class MapDeserializer
      * that takes one or more named properties as argument(s),
      * this creator is used for instantiation.
      */
-    protected PropertyBasedCreator _propertyBasedCreator;    
+    protected @Initialized PropertyBasedCreator _propertyBasedCreator;    
 
-    protected final boolean _hasDefaultCreator;
+    protected final @Initialized boolean _hasDefaultCreator;
 
     // // Any properties to ignore if seen?
 
-    protected Set<String> _ignorableProperties;
+    protected @Initialized Set<String> _ignorableProperties;
 
     /*
     /**********************************************************
@@ -92,8 +94,10 @@ public class MapDeserializer
     /**********************************************************
      */
 
-    public MapDeserializer(JavaType mapType, ValueInstantiator valueInstantiator,
-            KeyDeserializer keyDeser, JsonDeserializer<Object> valueDeser,
+    public MapDeserializer(@Initialized JavaType mapType, @Initialized ValueInstantiator valueInstantiator,
+            @Initialized
+            KeyDeserializer keyDeser, @Initialized JsonDeserializer<Object> valueDeser,
+            @Initialized
             TypeDeserializer valueTypeDeser)
     {
         super(mapType, null, null);
@@ -127,10 +131,14 @@ public class MapDeserializer
         _standardStringKey = src._standardStringKey;
     }
 
-    protected MapDeserializer(MapDeserializer src,
-            KeyDeserializer keyDeser, JsonDeserializer<Object> valueDeser,
+    protected MapDeserializer(@Initialized MapDeserializer src,
+            @Initialized
+            KeyDeserializer keyDeser, @Initialized JsonDeserializer<Object> valueDeser,
+            @Initialized
             TypeDeserializer valueTypeDeser,
+            @Initialized
             NullValueProvider nuller,
+            @Initialized
             Set<String> ignorable)
     {
         super(src, nuller, src._unwrapSingle);
@@ -151,9 +159,12 @@ public class MapDeserializer
      * different settings. When sub-classing, MUST be overridden.
      */
     @SuppressWarnings("unchecked")
-    protected MapDeserializer withResolved(KeyDeserializer keyDeser,
-            TypeDeserializer valueTypeDeser, JsonDeserializer<?> valueDeser,
+    protected MapDeserializer withResolved(@Initialized KeyDeserializer keyDeser,
+            @Initialized
+            TypeDeserializer valueTypeDeser, @Initialized JsonDeserializer<?> valueDeser,
+            @Initialized
             NullValueProvider nuller,
+            @Initialized
             Set<String> ignorable)
     {
         
@@ -171,7 +182,7 @@ public class MapDeserializer
      * Helper method used to check whether we can just use the default key
      * deserialization, where JSON String becomes Java String.
      */
-    protected final boolean _isStdKeyDeser(JavaType mapType, KeyDeserializer keyDeser)
+    protected final boolean _isStdKeyDeser(@Initialized JavaType mapType, @Initialized KeyDeserializer keyDeser)
     {
         if (keyDeser == null) {
             return true;
@@ -190,7 +201,7 @@ public class MapDeserializer
             null : ArrayBuilders.arrayToSet(ignorable);
     }
 
-    public void setIgnorableProperties(Set<String> ignorable) {
+    public void setIgnorableProperties(@Initialized @Nullable Set<String> ignorable) {
         _ignorableProperties = (ignorable == null || ignorable.size() == 0) ?
                 null : ignorable;
     }
@@ -202,7 +213,7 @@ public class MapDeserializer
      */
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException
+    public void resolve(@Initialized MapDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException
     {
         // May need to resolve types for delegate- and/or property-based creators:
         if (_valueInstantiator.canCreateUsingDelegate()) {
@@ -240,7 +251,8 @@ public class MapDeserializer
      * when it is known for which property deserializer is needed for.
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized MapDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         KeyDeserializer keyDeser = _keyDeserializer;
@@ -295,12 +307,12 @@ public class MapDeserializer
      */
 
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized MapDeserializer this) {
         return _valueDeserializer;
     }
 
     @Override
-    public ValueInstantiator getValueInstantiator() {
+    public ValueInstantiator getValueInstantiator(@Initialized MapDeserializer this) {
         return _valueInstantiator;
     }
 
@@ -324,7 +336,7 @@ public class MapDeserializer
      * @since 2.4.4
      */
     @Override
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized MapDeserializer this) {
         // As per [databind#735], existence of value or key deserializer (only passed
         // if annotated to use non-standard one) should also prevent caching.
         return (_valueDeserializer == null)
@@ -335,7 +347,7 @@ public class MapDeserializer
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<Object,Object> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Map<Object,Object> deserialize(@Initialized MapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         if (_propertyBasedCreator != null) {
             return _deserializeUsingCreator(p, ctxt);
@@ -370,7 +382,8 @@ public class MapDeserializer
 
     @SuppressWarnings("unchecked")
     @Override
-    public Map<Object,Object> deserialize(JsonParser p, DeserializationContext ctxt,
+    public Map<Object,Object> deserialize(@Initialized MapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Map<Object,Object> result)
         throws IOException
     {
@@ -392,7 +405,8 @@ public class MapDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized MapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -409,7 +423,7 @@ public class MapDeserializer
     @SuppressWarnings("unchecked")
     public final Class<?> getMapClass() { return (Class<Map<Object,Object>>) _containerType.getRawClass(); }
 
-    @Override public JavaType getValueType() { return _containerType; }
+    @Override public JavaType getValueType(@Initialized MapDeserializer this) { return _containerType; }
 
     /*
     /**********************************************************
@@ -417,7 +431,8 @@ public class MapDeserializer
     /**********************************************************
      */
 
-    protected final void _readAndBind(JsonParser p, DeserializationContext ctxt,
+    protected final void _readAndBind(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Map<Object,Object> result) throws IOException
     {
         final KeyDeserializer keyDes = _keyDeserializer;
@@ -484,7 +499,8 @@ public class MapDeserializer
      * {@link java.lang.String}s, and there is no custom deserialized
      * specified.
      */
-    protected final void _readAndBindStringKeyMap(JsonParser p, DeserializationContext ctxt,
+    protected final void _readAndBindStringKeyMap(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Map<Object,Object> result) throws IOException
     {
         final JsonDeserializer<Object> valueDes = _valueDeserializer;
@@ -543,7 +559,7 @@ public class MapDeserializer
     }
     
     @SuppressWarnings("unchecked") 
-    public Map<Object,Object> _deserializeUsingCreator(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Map<Object,Object> _deserializeUsingCreator(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         final PropertyBasedCreator creator = _propertyBasedCreator;
         // null -> no ObjectIdReader for Maps (yet?)
@@ -624,7 +640,8 @@ public class MapDeserializer
     /**
      * @since 2.9
      */
-    protected final void _readAndUpdate(JsonParser p, DeserializationContext ctxt,
+    protected final void _readAndUpdate(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Map<Object,Object> result) throws IOException
     {
         final KeyDeserializer keyDes = _keyDeserializer;
@@ -690,7 +707,8 @@ public class MapDeserializer
      *
      * @since 2.9
      */
-    protected final void _readAndUpdateStringKeyMap(JsonParser p, DeserializationContext ctxt,
+    protected final void _readAndUpdateStringKeyMap(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Map<Object,Object> result) throws IOException
     {
         final JsonDeserializer<Object> valueDes = _valueDeserializer;
@@ -752,9 +770,12 @@ public class MapDeserializer
     /**********************************************************
      */
 
-    private void handleUnresolvedReference(DeserializationContext ctxt,
+    private void handleUnresolvedReference(@Initialized DeserializationContext ctxt,
+            @Initialized
+            @Nullable
             MapReferringAccumulator accumulator,
-            Object key, UnresolvedForwardReference reference)
+            @Initialized
+            Object key, @Initialized UnresolvedForwardReference reference)
         throws JsonMappingException
     {
         if (accumulator == null) {
@@ -766,19 +787,19 @@ public class MapDeserializer
     }
 
     private final static class MapReferringAccumulator {
-        private final Class<?> _valueType;
-        private Map<Object,Object> _result;
+        private final @Initialized Class<?> _valueType;
+        private @Initialized Map<Object,Object> _result;
         /**
          * A list of {@link MapReferring} to maintain ordering.
          */
-        private List<MapReferring> _accumulator = new ArrayList<MapReferring>();
+        private @Initialized List<MapReferring> _accumulator = new ArrayList<MapReferring>();
 
-        public MapReferringAccumulator(Class<?> valueType, Map<Object, Object> result) {
+        public MapReferringAccumulator(@Initialized Class<?> valueType, @Initialized Map<Object, Object> result) {
             _valueType = valueType;
             _result = result;
         }
 
-        public void put(Object key, Object value)
+        public void put(@Initialized Object key, @Initialized Object value)
         {
             if (_accumulator.isEmpty()) {
                 _result.put(key, value);
@@ -788,14 +809,14 @@ public class MapDeserializer
             }
         }
 
-        public Referring handleUnresolvedReference(UnresolvedForwardReference reference, Object key)
+        public Referring handleUnresolvedReference(@Initialized UnresolvedForwardReference reference, @Initialized Object key)
         {
             MapReferring id = new MapReferring(this, reference, _valueType, key);
             _accumulator.add(id);
             return id;
         }
 
-        public void resolveForwardReference(Object id, Object value) throws IOException
+        public void resolveForwardReference(@Initialized Object id, @Initialized Object value) throws IOException
         {
             Iterator<MapReferring> iterator = _accumulator.iterator();
             // Resolve ordering after resolution of an id. This means either:
@@ -824,13 +845,14 @@ public class MapDeserializer
      * {@link #next}.
      */
     static class MapReferring extends Referring {
-        private final MapReferringAccumulator _parent;
+        private final @Initialized MapReferringAccumulator _parent;
 
-        public final Map<Object, Object> next = new LinkedHashMap<Object, Object>();
-        public final Object key;
+        public final @Initialized Map<Object, Object> next = new LinkedHashMap<Object, Object>();
+        public final @Initialized Object key;
         
-        MapReferring(MapReferringAccumulator parent, UnresolvedForwardReference ref,
-                Class<?> valueType, Object key)
+        MapReferring(@Initialized MapReferringAccumulator parent, @Initialized UnresolvedForwardReference ref,
+                @Initialized
+                Class<?> valueType, @Initialized Object key)
         {
             super(ref, valueType);
             _parent = parent;
@@ -838,7 +860,7 @@ public class MapDeserializer
         }
 
         @Override
-        public void handleResolvedForwardReference(Object id, Object value) throws IOException {
+        public void handleResolvedForwardReference(MapDeserializer.@Initialized MapReferring this, @Initialized Object id, @Initialized Object value) throws IOException {
             _parent.resolveForwardReference(id, value);
         }
     }

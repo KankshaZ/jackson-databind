@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -23,7 +25,7 @@ public final class StringCollectionDeserializer
     extends ContainerDeserializerBase<Collection<String>>
     implements ContextualDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     // // Configuration
 
@@ -31,20 +33,20 @@ public final class StringCollectionDeserializer
      * Value deserializer to use, if NOT the standard one
      * (if it is, will be null).
      */
-    protected final JsonDeserializer<String> _valueDeserializer;
+    protected final @Initialized JsonDeserializer<String> _valueDeserializer;
 
     // // Instance construction settings:
     
     /**
      * Instantiator used in case custom handling is needed for creation.
      */
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Deserializer that is used iff delegate-based creator is
      * to be used for deserializing from JSON Object.
      */
-    protected final JsonDeserializer<Object> _delegateDeserializer;
+    protected final @Initialized JsonDeserializer<Object> _delegateDeserializer;
 
     // NOTE: no PropertyBasedCreator, as JSON Arrays have no properties
 
@@ -54,17 +56,21 @@ public final class StringCollectionDeserializer
     /**********************************************************
      */
     
-    public StringCollectionDeserializer(JavaType collectionType,
-            JsonDeserializer<?> valueDeser, ValueInstantiator valueInstantiator)
+    public StringCollectionDeserializer(@Initialized JavaType collectionType,
+            @Initialized
+            JsonDeserializer<?> valueDeser, @Initialized ValueInstantiator valueInstantiator)
     {
         this(collectionType, valueInstantiator, null, valueDeser, valueDeser, null);
     }
 
     @SuppressWarnings("unchecked")
-    protected StringCollectionDeserializer(JavaType collectionType,
-            ValueInstantiator valueInstantiator, JsonDeserializer<?> delegateDeser,
+    protected StringCollectionDeserializer(@Initialized JavaType collectionType,
+            @Initialized
+            ValueInstantiator valueInstantiator, @Initialized @Nullable JsonDeserializer<?> delegateDeser,
+            @Initialized
             JsonDeserializer<?> valueDeser,
-            NullValueProvider nuller, Boolean unwrapSingle)
+            @Initialized
+            NullValueProvider nuller, @Initialized @Nullable Boolean unwrapSingle)
     {
         super(collectionType, nuller, unwrapSingle);
         _valueDeserializer = (JsonDeserializer<String>) valueDeser;
@@ -72,9 +78,12 @@ public final class StringCollectionDeserializer
         _delegateDeserializer = (JsonDeserializer<Object>) delegateDeser;
     }
 
-    protected StringCollectionDeserializer withResolved(JsonDeserializer<?> delegateDeser,
+    protected StringCollectionDeserializer withResolved(@Initialized @Nullable JsonDeserializer<?> delegateDeser,
+            @Initialized
+            @Nullable
             JsonDeserializer<?> valueDeser,
-            NullValueProvider nuller, Boolean unwrapSingle)
+            @Initialized
+            NullValueProvider nuller, @Initialized Boolean unwrapSingle)
     {
         if ((_unwrapSingle == unwrapSingle) && (_nullProvider == nuller)
                 && (_valueDeserializer == valueDeser) && (_delegateDeserializer == delegateDeser)) {
@@ -85,7 +94,7 @@ public final class StringCollectionDeserializer
     }
 
     @Override // since 2.5
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized StringCollectionDeserializer this) {
         // 26-Mar-2015, tatu: Important: prevent caching if custom deserializers via annotations
         //    are involved
         return (_valueDeserializer == null) && (_delegateDeserializer == null);
@@ -97,7 +106,8 @@ public final class StringCollectionDeserializer
     /**********************************************************
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+    public JsonDeserializer<?> createContextual(@Initialized StringCollectionDeserializer this, @Initialized DeserializationContext ctxt,
+            @Initialized
             BeanProperty property) throws JsonMappingException
     {
         // May need to resolve types for delegate-based creators:
@@ -140,13 +150,13 @@ public final class StringCollectionDeserializer
 
     @SuppressWarnings("unchecked")
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized StringCollectionDeserializer this) {
         JsonDeserializer<?> deser = _valueDeserializer;
         return (JsonDeserializer<Object>) deser;
     }
 
     @Override
-    public ValueInstantiator getValueInstantiator() {
+    public ValueInstantiator getValueInstantiator(@Initialized StringCollectionDeserializer this) {
         return _valueInstantiator;
     }
 
@@ -158,7 +168,7 @@ public final class StringCollectionDeserializer
     
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<String> deserialize(JsonParser p, DeserializationContext ctxt)
+    public Collection<String> deserialize(@Initialized StringCollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_delegateDeserializer != null) {
@@ -170,7 +180,8 @@ public final class StringCollectionDeserializer
     }
 
     @Override
-    public Collection<String> deserialize(JsonParser p, DeserializationContext ctxt,
+    public Collection<String> deserialize(@Initialized StringCollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<String> result)
         throws IOException
     {
@@ -210,8 +221,9 @@ public final class StringCollectionDeserializer
         return result;
     }
     
-    private Collection<String> deserializeUsingCustom(JsonParser p, DeserializationContext ctxt,
-            Collection<String> result, final JsonDeserializer<String> deser) throws IOException
+    private Collection<String> deserializeUsingCustom(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
+            Collection<String> result, final @Initialized JsonDeserializer<String> deser) throws IOException
     {
         while (true) {
             /* 30-Dec-2014, tatu: This may look odd, but let's actually call method
@@ -243,7 +255,8 @@ public final class StringCollectionDeserializer
     }
     
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized StringCollectionDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer) throws IOException {
         // In future could check current token... for now this should be enough:
         return typeDeserializer.deserializeTypedFromArray(p, ctxt);
@@ -255,7 +268,8 @@ public final class StringCollectionDeserializer
      * array, depending on configuration.
      */
     @SuppressWarnings("unchecked")
-    private final Collection<String> handleNonArray(JsonParser p, DeserializationContext ctxt,
+    private final Collection<String> handleNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Collection<String> result) throws IOException
     {
         // implicit arrays from single values?

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
@@ -24,12 +25,12 @@ public class BeanDeserializerBuilder
     /**********************************************************
      */
 
-    final protected DeserializationConfig _config;
+    final protected @Initialized DeserializationConfig _config;
 
     /**
      * @since 2.9
      */
-    final protected DeserializationContext _context;
+    final protected @Initialized DeserializationContext _context;
 
     /*
     /**********************************************************
@@ -40,7 +41,7 @@ public class BeanDeserializerBuilder
     /**
      * Introspected information about POJO for deserializer to handle
      */
-    final protected BeanDescription _beanDesc;
+    final protected @Initialized BeanDescription _beanDesc;
 
     /*
     /**********************************************************
@@ -51,59 +52,59 @@ public class BeanDeserializerBuilder
     /**
      * Properties to deserialize collected so far.
      */
-    final protected Map<String, SettableBeanProperty> _properties
+    final protected @Initialized Map<String, SettableBeanProperty> _properties
         = new LinkedHashMap<String, SettableBeanProperty>();
 
     /**
      * Value injectors for deserialization
      */
-    protected List<ValueInjector> _injectables;
+    protected @Initialized List<ValueInjector> _injectables;
 
     /**
      * Back-reference properties this bean contains (if any)
      */
-    protected HashMap<String, SettableBeanProperty> _backRefProperties;
+    protected @Initialized HashMap<String, SettableBeanProperty> _backRefProperties;
 
     /**
      * Set of names of properties that are recognized but are to be ignored for deserialization
      * purposes (meaning no exception is thrown, value is just skipped).
      */
-    protected HashSet<String> _ignorableProps;
+    protected @Initialized HashSet<String> _ignorableProps;
 
     /**
      * Object that will handle value instantiation for the bean type.
      */
-    protected ValueInstantiator _valueInstantiator;
+    protected @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Handler for Object Id values, if Object Ids are enabled for the
      * bean type.
      */
-    protected ObjectIdReader _objectIdReader;
+    protected @Initialized ObjectIdReader _objectIdReader;
 
     /**
      * Fallback setter used for handling any properties that are not
      * mapped to regular setters. If setter is not null, it will be
      * called once for each such property.
      */
-    protected SettableAnyProperty _anySetter;
+    protected @Initialized SettableAnyProperty _anySetter;
 
     /**
      * Flag that can be set to ignore and skip unknown properties.
      * If set, will not throw an exception for unknown properties.
      */
-    protected boolean _ignoreAllUnknown;
+    protected @Initialized boolean _ignoreAllUnknown;
 
     /**
      * When creating Builder-based deserializers, this indicates
      * method to call on builder to finalize value.
      */
-    protected AnnotatedMethod _buildMethod;
+    protected @Initialized AnnotatedMethod _buildMethod;
 
     /**
      * In addition, Builder may have additional configuration
      */
-    protected JsonPOJOBuilder.Value _builderConfig;
+    protected JsonPOJOBuilder.@Initialized Value _builderConfig;
 
     /*
     /**********************************************************
@@ -111,7 +112,8 @@ public class BeanDeserializerBuilder
     /**********************************************************
      */
 
-    public BeanDeserializerBuilder(BeanDescription beanDesc,
+    public BeanDeserializerBuilder(@Initialized BeanDescription beanDesc,
+            @Initialized
             DeserializationContext ctxt)
     { 
         _beanDesc = beanDesc;
@@ -145,12 +147,12 @@ public class BeanDeserializerBuilder
         _builderConfig = src._builderConfig;
     }
 
-    private static HashMap<String, SettableBeanProperty> _copy(HashMap<String, SettableBeanProperty> src) {
+    private static HashMap<String, SettableBeanProperty> _copy(@Initialized HashMap<String, SettableBeanProperty> src) {
         return (src == null) ? null
                 : new HashMap<String, SettableBeanProperty>(src);
     }
 
-    private static <T> List<T> _copy(List<T> src) {
+    private static <T> List<T> _copy(@Initialized List<T> src) {
         return (src == null) ? null : new ArrayList<T>(src);
     }
 
@@ -163,7 +165,7 @@ public class BeanDeserializerBuilder
     /**
      * Method for adding a new property or replacing a property.
      */
-    public void addOrReplaceProperty(SettableBeanProperty prop, boolean allowOverride) {
+    public void addOrReplaceProperty(@Initialized SettableBeanProperty prop, @Initialized boolean allowOverride) {
         _properties.put(prop.getName(), prop);
     }
 
@@ -172,7 +174,7 @@ public class BeanDeserializerBuilder
      * unexpected override; if one is found will throw a
      * {@link IllegalArgumentException}.
      */
-    public void addProperty(SettableBeanProperty prop)
+    public void addProperty(@Initialized SettableBeanProperty prop)
     {
         SettableBeanProperty old =  _properties.put(prop.getName(), prop);
         if (old != null && old != prop) { // should never occur...
@@ -185,7 +187,7 @@ public class BeanDeserializerBuilder
      * reference that "points back" to object that has forward reference to
      * currently built bean.
      */
-    public void  addBackReferenceProperty(String referenceName, SettableBeanProperty prop)
+    public void  addBackReferenceProperty(@Initialized String referenceName, @Initialized SettableBeanProperty prop)
     {
         if (_backRefProperties == null) {
             _backRefProperties = new HashMap<String, SettableBeanProperty>(4);
@@ -206,8 +208,10 @@ public class BeanDeserializerBuilder
         */
     }
 
-    public void addInjectable(PropertyName propName, JavaType propType,
-            Annotations contextAnnotations, AnnotatedMember member,
+    public void addInjectable(@Initialized PropertyName propName, @Initialized JavaType propType,
+            @Initialized
+            Annotations contextAnnotations, @Initialized AnnotatedMember member,
+            @Initialized
             Object valueId)
     {
         if (_injectables == null) {
@@ -225,7 +229,7 @@ public class BeanDeserializerBuilder
      * Method that will add property name as one of properties that can
      * be ignored if not recognized.
      */
-    public void addIgnorable(String propName)
+    public void addIgnorable(@Initialized String propName)
     {
         if (_ignorableProps == null) {
             _ignorableProps = new HashSet<String>();
@@ -243,12 +247,12 @@ public class BeanDeserializerBuilder
      * For now, however, we just have to ensure that we don't try to resolve
      * types that masked setter/field has (see [JACKSON-700] for details).
      */
-    public void addCreatorProperty(SettableBeanProperty prop)
+    public void addCreatorProperty(@Initialized SettableBeanProperty prop)
     {
         addProperty(prop);
     }
 
-    public void setAnySetter(SettableAnyProperty s)
+    public void setAnySetter(@Initialized SettableAnyProperty s)
     {
         if (_anySetter != null && s != null) {
             throw new IllegalStateException("_anySetter already set to non-null");
@@ -256,19 +260,19 @@ public class BeanDeserializerBuilder
         _anySetter = s;
     }
 
-    public void setIgnoreUnknownProperties(boolean ignore) {
+    public void setIgnoreUnknownProperties(@Initialized boolean ignore) {
         _ignoreAllUnknown = ignore;
     }
 
-    public void setValueInstantiator(ValueInstantiator inst) {
+    public void setValueInstantiator(@Initialized ValueInstantiator inst) {
         _valueInstantiator = inst;
     }
 
-    public void setObjectIdReader(ObjectIdReader r) {
+    public void setObjectIdReader(@Initialized ObjectIdReader r) {
         _objectIdReader = r;
     }
 
-    public void setPOJOBuilder(AnnotatedMethod buildMethod, JsonPOJOBuilder.Value config) {
+    public void setPOJOBuilder(@Initialized AnnotatedMethod buildMethod, JsonPOJOBuilder.@Initialized Value config) {
         _buildMethod = buildMethod;
         _builderConfig = config;
     }
@@ -291,7 +295,7 @@ public class BeanDeserializerBuilder
         return _properties.values().iterator();
     }
 
-    public SettableBeanProperty findProperty(PropertyName propertyName) {
+    public SettableBeanProperty findProperty(@Initialized PropertyName propertyName) {
         return _properties.get(propertyName.getSimpleName());
     }
 
@@ -330,7 +334,7 @@ public class BeanDeserializerBuilder
     /**
      * @since 2.9.4
      */
-    public boolean hasIgnorable(String name) {
+    public boolean hasIgnorable(@Initialized String name) {
         return (_ignorableProps != null) && _ignorableProps.contains(name);
     }
 
@@ -396,7 +400,7 @@ public class BeanDeserializerBuilder
      * Method for constructing a specialized deserializer that uses
      * additional external Builder object during data binding.
      */
-    public JsonDeserializer<?> buildBuilderBased(JavaType valueType, String expBuildMethodName)
+    public JsonDeserializer<?> buildBuilderBased(@Initialized JavaType valueType, @Initialized String expBuildMethodName)
         throws JsonMappingException
     {
         // First: validation; must have build method that returns compatible type
@@ -460,7 +464,7 @@ public class BeanDeserializerBuilder
     /**********************************************************
      */
 
-    protected void _fixAccess(Collection<SettableBeanProperty> mainProps)
+    protected void _fixAccess(@Initialized Collection<SettableBeanProperty> mainProps)
     {
         /* 07-Sep-2016, tatu: Ideally we should be able to avoid forcing
          *   access to properties that are likely ignored, but due to
@@ -500,7 +504,7 @@ public class BeanDeserializerBuilder
         }
     }
 
-    protected Map<String,List<PropertyName>> _collectAliases(Collection<SettableBeanProperty> props)
+    protected Map<String,List<PropertyName>> _collectAliases(@Initialized Collection<SettableBeanProperty> props)
     {
         Map<String,List<PropertyName>> mapping = null;
         AnnotationIntrospector intr = _config.getAnnotationIntrospector();

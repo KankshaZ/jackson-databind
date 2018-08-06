@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.BitSet;
 
@@ -26,10 +27,10 @@ public class PropertyValueBuffer
     /**********************************************************
      */
 
-    protected final JsonParser _parser;
-    protected final DeserializationContext _context;
+    protected final @Initialized JsonParser _parser;
+    protected final @Initialized DeserializationContext _context;
 
-    protected final ObjectIdReader _objectIdReader;
+    protected final @Initialized ObjectIdReader _objectIdReader;
     
     /*
     /**********************************************************
@@ -41,40 +42,40 @@ public class PropertyValueBuffer
      * Buffer used for storing creator parameters for constructing
      * instance.
      */
-    protected final Object[] _creatorParameters;
+    protected final Object @Initialized [] _creatorParameters;
     
     /**
      * Number of creator parameters for which we have not yet received
      * values.
      */
-    protected int _paramsNeeded;
+    protected @Initialized int _paramsNeeded;
 
     /**
      * Bitflag used to track parameters found from incoming data
      * when number of parameters is
      * less than 32 (fits in int).
      */
-    protected int _paramsSeen;
+    protected @Initialized int _paramsSeen;
 
     /**
      * Bitflag used to track parameters found from incoming data
      * when number of parameters is
      * 32 or higher.
      */
-    protected final BitSet _paramsSeenBig;
+    protected final @Initialized BitSet _paramsSeenBig;
 
     /**
      * If we get non-creator parameters before or between
      * creator parameters, those need to be buffered. Buffer
      * is just a simple linked list
      */
-    protected PropertyValue _buffered;
+    protected @Initialized PropertyValue _buffered;
 
     /**
      * In case there is an Object Id property to handle, this is the value
      * we have for it.
      */
-    protected Object _idValue;
+    protected @Initialized Object _idValue;
 
     /*
     /**********************************************************
@@ -82,7 +83,8 @@ public class PropertyValueBuffer
     /**********************************************************
      */
     
-    public PropertyValueBuffer(JsonParser p, DeserializationContext ctxt, int paramCount,
+    public PropertyValueBuffer(@Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized int paramCount,
+            @Initialized
             ObjectIdReader oir)
     {
         _parser = p;
@@ -103,7 +105,7 @@ public class PropertyValueBuffer
      *
      * @since 2.8
      */
-    public final boolean hasParameter(SettableBeanProperty prop)
+    public final boolean hasParameter(@Initialized SettableBeanProperty prop)
     {
         if (_paramsSeenBig == null) {
             return ((_paramsSeen >> prop.getCreatorIndex()) & 1) == 1;
@@ -145,7 +147,7 @@ public class PropertyValueBuffer
      * returns <code>true</code> (to indicate all creator properties are found), or when
      * then whole JSON Object has been processed,
      */
-    public Object[] getParameters(SettableBeanProperty[] props)
+    public Object[] getParameters(SettableBeanProperty @Initialized [] props)
         throws JsonMappingException
     {
         // quick check to see if anything else is needed
@@ -181,7 +183,7 @@ public class PropertyValueBuffer
         return _creatorParameters;
     }
 
-    protected Object _findMissing(SettableBeanProperty prop) throws JsonMappingException
+    protected Object _findMissing(@Initialized SettableBeanProperty prop) throws JsonMappingException
     {
         // First: do we have injectable value?
         Object injectableValueId = prop.getInjectableValueId();
@@ -216,7 +218,7 @@ public class PropertyValueBuffer
      * 
      * @since 2.1
      */
-    public boolean readIdProperty(String propName) throws IOException
+    public boolean readIdProperty(@Initialized String propName) throws IOException
     {
         if ((_objectIdReader != null) && propName.equals(_objectIdReader.propertyName.getSimpleName())) {
             _idValue = _objectIdReader.readObjectReference(_parser, _context);
@@ -228,7 +230,7 @@ public class PropertyValueBuffer
     /**
      * Helper method called to handle Object Id value collected earlier, if any
      */
-    public Object handleIdValue(final DeserializationContext ctxt, Object bean) throws IOException
+    public Object handleIdValue(final @Initialized DeserializationContext ctxt, @Initialized Object bean) throws IOException
     {
         if (_objectIdReader != null) {
             if (_idValue != null) {
@@ -259,7 +261,7 @@ public class PropertyValueBuffer
      * 
      * @since 2.6
      */
-    public boolean assignParameter(SettableBeanProperty prop, Object value)
+    public boolean assignParameter(@Initialized SettableBeanProperty prop, @Initialized Object value)
     {
         final int ix = prop.getCreatorIndex();
         _creatorParameters[ix] = value;
@@ -285,15 +287,15 @@ public class PropertyValueBuffer
         return false;
     }
 
-    public void bufferProperty(SettableBeanProperty prop, Object value) {
+    public void bufferProperty(@Initialized SettableBeanProperty prop, @Initialized Object value) {
         _buffered = new PropertyValue.Regular(_buffered, value, prop);
     }
     
-    public void bufferAnyProperty(SettableAnyProperty prop, String propName, Object value) {
+    public void bufferAnyProperty(@Initialized SettableAnyProperty prop, @Initialized String propName, @Initialized Object value) {
         _buffered = new PropertyValue.Any(_buffered, value, prop, propName);
     }
 
-    public void bufferMapProperty(Object key, Object value) {
+    public void bufferMapProperty(@Initialized Object key, @Initialized Object value) {
         _buffered = new PropertyValue.Map(_buffered, value, key);
     }
 }

@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.Set;
 
@@ -22,7 +24,7 @@ public class BeanAsArrayBuilderDeserializer
     /**
      * Properties in order expected to be found in JSON array.
      */
-    final protected SettableBeanProperty[] _orderedProperties;
+    final protected SettableBeanProperty @Initialized [] _orderedProperties;
 
     final protected AnnotatedMethod _buildMethod;
 
@@ -47,9 +49,11 @@ public class BeanAsArrayBuilderDeserializer
      *
      * @since 2.9
      */
-    public BeanAsArrayBuilderDeserializer(BeanDeserializerBase delegate,
+    public BeanAsArrayBuilderDeserializer(@Initialized BeanDeserializerBase delegate,
+            @Initialized
             JavaType targetType,
-            SettableBeanProperty[] ordered,
+            SettableBeanProperty @Initialized [] ordered,
+            @Initialized
             AnnotatedMethod buildMethod)
     {
         super(delegate);
@@ -60,7 +64,7 @@ public class BeanAsArrayBuilderDeserializer
     }
     
     @Override
-    public JsonDeserializer<Object> unwrappingDeserializer(NameTransformer unwrapper)
+    public JsonDeserializer<Object> unwrappingDeserializer(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized NameTransformer unwrapper)
     {
         /* We can't do much about this; could either replace _delegate
          * with unwrapping instance, or just replace this one. Latter seems
@@ -70,25 +74,25 @@ public class BeanAsArrayBuilderDeserializer
     }
 
     @Override
-    public BeanDeserializerBase withObjectIdReader(ObjectIdReader oir) {
+    public BeanDeserializerBase withObjectIdReader(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized ObjectIdReader oir) {
         return new BeanAsArrayBuilderDeserializer(_delegate.withObjectIdReader(oir),
                 _targetType, _orderedProperties, _buildMethod);
     }
 
     @Override
-    public BeanDeserializerBase withIgnorableProperties(Set<String> ignorableProps) {
+    public BeanDeserializerBase withIgnorableProperties(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized Set<String> ignorableProps) {
         return new BeanAsArrayBuilderDeserializer(_delegate.withIgnorableProperties(ignorableProps),
                 _targetType, _orderedProperties, _buildMethod);
     }
 
     @Override
-    public BeanDeserializerBase withBeanProperties(BeanPropertyMap props) {
+    public BeanDeserializerBase withBeanProperties(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized BeanPropertyMap props) {
         return new BeanAsArrayBuilderDeserializer(_delegate.withBeanProperties(props),
                 _targetType, _orderedProperties, _buildMethod);
     }
 
     @Override
-    protected BeanDeserializerBase asArrayDeserializer() {
+    protected BeanDeserializerBase asArrayDeserializer(@Initialized BeanAsArrayBuilderDeserializer this) {
         return this;
     }
 
@@ -99,7 +103,7 @@ public class BeanAsArrayBuilderDeserializer
      */
     
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized DeserializationConfig config) {
         // 26-Oct-2016, tatu: No, we can't merge Builder-based POJOs as of now
         return Boolean.FALSE;
     }
@@ -110,7 +114,7 @@ public class BeanAsArrayBuilderDeserializer
     /**********************************************************
      */
 
-    protected final Object finishBuild(DeserializationContext ctxt, Object builder)
+    protected final Object finishBuild(@Initialized DeserializationContext ctxt, @Initialized Object builder)
         throws IOException
     {
         try {
@@ -121,7 +125,7 @@ public class BeanAsArrayBuilderDeserializer
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+    public Object deserialize(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // Let's delegate just in case we got a JSON Object (could error out, alternatively?)
@@ -170,7 +174,7 @@ public class BeanAsArrayBuilderDeserializer
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt, Object value)
+    public Object deserialize(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object value)
         throws IOException
     {
         // 26-Oct-2016, tatu: Will fail, but let the original deserializer provide message
@@ -179,7 +183,7 @@ public class BeanAsArrayBuilderDeserializer
 
     // needed since 2.1
     @Override
-    public Object deserializeFromObject(JsonParser p, DeserializationContext ctxt) throws IOException
+    public Object deserializeFromObject(@Initialized BeanAsArrayBuilderDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         return _deserializeFromNonArray(p, ctxt);
     }
@@ -197,7 +201,7 @@ public class BeanAsArrayBuilderDeserializer
      * 
      * @return Builder object in use.
      */
-    protected Object _deserializeNonVanilla(JsonParser p, DeserializationContext ctxt)
+    protected Object _deserializeNonVanilla(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_nonStandardCreation) {
@@ -256,8 +260,8 @@ public class BeanAsArrayBuilderDeserializer
      * as well.
      */
     @Override
-    protected final Object _deserializeUsingPropertyBased(final JsonParser p,
-            final DeserializationContext ctxt)
+    protected final Object _deserializeUsingPropertyBased(@Initialized BeanAsArrayBuilderDeserializer this, final @Initialized JsonParser p,
+            final @Initialized DeserializationContext ctxt)
         throws IOException
     {
         final PropertyBasedCreator creator = _propertyBasedCreator;
@@ -338,7 +342,7 @@ public class BeanAsArrayBuilderDeserializer
     /**********************************************************
      */
 
-    protected Object _deserializeFromNonArray(JsonParser p, DeserializationContext ctxt)
+    protected Object _deserializeFromNonArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         // Let's start with failure

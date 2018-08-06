@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -21,9 +22,9 @@ public abstract class StdNodeBasedDeserializer<T>
     extends StdDeserializer<T>
     implements ResolvableDeserializer
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected JsonDeserializer<Object> _treeDeserializer;
+    protected @Initialized JsonDeserializer<Object> _treeDeserializer;
 
     /*
     /**********************************************************
@@ -49,7 +50,7 @@ public abstract class StdNodeBasedDeserializer<T>
     }
 
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+    public void resolve(@Initialized StdNodeBasedDeserializer<T> this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         _treeDeserializer = ctxt.findRootValueDeserializer(ctxt.constructType(JsonNode.class));
     }
 
@@ -59,7 +60,7 @@ public abstract class StdNodeBasedDeserializer<T>
     /**********************************************************
      */
 
-    public abstract T convert(JsonNode root, DeserializationContext ctxt) throws IOException;
+    public abstract T convert(@Initialized JsonNode root, @Initialized DeserializationContext ctxt) throws IOException;
 
     /*
     /**********************************************************
@@ -68,13 +69,14 @@ public abstract class StdNodeBasedDeserializer<T>
      */
     
     @Override
-    public T deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public T deserialize(@Initialized StdNodeBasedDeserializer<T> this, @Initialized JsonParser jp, @Initialized DeserializationContext ctxt) throws IOException {
         JsonNode n = (JsonNode) _treeDeserializer.deserialize(jp, ctxt);
         return convert(n, ctxt);
     }
 
     @Override
-    public Object deserializeWithType(JsonParser jp, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized StdNodeBasedDeserializer<T> this, @Initialized JsonParser jp, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer td)
         throws IOException, JsonProcessingException
     {

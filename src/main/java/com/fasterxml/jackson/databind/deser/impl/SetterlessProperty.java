@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -23,44 +25,47 @@ import com.fasterxml.jackson.databind.util.Annotations;
 public final class SetterlessProperty
     extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final AnnotatedMethod _annotated;
+    protected final @Initialized AnnotatedMethod _annotated;
 
     /**
      * Get method for accessing property value used to access property
      * (of Collection or Map type) to modify.
      */
-    protected final Method _getter;
+    protected final @Initialized Method _getter;
 
-    public SetterlessProperty(BeanPropertyDefinition propDef, JavaType type,
-            TypeDeserializer typeDeser, Annotations contextAnnotations, AnnotatedMethod method)
+    public SetterlessProperty(@Initialized BeanPropertyDefinition propDef, @Initialized JavaType type,
+            @Initialized
+            @Nullable
+            TypeDeserializer typeDeser, @Initialized Annotations contextAnnotations, @Initialized AnnotatedMethod method)
     {
         super(propDef, type, typeDeser, contextAnnotations);
         _annotated = method;
         _getter = method.getAnnotated();
     }
 
-    protected SetterlessProperty(SetterlessProperty src, JsonDeserializer<?> deser,
+    protected SetterlessProperty(@Initialized SetterlessProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva) {
         super(src, deser, nva);
         _annotated = src._annotated;
         _getter = src._getter;
     }
 
-    protected SetterlessProperty(SetterlessProperty src, PropertyName newName) {
+    protected SetterlessProperty(@Initialized SetterlessProperty src, @Initialized PropertyName newName) {
         super(src, newName);
         _annotated = src._annotated;
         _getter = src._getter;
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized SetterlessProperty this, @Initialized PropertyName newName) {
         return new SetterlessProperty(this, newName);
     }
 
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized SetterlessProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -68,12 +73,12 @@ public final class SetterlessProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized SetterlessProperty this, @Initialized NullValueProvider nva) {
         return new SetterlessProperty(this, _valueDeserializer, nva);
     }
 
     @Override
-    public void fixAccess(DeserializationConfig config) {
+    public void fixAccess(@Initialized SetterlessProperty this, @Initialized DeserializationConfig config) {
         _annotated.fixAccess(
                 config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
     }
@@ -85,11 +90,11 @@ public final class SetterlessProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized SetterlessProperty this, @Initialized Class<A> acls) {
         return _annotated.getAnnotation(acls);
     }
 
-    @Override public AnnotatedMember getMember() {  return _annotated; }
+    @Override public AnnotatedMember getMember(@Initialized SetterlessProperty this) {  return _annotated; }
 
     /*
     /**********************************************************
@@ -98,7 +103,8 @@ public final class SetterlessProperty
      */
     
     @Override
-    public final void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+    public final void deserializeAndSet(@Initialized SetterlessProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object instance) throws IOException
     {
         JsonToken t = p.getCurrentToken();
@@ -134,20 +140,21 @@ public final class SetterlessProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized SetterlessProperty this, @Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         deserializeAndSet(p, ctxt, instance);
         return instance;
     }
 
     @Override
-    public final void set(Object instance, Object value) throws IOException {
+    public final void set(@Initialized SetterlessProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         throw new UnsupportedOperationException("Should never call `set()` on setterless property ('"+getName()+"')");
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException
+    public Object setAndReturn(@Initialized SetterlessProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         set(instance, value);
         return instance;

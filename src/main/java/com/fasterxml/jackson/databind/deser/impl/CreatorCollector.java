@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
@@ -19,36 +21,36 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
  */
 public class CreatorCollector {
     // Since 2.5
-    protected final static int C_DEFAULT = 0;
-    protected final static int C_STRING = 1;
-    protected final static int C_INT = 2;
-    protected final static int C_LONG = 3;
-    protected final static int C_DOUBLE = 4;
-    protected final static int C_BOOLEAN = 5;
-    protected final static int C_DELEGATE = 6;
-    protected final static int C_PROPS = 7;
-    protected final static int C_ARRAY_DELEGATE = 8;
+    protected final static @Initialized int C_DEFAULT = 0;
+    protected final static @Initialized int C_STRING = 1;
+    protected final static @Initialized int C_INT = 2;
+    protected final static @Initialized int C_LONG = 3;
+    protected final static @Initialized int C_DOUBLE = 4;
+    protected final static @Initialized int C_BOOLEAN = 5;
+    protected final static @Initialized int C_DELEGATE = 6;
+    protected final static @Initialized int C_PROPS = 7;
+    protected final static @Initialized int C_ARRAY_DELEGATE = 8;
 
-    protected final static String[] TYPE_DESCS = new String[] { "default",
+    protected final static String @Initialized [] TYPE_DESCS = new String[] { "default",
             "from-String", "from-int", "from-long", "from-double",
             "from-boolean", "delegate", "property-based" };
 
     /// Type of bean being created
-    final protected BeanDescription _beanDesc;
+    final protected @Initialized BeanDescription _beanDesc;
 
-    final protected boolean _canFixAccess;
+    final protected @Initialized boolean _canFixAccess;
 
     /**
      * @since 2.7
      */
-    final protected boolean _forceAccess;
+    final protected @Initialized boolean _forceAccess;
 
     /**
      * Set of creators we have collected so far
      * 
      * @since 2.5
      */
-    protected final AnnotatedWithParams[] _creators = new AnnotatedWithParams[9];
+    protected final AnnotatedWithParams @Initialized [] _creators = new AnnotatedWithParams[9];
 
     /**
      * Bitmask of creators that were explicitly marked as creators; false for
@@ -57,18 +59,18 @@ public class CreatorCollector {
      * 
      * @since 2.5
      */
-    protected int _explicitCreators = 0;
+    protected @Initialized int _explicitCreators = 0;
 
-    protected boolean _hasNonDefaultCreator = false;
+    protected @Initialized boolean _hasNonDefaultCreator = false;
 
     // when there are injectable values along with delegate:
-    protected SettableBeanProperty[] _delegateArgs;
+    protected SettableBeanProperty @Initialized @Nullable [] _delegateArgs;
 
-    protected SettableBeanProperty[] _arrayDelegateArgs;
+    protected SettableBeanProperty @Initialized @Nullable [] _arrayDelegateArgs;
 
-    protected SettableBeanProperty[] _propertyBasedArgs;
+    protected SettableBeanProperty @Initialized [] _propertyBasedArgs;
 
-    protected AnnotatedParameter _incompleteParameter;
+    protected @Initialized AnnotatedParameter _incompleteParameter;
 
     /*
     /**********************************************************
@@ -76,7 +78,7 @@ public class CreatorCollector {
     /**********************************************************
      */
 
-    public CreatorCollector(BeanDescription beanDesc, MapperConfig<?> config) {
+    public CreatorCollector(@Initialized BeanDescription beanDesc, @Initialized MapperConfig<?> config) {
         _beanDesc = beanDesc;
         _canFixAccess = config.canOverrideAccessModifiers();
         _forceAccess = config
@@ -84,6 +86,7 @@ public class CreatorCollector {
     }
 
     public ValueInstantiator constructValueInstantiator(
+            @Initialized
             DeserializationConfig config) {
         final JavaType delegateType = _computeDelegateType(
                 _creators[C_DELEGATE], _delegateArgs);
@@ -128,32 +131,34 @@ public class CreatorCollector {
      *            Creator method; no-arguments constructor or static factory
      *            method.
      */
-    public void setDefaultCreator(AnnotatedWithParams creator) {
+    public void setDefaultCreator(@Initialized AnnotatedWithParams creator) {
         _creators[C_DEFAULT] = _fixAccess(creator);
     }
 
-    public void addStringCreator(AnnotatedWithParams creator, boolean explicit) {
+    public void addStringCreator(@Initialized AnnotatedWithParams creator, @Initialized boolean explicit) {
         verifyNonDup(creator, C_STRING, explicit);
     }
 
-    public void addIntCreator(AnnotatedWithParams creator, boolean explicit) {
+    public void addIntCreator(@Initialized AnnotatedWithParams creator, @Initialized boolean explicit) {
         verifyNonDup(creator, C_INT, explicit);
     }
 
-    public void addLongCreator(AnnotatedWithParams creator, boolean explicit) {
+    public void addLongCreator(@Initialized AnnotatedWithParams creator, @Initialized boolean explicit) {
         verifyNonDup(creator, C_LONG, explicit);
     }
 
-    public void addDoubleCreator(AnnotatedWithParams creator, boolean explicit) {
+    public void addDoubleCreator(@Initialized AnnotatedWithParams creator, @Initialized boolean explicit) {
         verifyNonDup(creator, C_DOUBLE, explicit);
     }
 
-    public void addBooleanCreator(AnnotatedWithParams creator, boolean explicit) {
+    public void addBooleanCreator(@Initialized AnnotatedWithParams creator, @Initialized boolean explicit) {
         verifyNonDup(creator, C_BOOLEAN, explicit);
     }
 
-    public void addDelegatingCreator(AnnotatedWithParams creator,
-            boolean explicit, SettableBeanProperty[] injectables,
+    public void addDelegatingCreator(@Initialized AnnotatedWithParams creator,
+            @Initialized
+            boolean explicit, SettableBeanProperty @Initialized  @Nullable [] injectables,
+            @Initialized
             int delegateeIndex)
     {
         if (creator.getParameterType(delegateeIndex).isCollectionLikeType()) {
@@ -167,8 +172,9 @@ public class CreatorCollector {
         }
     }
 
-    public void addPropertyCreator(AnnotatedWithParams creator,
-            boolean explicit, SettableBeanProperty[] properties)
+    public void addPropertyCreator(@Initialized AnnotatedWithParams creator,
+            @Initialized
+            boolean explicit, SettableBeanProperty @Initialized  @Nullable [] properties)
     {
         if (verifyNonDup(creator, C_PROPS, explicit)) {
             // Better ensure we have no duplicate names either...
@@ -232,8 +238,8 @@ public class CreatorCollector {
     /**********************************************************
      */
 
-    private JavaType _computeDelegateType(AnnotatedWithParams creator,
-            SettableBeanProperty[] delegateArgs) {
+    private JavaType _computeDelegateType(@Initialized AnnotatedWithParams creator,
+            SettableBeanProperty @Initialized [] delegateArgs) {
         if (!_hasNonDefaultCreator || (creator == null)) {
             return null;
         }
@@ -261,7 +267,7 @@ public class CreatorCollector {
     /**
      * @return True if specified Creator is to be used
      */
-    protected boolean verifyNonDup(AnnotatedWithParams newOne, int typeIndex, boolean explicit)
+    protected boolean verifyNonDup(@Initialized AnnotatedWithParams newOne, @Initialized int typeIndex, @Initialized boolean explicit)
     {
         final int mask = (1 << typeIndex);
         _hasNonDefaultCreator = true;
@@ -327,7 +333,7 @@ public class CreatorCollector {
      *
      * @since 2.8.1
      */
-    protected boolean _isEnumValueOf(AnnotatedWithParams creator) {
+    protected boolean _isEnumValueOf(@Initialized AnnotatedWithParams creator) {
         return creator.getDeclaringClass().isEnum()
                 && "valueOf".equals(creator.getName());
     }
@@ -349,23 +355,24 @@ public class CreatorCollector {
      */
     protected final static class StdTypeConstructor extends AnnotatedWithParams
             implements java.io.Serializable {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        public final static int TYPE_ARRAY_LIST = 1;
-        public final static int TYPE_HASH_MAP = 2;
-        public final static int TYPE_LINKED_HASH_MAP = 3;
+        public final static @Initialized int TYPE_ARRAY_LIST = 1;
+        public final static @Initialized int TYPE_HASH_MAP = 2;
+        public final static @Initialized int TYPE_LINKED_HASH_MAP = 3;
 
-        private final AnnotatedWithParams _base;
+        private final @Initialized AnnotatedWithParams _base;
 
-        private final int _type;
+        private final @Initialized int _type;
 
-        public StdTypeConstructor(AnnotatedWithParams base, int t) {
+        public StdTypeConstructor(@Initialized AnnotatedWithParams base, @Initialized int t) {
             super(base, null);
             _base = base;
             _type = t;
         }
 
         public static AnnotatedWithParams tryToOptimize(
+                @Initialized
                 AnnotatedWithParams src) {
             if (src != null) {
                 final Class<?> rawType = src.getDeclaringClass();
@@ -395,105 +402,105 @@ public class CreatorCollector {
         }
 
         @Override
-        public int getParameterCount() {
+        public int getParameterCount(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getParameterCount();
         }
 
         @Override
-        public Class<?> getRawParameterType(int index) {
+        public Class<?> getRawParameterType(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized int index) {
             return _base.getRawParameterType(index);
         }
 
         @Override
-        public JavaType getParameterType(int index) {
+        public JavaType getParameterType(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized int index) {
             return _base.getParameterType(index);
         }
 
         @Override
         @Deprecated
-        public Type getGenericParameterType(int index) {
+        public Type getGenericParameterType(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized int index) {
             return _base.getGenericParameterType(index);
         }
 
         @Override
-        public Object call() throws Exception {
+        public Object call(CreatorCollector.@Initialized StdTypeConstructor this) throws Exception {
             return _construct();
         }
 
         @Override
-        public Object call(Object[] args) throws Exception {
+        public Object call(CreatorCollector.@Initialized StdTypeConstructor this, Object @Initialized [] args) throws Exception {
             return _construct();
         }
 
         @Override
-        public Object call1(Object arg) throws Exception {
+        public Object call1(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized Object arg) throws Exception {
             return _construct();
         }
 
         @Override
-        public Class<?> getDeclaringClass() {
+        public Class<?> getDeclaringClass(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getDeclaringClass();
         }
 
         @Override
-        public Member getMember() {
+        public Member getMember(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getMember();
         }
 
         @Override
-        public void setValue(Object pojo, Object value)
+        public void setValue(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized Object pojo, @Initialized Object value)
                 throws UnsupportedOperationException, IllegalArgumentException {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Object getValue(Object pojo)
+        public Object getValue(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized Object pojo)
                 throws UnsupportedOperationException, IllegalArgumentException {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Annotated withAnnotations(AnnotationMap fallback) {
+        public Annotated withAnnotations(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized AnnotationMap fallback) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public AnnotatedElement getAnnotated() {
+        public AnnotatedElement getAnnotated(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getAnnotated();
         }
 
         @Override
-        protected int getModifiers() {
+        protected int getModifiers(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getMember().getModifiers();
         }
 
         @Override
-        public String getName() {
+        public String getName(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getName();
         }
 
         @Override
-        public JavaType getType() {
+        public JavaType getType(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getType();
         }
 
         @Override
-        public Class<?> getRawType() {
+        public Class<?> getRawType(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.getRawType();
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(CreatorCollector.@Initialized StdTypeConstructor this, @Initialized @Nullable Object o) {
             return (o == this);
         }
 
         @Override
-        public int hashCode() {
+        public int hashCode(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.hashCode();
         }
 
         @Override
-        public String toString() {
+        public String toString(CreatorCollector.@Initialized StdTypeConstructor this) {
             return _base.toString();
         }
     }

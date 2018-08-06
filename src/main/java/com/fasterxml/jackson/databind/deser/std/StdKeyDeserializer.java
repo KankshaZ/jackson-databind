@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -29,45 +31,45 @@ import com.fasterxml.jackson.databind.util.TokenBuffer;
 public class StdKeyDeserializer extends KeyDeserializer
     implements java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    public final static int TYPE_BOOLEAN = 1;
-    public final static int TYPE_BYTE = 2;
-    public final static int TYPE_SHORT = 3;
-    public final static int TYPE_CHAR = 4;
-    public final static int TYPE_INT = 5;
-    public final static int TYPE_LONG = 6;
-    public final static int TYPE_FLOAT = 7;
-    public final static int TYPE_DOUBLE = 8;
-    public final static int TYPE_LOCALE = 9;
-    public final static int TYPE_DATE = 10;
-    public final static int TYPE_CALENDAR = 11;
-    public final static int TYPE_UUID = 12;
-    public final static int TYPE_URI = 13;
-    public final static int TYPE_URL = 14;
-    public final static int TYPE_CLASS = 15;
-    public final static int TYPE_CURRENCY = 16;
-    public final static int TYPE_BYTE_ARRAY = 17; // since 2.9
+    public final static @Initialized int TYPE_BOOLEAN = 1;
+    public final static @Initialized int TYPE_BYTE = 2;
+    public final static @Initialized int TYPE_SHORT = 3;
+    public final static @Initialized int TYPE_CHAR = 4;
+    public final static @Initialized int TYPE_INT = 5;
+    public final static @Initialized int TYPE_LONG = 6;
+    public final static @Initialized int TYPE_FLOAT = 7;
+    public final static @Initialized int TYPE_DOUBLE = 8;
+    public final static @Initialized int TYPE_LOCALE = 9;
+    public final static @Initialized int TYPE_DATE = 10;
+    public final static @Initialized int TYPE_CALENDAR = 11;
+    public final static @Initialized int TYPE_UUID = 12;
+    public final static @Initialized int TYPE_URI = 13;
+    public final static @Initialized int TYPE_URL = 14;
+    public final static @Initialized int TYPE_CLASS = 15;
+    public final static @Initialized int TYPE_CURRENCY = 16;
+    public final static @Initialized int TYPE_BYTE_ARRAY = 17; // since 2.9
 
-    final protected int _kind;
-    final protected Class<?> _keyClass;
+    final protected @Initialized int _kind;
+    final protected @Initialized Class<?> _keyClass;
 
     /**
      * Some types that are deserialized using a helper deserializer.
      */
-    protected final FromStringDeserializer<?> _deser;
+    protected final @Initialized FromStringDeserializer<?> _deser;
     
-    protected StdKeyDeserializer(int kind, Class<?> cls) {
+    protected StdKeyDeserializer(@Initialized int kind, @Initialized Class<?> cls) {
         this(kind, cls, null);
     }
 
-    protected StdKeyDeserializer(int kind, Class<?> cls, FromStringDeserializer<?> deser) {
+    protected StdKeyDeserializer(@Initialized int kind, @Initialized Class<?> cls, @Initialized @Nullable FromStringDeserializer<?> deser) {
         _kind = kind;
         _keyClass = cls;
         _deser = deser;
     }
 
-    public static StdKeyDeserializer forType(Class<?> raw)
+    public static StdKeyDeserializer forType(@Initialized Class<?> raw)
     {
         int kind;
 
@@ -118,7 +120,7 @@ public class StdKeyDeserializer extends KeyDeserializer
     }
 
     @Override
-    public Object deserializeKey(String key, DeserializationContext ctxt)
+    public Object deserializeKey(@Initialized StdKeyDeserializer this, @Initialized String key, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (key == null) { // is this even legal call?
@@ -141,7 +143,7 @@ public class StdKeyDeserializer extends KeyDeserializer
 
     public Class<?> getKeyClass() { return _keyClass; }
 
-    protected Object _parse(String key, DeserializationContext ctxt) throws Exception
+    protected Object _parse(@Initialized String key, @Initialized DeserializationContext ctxt) throws Exception
     {
         switch (_kind) {
         case TYPE_BOOLEAN:
@@ -243,20 +245,20 @@ public class StdKeyDeserializer extends KeyDeserializer
     /**********************************************************
      */
 
-    protected int _parseInt(String key) throws IllegalArgumentException {
+    protected int _parseInt(@Initialized String key) throws IllegalArgumentException {
         return Integer.parseInt(key);
     }
 
-    protected long _parseLong(String key) throws IllegalArgumentException {
+    protected long _parseLong(@Initialized String key) throws IllegalArgumentException {
         return Long.parseLong(key);
     }
 
-    protected double _parseDouble(String key) throws IllegalArgumentException {
+    protected double _parseDouble(@Initialized String key) throws IllegalArgumentException {
         return NumberInput.parseDouble(key);
     }
 
     // @since 2.9
-    protected Object _weirdKey(DeserializationContext ctxt, String key, Exception e) throws IOException {
+    protected Object _weirdKey(@Initialized DeserializationContext ctxt, @Initialized String key, @Initialized Exception e) throws IOException {
         return ctxt.handleWeirdKey(_keyClass, key, "problem: %s", e.getMessage());
     }
 
@@ -269,13 +271,13 @@ public class StdKeyDeserializer extends KeyDeserializer
     @JacksonStdImpl
     final static class StringKD extends StdKeyDeserializer
     {
-        private static final long serialVersionUID = 1L;
-        private final static StringKD sString = new StringKD(String.class);
-        private final static StringKD sObject = new StringKD(Object.class);
+        private static final @Initialized long serialVersionUID = 1L;
+        private final static @Initialized StringKD sString = new StringKD(String.class);
+        private final static @Initialized StringKD sObject = new StringKD(Object.class);
         
-        private StringKD(Class<?> nominalType) { super(-1, nominalType); }
+        private StringKD(@Initialized Class<?> nominalType) { super(-1, nominalType); }
 
-        public static StringKD forType(Class<?> nominalType)
+        public static StringKD forType(@Initialized Class<?> nominalType)
         {
             if (nominalType == String.class) {
                 return sString;
@@ -287,7 +289,7 @@ public class StdKeyDeserializer extends KeyDeserializer
         }
 
         @Override
-        public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        public Object deserializeKey(StdKeyDeserializer.@Initialized StringKD this, @Initialized String key, @Initialized DeserializationContext ctxt) throws IOException, JsonProcessingException {
             return key;
         }
     }    
@@ -307,20 +309,20 @@ public class StdKeyDeserializer extends KeyDeserializer
         extends KeyDeserializer // note: NOT the std one
         implements java.io.Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final protected Class<?> _keyClass;
+        final protected @Initialized Class<?> _keyClass;
 
-        protected final JsonDeserializer<?> _delegate;
+        protected final @Initialized JsonDeserializer<?> _delegate;
         
-        protected DelegatingKD(Class<?> cls, JsonDeserializer<?> deser) {
+        protected DelegatingKD(@Initialized Class<?> cls, @Initialized JsonDeserializer<?> deser) {
             _keyClass = cls;
             _delegate = deser;
         }
 
         @SuppressWarnings("resource")
         @Override
-        public final Object deserializeKey(String key, DeserializationContext ctxt)
+        public final Object deserializeKey(StdKeyDeserializer.@Initialized DelegatingKD this, @Initialized String key, @Initialized DeserializationContext ctxt)
             throws IOException
         {
             if (key == null) { // is this even legal call?
@@ -348,11 +350,11 @@ public class StdKeyDeserializer extends KeyDeserializer
     @JacksonStdImpl
     final static class EnumKD extends StdKeyDeserializer
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        protected final EnumResolver _byNameResolver;
+        protected final @Initialized EnumResolver _byNameResolver;
 
-        protected final AnnotatedMethod _factory;
+        protected final @Initialized AnnotatedMethod _factory;
 
         /**
          * Lazily constructed alternative in case there is need to
@@ -362,9 +364,9 @@ public class StdKeyDeserializer extends KeyDeserializer
          */
         protected EnumResolver _byToStringResolver;
 
-        protected final Enum<?> _enumDefaultValue;
+        protected final @Initialized Enum<?> _enumDefaultValue;
         
-        protected EnumKD(EnumResolver er, AnnotatedMethod factory) {
+        protected EnumKD(@Initialized EnumResolver er, @Initialized @Nullable AnnotatedMethod factory) {
             super(-1, er.getEnumClass());
             _byNameResolver = er;
             _factory = factory;
@@ -372,7 +374,7 @@ public class StdKeyDeserializer extends KeyDeserializer
         }
 
         @Override
-        public Object _parse(String key, DeserializationContext ctxt) throws IOException
+        public Object _parse(StdKeyDeserializer.@Initialized EnumKD this, @Initialized String key, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (_factory != null) {
                 try {
@@ -397,7 +399,7 @@ public class StdKeyDeserializer extends KeyDeserializer
             return e;
         }
 
-        private EnumResolver _getToStringResolver(DeserializationContext ctxt)
+        private EnumResolver _getToStringResolver(@Initialized DeserializationContext ctxt)
         {
             EnumResolver res = _byToStringResolver;
             if (res == null) {
@@ -416,17 +418,17 @@ public class StdKeyDeserializer extends KeyDeserializer
      */
     final static class StringCtorKeyDeserializer extends StdKeyDeserializer
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        protected final Constructor<?> _ctor;
+        protected final @Initialized Constructor<?> _ctor;
 
-        public StringCtorKeyDeserializer(Constructor<?> ctor) {
+        public StringCtorKeyDeserializer(@Initialized Constructor<?> ctor) {
             super(-1, ctor.getDeclaringClass());
             _ctor = ctor;
         }
 
         @Override
-        public Object _parse(String key, DeserializationContext ctxt) throws Exception
+        public Object _parse(StdKeyDeserializer.@Initialized StringCtorKeyDeserializer this, @Initialized String key, @Initialized DeserializationContext ctxt) throws Exception
         {
             return _ctor.newInstance(key);
         }
@@ -438,17 +440,17 @@ public class StdKeyDeserializer extends KeyDeserializer
      */
     final static class StringFactoryKeyDeserializer extends StdKeyDeserializer
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        final Method _factoryMethod;
+        final @Initialized Method _factoryMethod;
 
-        public StringFactoryKeyDeserializer(Method fm) {
+        public StringFactoryKeyDeserializer(@Initialized Method fm) {
             super(-1, fm.getDeclaringClass());
             _factoryMethod = fm;
         }
 
         @Override
-        public Object _parse(String key, DeserializationContext ctxt) throws Exception
+        public Object _parse(StdKeyDeserializer.@Initialized StringFactoryKeyDeserializer this, @Initialized String key, @Initialized DeserializationContext ctxt) throws Exception
         {
             return _factoryMethod.invoke(null, key);
         }

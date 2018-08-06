@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,12 +14,12 @@ import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
  */
 public abstract class PropertyValue
 {
-    public final PropertyValue next;
+    public final @Initialized PropertyValue next;
 
     /**
      * Value to assign when POJO has been instantiated.
      */
-    public final Object value;
+    public final @Initialized Object value;
     
     protected PropertyValue(PropertyValue next, Object value)
     {
@@ -30,7 +31,7 @@ public abstract class PropertyValue
      * Method called to assign stored value of this property to specified
      * bean instance
      */
-    public abstract void assign(Object bean)
+    public abstract void assign(@Initialized Object bean)
         throws IOException, JsonProcessingException;
 
     /*
@@ -46,9 +47,10 @@ public abstract class PropertyValue
     final static class Regular
         extends PropertyValue
     {
-        final SettableBeanProperty _property;
+        final @Initialized SettableBeanProperty _property;
         
-        public Regular(PropertyValue next, Object value,
+        public Regular(@Initialized PropertyValue next, @Initialized Object value,
+                       @Initialized
                        SettableBeanProperty prop)
         {
             super(next, value);
@@ -56,7 +58,7 @@ public abstract class PropertyValue
         }
 
         @Override
-        public void assign(Object bean)
+        public void assign(PropertyValue.@Initialized Regular this, @Initialized Object bean)
             throws IOException, JsonProcessingException
         {
             _property.set(bean, value);
@@ -72,11 +74,13 @@ public abstract class PropertyValue
     final static class Any
         extends PropertyValue
     {
-        final SettableAnyProperty _property;
-        final String _propertyName;
+        final @Initialized SettableAnyProperty _property;
+        final @Initialized String _propertyName;
         
-        public Any(PropertyValue next, Object value,
+        public Any(@Initialized PropertyValue next, @Initialized Object value,
+                   @Initialized
                    SettableAnyProperty prop,
+                   @Initialized
                    String propName)
         {
             super(next, value);
@@ -85,7 +89,7 @@ public abstract class PropertyValue
         }
 
         @Override
-        public void assign(Object bean)
+        public void assign(PropertyValue.@Initialized Any this, @Initialized Object bean)
             throws IOException, JsonProcessingException
         {
             _property.set(bean, _propertyName, value);
@@ -99,9 +103,9 @@ public abstract class PropertyValue
     final static class Map
         extends PropertyValue
     {
-        final Object _key;
+        final @Initialized Object _key;
         
-        public Map(PropertyValue next, Object value, Object key)
+        public Map(@Initialized PropertyValue next, @Initialized Object value, @Initialized Object key)
         {
             super(next, value);
             _key = key;
@@ -109,7 +113,7 @@ public abstract class PropertyValue
 
         @SuppressWarnings("unchecked") 
         @Override
-        public void assign(Object bean)
+        public void assign(PropertyValue.@Initialized Map this, @Initialized Object bean)
             throws IOException, JsonProcessingException
         {
             ((java.util.Map<Object,Object>) bean).put(_key, value);

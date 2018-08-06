@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.*;
@@ -145,7 +147,7 @@ public abstract class ValueInstantiator
      * NOTE: all properties will be of type
      * {@link com.fasterxml.jackson.databind.deser.CreatorProperty}.
      */
-    public SettableBeanProperty[] getFromObjectArguments(DeserializationConfig config) {
+    public SettableBeanProperty[] getFromObjectArguments(@Initialized DeserializationConfig config) {
         return null;
     }
 
@@ -156,7 +158,7 @@ public abstract class ValueInstantiator
      * specified type (using standard deserializer for that type), and
      * pass that to instantiator.
      */
-    public JavaType getDelegateType(DeserializationConfig config) { return null; }
+    public JavaType getDelegateType(@Initialized DeserializationConfig config) { return null; }
 
     /**
      * Method that can be used to determine what is the type of array delegate
@@ -167,7 +169,7 @@ public abstract class ValueInstantiator
      *
      * @since 2.7
      */
-    public JavaType getArrayDelegateType(DeserializationConfig config) { return null; }
+    public JavaType getArrayDelegateType(@Initialized DeserializationConfig config) { return null; }
 
     /*
     /**********************************************************
@@ -185,7 +187,7 @@ public abstract class ValueInstantiator
      * This method is called if {@link #getFromObjectArguments} returns
      * null or empty List.
      */
-    public Object createUsingDefault(DeserializationContext ctxt) throws IOException {
+    public Object createUsingDefault(@Initialized DeserializationContext ctxt) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no default no-arguments constructor found");
     }
@@ -198,7 +200,7 @@ public abstract class ValueInstantiator
      * This method is called if {@link #getFromObjectArguments} returns
      * a non-empty List of arguments.
      */
-    public Object createFromObjectWith(DeserializationContext ctxt, Object[] args) throws IOException {
+    public Object createFromObjectWith(@Initialized DeserializationContext ctxt, Object @Initialized [] args) throws IOException {
         // sanity check; shouldn't really get called if no Creator specified
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no creator with arguments specified");
@@ -222,8 +224,8 @@ public abstract class ValueInstantiator
      * 
      * @since 2.8
      */
-    public Object createFromObjectWith(DeserializationContext ctxt,
-            SettableBeanProperty[] props, PropertyValueBuffer buffer)
+    public Object createFromObjectWith(@Initialized DeserializationContext ctxt,
+            SettableBeanProperty @Initialized [] props, @Initialized PropertyValueBuffer buffer)
         throws IOException
     {
         return createFromObjectWith(ctxt, buffer.getParameters(props));
@@ -233,7 +235,7 @@ public abstract class ValueInstantiator
      * Method to called to create value instance from JSON Object using
      * an intermediate "delegate" value to pass to createor method
      */
-    public Object createUsingDelegate(DeserializationContext ctxt, Object delegate) throws IOException {
+    public Object createUsingDelegate(@Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no delegate creator specified");
     }
@@ -242,7 +244,7 @@ public abstract class ValueInstantiator
      * Method to called to create value instance from JSON Array using
      * an intermediate "delegate" value to pass to createor method
      */
-    public Object createUsingArrayDelegate(DeserializationContext ctxt, Object delegate) throws IOException {
+    public Object createUsingArrayDelegate(@Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no array delegate creator specified");
     }
@@ -254,29 +256,29 @@ public abstract class ValueInstantiator
     /**********************************************************
      */
     
-    public Object createFromString(DeserializationContext ctxt, String value) throws IOException {
+    public Object createFromString(@Initialized DeserializationContext ctxt, @Initialized @Nullable String value) throws IOException {
         return _createFromStringFallbacks(ctxt, value);
     }
 
-    public Object createFromInt(DeserializationContext ctxt, int value) throws IOException {
+    public Object createFromInt(@Initialized DeserializationContext ctxt, @Initialized int value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no int/Int-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
 
-    public Object createFromLong(DeserializationContext ctxt, long value) throws IOException {
+    public Object createFromLong(@Initialized DeserializationContext ctxt, @Initialized long value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no long/Long-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
 
-    public Object createFromDouble(DeserializationContext ctxt, double value) throws IOException {
+    public Object createFromDouble(@Initialized DeserializationContext ctxt, @Initialized double value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no double/Double-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
 
-    public Object createFromBoolean(DeserializationContext ctxt, boolean value) throws IOException {
+    public Object createFromBoolean(@Initialized DeserializationContext ctxt, @Initialized boolean value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no boolean/Boolean-argument constructor/factory method to deserialize from boolean value (%s)",
                 value);
@@ -346,7 +348,7 @@ public abstract class ValueInstantiator
     /**
      * @since 2.4 (demoted from <code>StdValueInstantiator</code>)
      */
-    protected Object _createFromStringFallbacks(DeserializationContext ctxt, String value)
+    protected Object _createFromStringFallbacks(@Initialized DeserializationContext ctxt, @Initialized String value)
             throws IOException
     {
         /* 28-Sep-2011, tatu: Ok this is not clean at all; but since there are legacy
@@ -398,23 +400,23 @@ public abstract class ValueInstantiator
      */
     public static class Base extends ValueInstantiator
     {
-        protected final Class<?> _valueType;
+        protected final @Initialized Class<?> _valueType;
 
         public Base(Class<?> type) {
             _valueType = type;
         }
 
-        public Base(JavaType type) {
+        public Base(@Initialized JavaType type) {
             _valueType = type.getRawClass();
         }
         
         @Override
-        public String getValueTypeDesc() {
+        public String getValueTypeDesc(ValueInstantiator.@Initialized Base this) {
             return _valueType.getName();
         }
 
         @Override
-        public Class<?> getValueClass() {
+        public Class<?> getValueClass(ValueInstantiator.@Initialized Base this) {
             return _valueType;
         }
     }

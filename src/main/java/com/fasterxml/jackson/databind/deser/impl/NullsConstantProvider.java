@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.NullValueProvider;
 import com.fasterxml.jackson.databind.exc.InvalidNullException;
@@ -12,17 +14,17 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
 public class NullsConstantProvider
     implements NullValueProvider, java.io.Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    private final static NullsConstantProvider SKIPPER = new NullsConstantProvider(null);
+    private final static @Initialized NullsConstantProvider SKIPPER = new NullsConstantProvider(null);
 
-    private final static NullsConstantProvider NULLER = new NullsConstantProvider(null);
+    private final static @Initialized NullsConstantProvider NULLER = new NullsConstantProvider(null);
     
-    protected final Object _nullValue;
+    protected final @Initialized Object _nullValue;
 
-    protected final AccessPattern _access;
+    protected final @Initialized AccessPattern _access;
 
-    protected NullsConstantProvider(Object nvl) {
+    protected NullsConstantProvider(@Initialized @Nullable Object nvl) {
         _nullValue = nvl;
         _access = (_nullValue == null) ? AccessPattern.ALWAYS_NULL
                 : AccessPattern.CONSTANT;
@@ -42,7 +44,7 @@ public class NullsConstantProvider
         return NULLER;
     }
 
-    public static NullsConstantProvider forValue(Object nvl) {
+    public static NullsConstantProvider forValue(@Initialized Object nvl) {
         if (nvl == null) {
             return NULLER;
         }
@@ -54,7 +56,7 @@ public class NullsConstantProvider
      * is "skipper", marker provider that means that all input `null`s should
      * be skipped (ignored), instead of converted
      */
-    public static boolean isSkipper(NullValueProvider p) {
+    public static boolean isSkipper(@Initialized NullValueProvider p) {
         return (p == SKIPPER);
     }
 
@@ -68,12 +70,12 @@ public class NullsConstantProvider
     }
     
     @Override
-    public AccessPattern getNullAccessPattern() {
+    public AccessPattern getNullAccessPattern(@Initialized NullsConstantProvider this) {
         return _access;
     }
     
     @Override
-    public Object getNullValue(DeserializationContext ctxt) {
+    public Object getNullValue(@Initialized NullsConstantProvider this, @Initialized DeserializationContext ctxt) {
         return _nullValue;
     }
 }

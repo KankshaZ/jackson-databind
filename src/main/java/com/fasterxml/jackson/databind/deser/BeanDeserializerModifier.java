@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.*;
@@ -59,8 +60,9 @@ public abstract class BeanDeserializerModifier
      * specified properties, or rename then: other modifications are easier
      * to make at later points.
      */
-    public List<BeanPropertyDefinition> updateProperties(DeserializationConfig config,
-            BeanDescription beanDesc, List<BeanPropertyDefinition> propDefs) {
+    public List<BeanPropertyDefinition> updateProperties(@Initialized DeserializationConfig config,
+            @Initialized
+            BeanDescription beanDesc, @Initialized List<BeanPropertyDefinition> propDefs) {
         return propDefs;
     }
 
@@ -72,8 +74,9 @@ public abstract class BeanDeserializerModifier
      * built), or even completely replace it (if they want to build different kind of
      * deserializer). Typically changes mostly concern set of properties to deserialize.
      */
-    public BeanDeserializerBuilder updateBuilder(DeserializationConfig config,
-            BeanDescription beanDesc, BeanDeserializerBuilder builder) {
+    public BeanDeserializerBuilder updateBuilder(@Initialized DeserializationConfig config,
+            @Initialized
+            BeanDescription beanDesc, @Initialized BeanDeserializerBuilder builder) {
         return builder;
     }
 
@@ -85,8 +88,9 @@ public abstract class BeanDeserializerModifier
      * {@link BeanDeserializer}, modifiers may return deserializers of other types;
      * and this is why implementations must check for type before casting.
      */
-    public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-            BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
@@ -99,16 +103,18 @@ public abstract class BeanDeserializerModifier
     /**
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyEnumDeserializer(DeserializationConfig config,
-            JavaType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyEnumDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            JavaType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
     /**
      * @since 2.7
      */
-    public JsonDeserializer<?> modifyReferenceDeserializer(DeserializationConfig config,
-            ReferenceType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyReferenceDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            ReferenceType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
@@ -129,40 +135,45 @@ public abstract class BeanDeserializerModifier
      * 
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyArrayDeserializer(DeserializationConfig config,
-            ArrayType valueType, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyArrayDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            ArrayType valueType, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
     /**
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyCollectionDeserializer(DeserializationConfig config,
-            CollectionType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyCollectionDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            CollectionType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
     /**
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyCollectionLikeDeserializer(DeserializationConfig config,
-            CollectionLikeType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyCollectionLikeDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            CollectionLikeType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
     /**
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyMapDeserializer(DeserializationConfig config,
-            MapType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyMapDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            MapType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
     /**
      * @since 2.2
      */
-    public JsonDeserializer<?> modifyMapLikeDeserializer(DeserializationConfig config,
-            MapLikeType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyMapLikeDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            MapLikeType type, @Initialized BeanDescription beanDesc, @Initialized JsonDeserializer<?> deserializer) {
         return deserializer;
     }
 
@@ -175,8 +186,9 @@ public abstract class BeanDeserializerModifier
      * 
      * @since 2.2
      */
-    public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config,
-            JavaType type, KeyDeserializer deserializer) {
+    public KeyDeserializer modifyKeyDeserializer(@Initialized DeserializationConfig config,
+            @Initialized
+            JavaType type, @Initialized KeyDeserializer deserializer) {
         return deserializer;
     }
 }

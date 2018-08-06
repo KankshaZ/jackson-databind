@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,14 +18,14 @@ import com.fasterxml.jackson.databind.deser.impl.ReadableObjectId;
  * @author pgelinas
  */
 public class UnresolvedForwardReference extends JsonMappingException {
-    private static final long serialVersionUID = 1L;
-    private ReadableObjectId _roid;
-    private List<UnresolvedId> _unresolvedIds;
+    private static final @Initialized long serialVersionUID = 1L;
+    private @Initialized ReadableObjectId _roid;
+    private @Initialized List<UnresolvedId> _unresolvedIds;
 
     /**
      * @since 2.7
      */
-    public UnresolvedForwardReference(JsonParser p, String msg, JsonLocation loc, ReadableObjectId roid) {
+    public UnresolvedForwardReference(@Initialized JsonParser p, @Initialized String msg, @Initialized JsonLocation loc, @Initialized ReadableObjectId roid) {
         super(p, msg, loc);
         _roid = roid;
     }
@@ -32,7 +33,7 @@ public class UnresolvedForwardReference extends JsonMappingException {
     /**
      * @since 2.7
      */
-    public UnresolvedForwardReference(JsonParser p, String msg) {
+    public UnresolvedForwardReference(@Initialized JsonParser p, @Initialized String msg) {
         super(p, msg);
         _unresolvedIds = new ArrayList<UnresolvedId>();
     }
@@ -69,7 +70,7 @@ public class UnresolvedForwardReference extends JsonMappingException {
         return _roid.getKey().key;
     }
 
-    public void addUnresolvedId(Object id, Class<?> type, JsonLocation where) {
+    public void addUnresolvedId(@Initialized Object id, @Initialized Class<?> type, @Initialized JsonLocation where) {
         _unresolvedIds.add(new UnresolvedId(id, type, where));
     }
 
@@ -78,7 +79,7 @@ public class UnresolvedForwardReference extends JsonMappingException {
     }
     
     @Override
-    public String getMessage()
+    public String getMessage(@Initialized UnresolvedForwardReference this)
     {
         String msg = super.getMessage();
         if (_unresolvedIds == null) {

@@ -1,0 +1,49 @@
+package org.checkerframework.checker.initialization.qual:
+annotation @Initialized:
+
+package com.fasterxml.jackson.databind.cfg:
+class DeserializerFactoryConfig:
+
+    field NO_DESERIALIZERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field NO_MODIFIERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field NO_ABSTRACT_TYPE_RESOLVERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field NO_VALUE_INSTANTIATORS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field DEFAULT_KEY_DESERIALIZERS:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _additionalDeserializers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _additionalKeyDeserializers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _modifiers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _abstractTypeResolvers:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    field _valueInstantiators:
+        type: @org.checkerframework.checker.initialization.qual.Initialized
+
+    method <init>([Lcom/fasterxml/jackson/databind/deser/Deserializers;[Lcom/fasterxml/jackson/databind/deser/KeyDeserializers;[Lcom/fasterxml/jackson/databind/deser/BeanDeserializerModifier;[Lcom/fasterxml/jackson/databind/AbstractTypeResolver;[Lcom/fasterxml/jackson/databind/deser/ValueInstantiators;)V:
+        return:
+        parameter #0:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #1:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #2:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #3:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+        parameter #4:
+            type: @org.checkerframework.checker.initialization.qual.Initialized
+

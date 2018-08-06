@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -17,11 +18,12 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 public final class ObjectIdValueProperty
     extends SettableBeanProperty
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
-    protected final ObjectIdReader _objectIdReader;
+    protected final @Initialized ObjectIdReader _objectIdReader;
 
-    public ObjectIdValueProperty(ObjectIdReader objectIdReader,
+    public ObjectIdValueProperty(@Initialized ObjectIdReader objectIdReader,
+            @Initialized
             PropertyMetadata metadata)
     {
         super(objectIdReader.propertyName, objectIdReader.getIdType(), metadata,
@@ -29,25 +31,26 @@ public final class ObjectIdValueProperty
         _objectIdReader = objectIdReader;
     }
 
-    protected ObjectIdValueProperty(ObjectIdValueProperty src, JsonDeserializer<?> deser,
+    protected ObjectIdValueProperty(@Initialized ObjectIdValueProperty src, @Initialized JsonDeserializer<?> deser,
+            @Initialized
             NullValueProvider nva)
     {
         super(src, deser, nva);
         _objectIdReader = src._objectIdReader;
     }
 
-    protected ObjectIdValueProperty(ObjectIdValueProperty src, PropertyName newName) {
+    protected ObjectIdValueProperty(@Initialized ObjectIdValueProperty src, @Initialized PropertyName newName) {
         super(src, newName);
         _objectIdReader = src._objectIdReader;
     }
 
     @Override
-    public SettableBeanProperty withName(PropertyName newName) {
+    public SettableBeanProperty withName(@Initialized ObjectIdValueProperty this, @Initialized PropertyName newName) {
         return new ObjectIdValueProperty(this, newName);
     }
 
     @Override
-    public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
+    public SettableBeanProperty withValueDeserializer(@Initialized ObjectIdValueProperty this, @Initialized JsonDeserializer<?> deser) {
         if (_valueDeserializer == deser) {
             return this;
         }
@@ -55,18 +58,18 @@ public final class ObjectIdValueProperty
     }
 
     @Override
-    public SettableBeanProperty withNullProvider(NullValueProvider nva) {
+    public SettableBeanProperty withNullProvider(@Initialized ObjectIdValueProperty this, @Initialized NullValueProvider nva) {
         return new ObjectIdValueProperty(this, _valueDeserializer, nva);
     }
 
     // // // BeanProperty impl
     
     @Override
-    public <A extends Annotation> A getAnnotation(Class<A> acls) {
+    public <A extends Annotation> A getAnnotation(@Initialized ObjectIdValueProperty this, @Initialized Class<A> acls) {
         return null;
     }
 
-    @Override public AnnotatedMember getMember() {  return null; }
+    @Override public AnnotatedMember getMember(@Initialized ObjectIdValueProperty this) {  return null; }
 
     /*
     /**********************************************************
@@ -75,15 +78,17 @@ public final class ObjectIdValueProperty
      */
 
     @Override
-    public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+    public void deserializeAndSet(@Initialized ObjectIdValueProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             Object instance) throws IOException
     {
         deserializeSetAndReturn(p, ctxt, instance);
     }
 
     @Override
-    public Object deserializeSetAndReturn(JsonParser p,
-    		DeserializationContext ctxt, Object instance) throws IOException
+    public Object deserializeSetAndReturn(@Initialized ObjectIdValueProperty this, @Initialized JsonParser p,
+    		@Initialized
+    		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         /* 02-Apr-2015, tatu: Actually, as per [databind#742], let it be;
          *  missing or null id is needed for some cases, such as cases where id
@@ -106,12 +111,12 @@ public final class ObjectIdValueProperty
     }
 
     @Override
-    public void set(Object instance, Object value) throws IOException {
+    public void set(@Initialized ObjectIdValueProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         setAndReturn(instance, value);
     }
 
     @Override
-    public Object setAndReturn(Object instance, Object value) throws IOException
+    public Object setAndReturn(@Initialized ObjectIdValueProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         SettableBeanProperty idProp = _objectIdReader.idProperty;
         if (idProp == null) {

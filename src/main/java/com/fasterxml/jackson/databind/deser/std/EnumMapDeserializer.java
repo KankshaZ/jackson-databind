@@ -1,5 +1,8 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.initialization.qual.FBCBottom;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,32 +29,32 @@ public class EnumMapDeserializer
     extends ContainerDeserializerBase<EnumMap<?,?>>
     implements ContextualDeserializer, ResolvableDeserializer
 {
-    private static final long serialVersionUID = 1;
+    private static final @Initialized long serialVersionUID = 1;
 
-    protected final Class<?> _enumClass;
+    protected final @Initialized Class<?> _enumClass;
 
-    protected KeyDeserializer _keyDeserializer;
+    protected @Initialized KeyDeserializer _keyDeserializer;
 
-    protected JsonDeserializer<Object> _valueDeserializer;
+    protected @Initialized JsonDeserializer<Object> _valueDeserializer;
 
     /**
      * If value instances have polymorphic type information, this
      * is the type deserializer that can handle it
      */
-    protected final TypeDeserializer _valueTypeDeserializer;
+    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
 
     // // Instance construction settings:
     
     /**
      * @since 2.9
      */
-    protected final ValueInstantiator _valueInstantiator;
+    protected final @Initialized ValueInstantiator _valueInstantiator;
 
     /**
      * Deserializer that is used iff delegate-based creator is
      * to be used for deserializing from JSON Object.
      */
-    protected JsonDeserializer<Object> _delegateDeserializer;
+    protected @Initialized JsonDeserializer<Object> _delegateDeserializer;
 
     /**
      * If the Map is to be instantiated using non-default constructor
@@ -59,7 +62,7 @@ public class EnumMapDeserializer
      * that takes one or more named properties as argument(s),
      * this creator is used for instantiation.
      */
-    protected PropertyBasedCreator _propertyBasedCreator;    
+    protected @Initialized PropertyBasedCreator _propertyBasedCreator;    
 
     /*
     /**********************************************************
@@ -70,8 +73,12 @@ public class EnumMapDeserializer
     /**
      * @since 2.9
      */
-    public EnumMapDeserializer(JavaType mapType, ValueInstantiator valueInst,
-            KeyDeserializer keyDeser, JsonDeserializer<?> valueDeser, TypeDeserializer vtd,
+    public EnumMapDeserializer(@Initialized JavaType mapType, @Initialized @Nullable ValueInstantiator valueInst,
+            @Initialized
+            @Nullable
+            KeyDeserializer keyDeser, @Initialized JsonDeserializer<?> valueDeser, @Initialized TypeDeserializer vtd,
+            @FBCBottom
+            @Nullable
             NullValueProvider nuller)
     {
         super(mapType, nuller, null);
@@ -85,8 +92,10 @@ public class EnumMapDeserializer
     /**
      * @since 2.9
      */
-    protected EnumMapDeserializer(EnumMapDeserializer base,
-            KeyDeserializer keyDeser, JsonDeserializer<?> valueDeser, TypeDeserializer vtd,
+    protected EnumMapDeserializer(@Initialized EnumMapDeserializer base,
+            @Initialized
+            KeyDeserializer keyDeser, @Initialized JsonDeserializer<?> valueDeser, @Initialized TypeDeserializer vtd,
+            @Initialized
             NullValueProvider nuller)
     {
         super(base, nuller, base._unwrapSingle);
@@ -107,8 +116,10 @@ public class EnumMapDeserializer
         this(mapType, null, keyDeser, valueDeser, vtd, null);
     }
     
-    public EnumMapDeserializer withResolved(KeyDeserializer keyDeserializer,
-            JsonDeserializer<?> valueDeserializer, TypeDeserializer valueTypeDeser,
+    public EnumMapDeserializer withResolved(@Initialized KeyDeserializer keyDeserializer,
+            @Initialized
+            JsonDeserializer<?> valueDeserializer, @Initialized TypeDeserializer valueTypeDeser,
+            @Initialized
             NullValueProvider nuller)
     {
         if ((keyDeserializer == _keyDeserializer) && (nuller == _nullProvider)
@@ -126,7 +137,7 @@ public class EnumMapDeserializer
      */
     
     @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException
+    public void resolve(@Initialized EnumMapDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException
     {
         // May need to resolve types for delegate- and/or property-based creators:
         if (_valueInstantiator != null) {
@@ -165,7 +176,7 @@ public class EnumMapDeserializer
      * when it is known for which property deserializer is needed for.
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException
+    public JsonDeserializer<?> createContextual(@Initialized EnumMapDeserializer this, @Initialized DeserializationContext ctxt, @Initialized BeanProperty property) throws JsonMappingException
     {
         // note: instead of finding key deserializer, with enums we actually
         // work with regular deserializers (less code duplication; but not
@@ -193,7 +204,7 @@ public class EnumMapDeserializer
      * let's cache instances by default.
      */
     @Override
-    public boolean isCachable() {
+    public boolean isCachable(@Initialized EnumMapDeserializer this) {
         // Important: do NOT cache if polymorphic values
         return (_valueDeserializer == null)
                 && (_keyDeserializer == null)
@@ -207,13 +218,13 @@ public class EnumMapDeserializer
      */
 
     @Override
-    public JsonDeserializer<Object> getContentDeserializer() {
+    public JsonDeserializer<Object> getContentDeserializer(@Initialized EnumMapDeserializer this) {
         return _valueDeserializer;
     }
 
     // Must override since we do not expose ValueInstantiator
     @Override // since 2.9
-    public Object getEmptyValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getEmptyValue(@Initialized EnumMapDeserializer this, @Initialized DeserializationContext ctxt) throws JsonMappingException {
         return constructMap(ctxt);
     }
 
@@ -224,7 +235,7 @@ public class EnumMapDeserializer
      */
     
     @Override
-    public EnumMap<?,?> deserialize(JsonParser p, DeserializationContext ctxt)
+    public EnumMap<?,?> deserialize(@Initialized EnumMapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt)
         throws IOException
     {
         if (_propertyBasedCreator != null) {
@@ -249,7 +260,8 @@ public class EnumMapDeserializer
     }
 
     @Override
-    public EnumMap<?,?> deserialize(JsonParser p, DeserializationContext ctxt,
+    public EnumMap<?,?> deserialize(@Initialized EnumMapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             EnumMap result)
         throws IOException
     {
@@ -301,7 +313,8 @@ public class EnumMapDeserializer
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized EnumMapDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -309,7 +322,7 @@ public class EnumMapDeserializer
         return typeDeserializer.deserializeTypedFromObject(p, ctxt);
     }
 
-    protected EnumMap<?,?> constructMap(DeserializationContext ctxt) throws JsonMappingException {
+    protected EnumMap<?,?> constructMap(@Initialized DeserializationContext ctxt) throws JsonMappingException {
         if (_valueInstantiator == null) {
             return new EnumMap(_enumClass);
         }
@@ -325,7 +338,7 @@ public class EnumMapDeserializer
         }
     }
 
-    public EnumMap<?,?> _deserializeUsingProperties(JsonParser p, DeserializationContext ctxt) throws IOException
+    public EnumMap<?,?> _deserializeUsingProperties(@Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         final PropertyBasedCreator creator = _propertyBasedCreator;
         // null -> no ObjectIdReader for EnumMaps

@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.cfg;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,7 +24,7 @@ public class MutableConfigOverride
 
     public MutableConfigOverride() { super(); }
 
-    protected MutableConfigOverride(MutableConfigOverride src) {
+    protected MutableConfigOverride(@Initialized MutableConfigOverride src) {
         super(src);
     }
 

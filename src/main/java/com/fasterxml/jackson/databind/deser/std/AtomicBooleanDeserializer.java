@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -8,12 +9,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 
 public class AtomicBooleanDeserializer extends StdScalarDeserializer<AtomicBoolean>
 {
-    private static final long serialVersionUID = 1L;
+    private static final @Initialized long serialVersionUID = 1L;
 
     public AtomicBooleanDeserializer() { super(AtomicBoolean.class); }
 
     @Override
-    public AtomicBoolean deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public AtomicBoolean deserialize(@Initialized AtomicBooleanDeserializer this, @Initialized JsonParser jp, @Initialized DeserializationContext ctxt) throws IOException {
         return new AtomicBoolean(_parseBooleanPrimitive(jp, ctxt));
     }
 }

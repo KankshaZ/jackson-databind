@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.deser.std;
 
+import org.checkerframework.checker.initialization.qual.Initialized;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.*;
@@ -20,7 +21,7 @@ public class JsonNodeDeserializer
      * Singleton instance of generic deserializer for {@link JsonNode}.
      * Only used for types other than JSON Object and Array.
      */
-    private final static JsonNodeDeserializer instance = new JsonNodeDeserializer();
+    private final static @Initialized JsonNodeDeserializer instance = new JsonNodeDeserializer();
 
     protected JsonNodeDeserializer() {
         // `null` means that explicit "merge" is honored and may or may not work, but
@@ -32,7 +33,7 @@ public class JsonNodeDeserializer
     /**
      * Factory method for accessing deserializer for specific node type
      */
-    public static JsonDeserializer<? extends JsonNode> getDeserializer(Class<?> nodeClass)
+    public static JsonDeserializer<? extends JsonNode> getDeserializer(@Initialized Class<?> nodeClass)
     {
         if (nodeClass == ObjectNode.class) {
             return ObjectDeserializer.getInstance();
@@ -51,7 +52,7 @@ public class JsonNodeDeserializer
      */
 
     @Override
-    public JsonNode getNullValue(DeserializationContext ctxt) {
+    public JsonNode getNullValue(@Initialized JsonNodeDeserializer this, @Initialized DeserializationContext ctxt) {
         return NullNode.getInstance();
     }
 
@@ -61,7 +62,7 @@ public class JsonNodeDeserializer
      * Overridden by typed sub-classes for more thorough checking
      */
     @Override
-    public JsonNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+    public JsonNode deserialize(@Initialized JsonNodeDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
     {
         switch (p.getCurrentTokenId()) {
         case JsonTokenId.ID_START_OBJECT:
@@ -82,16 +83,16 @@ public class JsonNodeDeserializer
     final static class ObjectDeserializer
         extends BaseNodeDeserializer<ObjectNode>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        protected final static ObjectDeserializer _instance = new ObjectDeserializer();
+        protected final static @Initialized ObjectDeserializer _instance = new ObjectDeserializer();
 
         protected ObjectDeserializer() { super(ObjectNode.class, true); }
 
         public static ObjectDeserializer getInstance() { return _instance; }
 
         @Override
-        public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public ObjectNode deserialize(JsonNodeDeserializer.@Initialized ObjectDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (p.isExpectedStartObjectToken()) {
                 return deserializeObject(p, ctxt, ctxt.getNodeFactory());
@@ -113,7 +114,8 @@ public class JsonNodeDeserializer
          * @since 2.9
          */
         @Override
-        public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt,
+        public ObjectNode deserialize(JsonNodeDeserializer.@Initialized ObjectDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 ObjectNode node) throws IOException
         {
             if (p.isExpectedStartObjectToken() || p.hasToken(JsonToken.FIELD_NAME)) {
@@ -126,16 +128,16 @@ public class JsonNodeDeserializer
     final static class ArrayDeserializer
         extends BaseNodeDeserializer<ArrayNode>
     {
-        private static final long serialVersionUID = 1L;
+        private static final @Initialized long serialVersionUID = 1L;
 
-        protected final static ArrayDeserializer _instance = new ArrayDeserializer();
+        protected final static @Initialized ArrayDeserializer _instance = new ArrayDeserializer();
 
         protected ArrayDeserializer() { super(ArrayNode.class, true); }
 
         public static ArrayDeserializer getInstance() { return _instance; }
 
         @Override
-        public ArrayNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+        public ArrayNode deserialize(JsonNodeDeserializer.@Initialized ArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException
         {
             if (p.isExpectedStartArrayToken()) {
                 return deserializeArray(p, ctxt, ctxt.getNodeFactory());
@@ -149,7 +151,8 @@ public class JsonNodeDeserializer
          * @since 2.9
          */
         @Override
-        public ArrayNode deserialize(JsonParser p, DeserializationContext ctxt,
+        public ArrayNode deserialize(JsonNodeDeserializer.@Initialized ArrayDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+                @Initialized
                 ArrayNode node) throws IOException
         {
             if (p.isExpectedStartArrayToken()) {
@@ -168,7 +171,7 @@ public class JsonNodeDeserializer
 abstract class BaseNodeDeserializer<T extends JsonNode>
     extends StdDeserializer<T>
 {
-    protected final Boolean _supportsUpdates;
+    protected final @Initialized Boolean _supportsUpdates;
 
     public BaseNodeDeserializer(Class<T> vc, Boolean supportsUpdates) {
         super(vc);
@@ -176,7 +179,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
     }
 
     @Override
-    public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+    public Object deserializeWithType(@Initialized BaseNodeDeserializer<T> this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             TypeDeserializer typeDeserializer)
         throws IOException
     {
@@ -189,10 +193,10 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      *   since it's not uncommon to "read anything"
      */
     @Override
-    public boolean isCachable() { return true; }
+    public boolean isCachable(@Initialized BaseNodeDeserializer<T> this) { return true; }
 
     @Override // since 2.9
-    public Boolean supportsUpdate(DeserializationConfig config) {
+    public Boolean supportsUpdate(@Initialized BaseNodeDeserializer<T> this, @Initialized DeserializationConfig config) {
         return _supportsUpdates;
     }
 
@@ -215,10 +219,13 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      *   was added
      * @param newValue Newly added value just added to the object node
      */
-    protected void _handleDuplicateField(JsonParser p, DeserializationContext ctxt,
+    protected void _handleDuplicateField(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             JsonNodeFactory nodeFactory,
-            String fieldName, ObjectNode objectNode,
-            JsonNode oldValue, JsonNode newValue)
+            @Initialized
+            String fieldName, @Initialized ObjectNode objectNode,
+            @Initialized
+            JsonNode oldValue, @Initialized JsonNode newValue)
         throws JsonProcessingException
     {
         // [databind#237]: Report an error if asked to do so:
@@ -239,8 +246,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      * Method called to deserialize Object node instance when there is no existing
      * node to modify.
      */
-    protected final ObjectNode deserializeObject(JsonParser p, DeserializationContext ctxt,
-            final JsonNodeFactory nodeFactory) throws IOException
+    protected final ObjectNode deserializeObject(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            final @Initialized JsonNodeFactory nodeFactory) throws IOException
     {
         final ObjectNode node = nodeFactory.objectNode();
         String key = p.nextFieldName();
@@ -293,8 +300,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      *
      * @since 2.9
      */
-    protected final ObjectNode deserializeObjectAtName(JsonParser p, DeserializationContext ctxt,
-            final JsonNodeFactory nodeFactory) throws IOException
+    protected final ObjectNode deserializeObjectAtName(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            final @Initialized JsonNodeFactory nodeFactory) throws IOException
     {
         final ObjectNode node = nodeFactory.objectNode();
         String key = p.getCurrentName();
@@ -347,8 +354,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      *
      * @since 2.9
      */
-    protected final JsonNode updateObject(JsonParser p, DeserializationContext ctxt,
-        final ObjectNode node) throws IOException
+    protected final JsonNode updateObject(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+        final @Initialized ObjectNode node) throws IOException
     {
         String key;
         if (p.isExpectedStartObjectToken()) {
@@ -423,8 +430,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
         return node;
     }
 
-    protected final ArrayNode deserializeArray(JsonParser p, DeserializationContext ctxt,
-            final JsonNodeFactory nodeFactory) throws IOException
+    protected final ArrayNode deserializeArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            final @Initialized JsonNodeFactory nodeFactory) throws IOException
     {
         ArrayNode node = nodeFactory.arrayNode();
         while (true) {
@@ -469,8 +476,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
      *
      * @since 2.9
      */
-    protected final JsonNode updateArray(JsonParser p, DeserializationContext ctxt,
-        final ArrayNode node) throws IOException
+    protected final JsonNode updateArray(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+        final @Initialized ArrayNode node) throws IOException
     {
         final JsonNodeFactory nodeFactory = ctxt.getNodeFactory();
         while (true) {
@@ -509,8 +516,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
         }
     }
     
-    protected final JsonNode deserializeAny(JsonParser p, DeserializationContext ctxt,
-            final JsonNodeFactory nodeFactory) throws IOException
+    protected final JsonNode deserializeAny(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            final @Initialized JsonNodeFactory nodeFactory) throws IOException
     {
         switch (p.getCurrentTokenId()) {
         case JsonTokenId.ID_END_OBJECT: // for empty JSON Objects we may point to this?
@@ -550,7 +557,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
         return (JsonNode) ctxt.handleUnexpectedToken(handledType(), p);
     }
 
-    protected final JsonNode _fromInt(JsonParser p, DeserializationContext ctxt,
+    protected final JsonNode _fromInt(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             JsonNodeFactory nodeFactory) throws IOException
     {
         JsonParser.NumberType nt;
@@ -575,8 +583,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
         return nodeFactory.numberNode(p.getBigIntegerValue());
     }
 
-    protected final JsonNode _fromFloat(JsonParser p, DeserializationContext ctxt,
-            final JsonNodeFactory nodeFactory) throws IOException
+    protected final JsonNode _fromFloat(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            final @Initialized JsonNodeFactory nodeFactory) throws IOException
     {
         JsonParser.NumberType nt = p.getNumberType();
         if (nt == JsonParser.NumberType.BIG_DECIMAL) {
@@ -596,7 +604,8 @@ abstract class BaseNodeDeserializer<T extends JsonNode>
         return nodeFactory.numberNode(p.getDoubleValue());
     }
 
-    protected final JsonNode _fromEmbedded(JsonParser p, DeserializationContext ctxt,
+    protected final JsonNode _fromEmbedded(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
+            @Initialized
             JsonNodeFactory nodeFactory) throws IOException
     {
         Object ob = p.getEmbeddedObject();
