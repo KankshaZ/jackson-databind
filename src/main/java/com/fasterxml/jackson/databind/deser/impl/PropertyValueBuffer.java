@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.util.BitSet;
 
@@ -27,10 +28,10 @@ public class PropertyValueBuffer
     /**********************************************************
      */
 
-    protected final @Initialized JsonParser _parser;
-    protected final @Initialized DeserializationContext _context;
+    protected final JsonParser _parser;
+    protected final DeserializationContext _context;
 
-    protected final @Initialized ObjectIdReader _objectIdReader;
+    protected final ObjectIdReader _objectIdReader;
     
     /*
     /**********************************************************
@@ -48,34 +49,34 @@ public class PropertyValueBuffer
      * Number of creator parameters for which we have not yet received
      * values.
      */
-    protected @Initialized int _paramsNeeded;
+    protected int _paramsNeeded;
 
     /**
      * Bitflag used to track parameters found from incoming data
      * when number of parameters is
      * less than 32 (fits in int).
      */
-    protected @Initialized int _paramsSeen;
+    protected int _paramsSeen;
 
     /**
      * Bitflag used to track parameters found from incoming data
      * when number of parameters is
      * 32 or higher.
      */
-    protected final @Initialized BitSet _paramsSeenBig;
+    protected final @Nullable BitSet _paramsSeenBig;
 
     /**
      * If we get non-creator parameters before or between
      * creator parameters, those need to be buffered. Buffer
      * is just a simple linked list
      */
-    protected @Initialized PropertyValue _buffered;
+    protected @Nullable PropertyValue _buffered;
 
     /**
      * In case there is an Object Id property to handle, this is the value
      * we have for it.
      */
-    protected @Initialized Object _idValue;
+    protected @Nullable Object _idValue;
 
     /*
     /**********************************************************
@@ -183,6 +184,7 @@ public class PropertyValueBuffer
         return _creatorParameters;
     }
 
+    @SuppressWarnings("nullness") // DeserializationContext needs to be annotated
     protected Object _findMissing(@Initialized SettableBeanProperty prop) throws JsonMappingException
     {
         // First: do we have injectable value?
@@ -230,7 +232,7 @@ public class PropertyValueBuffer
     /**
      * Helper method called to handle Object Id value collected earlier, if any
      */
-    public Object handleIdValue(final @Initialized DeserializationContext ctxt, @Initialized Object bean) throws IOException
+    public @Nullable Object handleIdValue(final @Initialized DeserializationContext ctxt, @Initialized Object bean) throws IOException
     {
         if (_objectIdReader != null) {
             if (_idValue != null) {
@@ -249,7 +251,7 @@ public class PropertyValueBuffer
         return bean;
     }
     
-    protected PropertyValue buffered() { return _buffered; }
+    protected @Nullable PropertyValue buffered() { return _buffered; }
 
     public boolean isComplete() { return _paramsNeeded <= 0; }
 

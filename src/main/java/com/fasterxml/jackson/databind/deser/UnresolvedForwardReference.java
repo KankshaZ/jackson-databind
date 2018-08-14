@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,9 +19,9 @@ import com.fasterxml.jackson.databind.deser.impl.ReadableObjectId;
  * @author pgelinas
  */
 public class UnresolvedForwardReference extends JsonMappingException {
-    private static final @Initialized long serialVersionUID = 1L;
-    private @Initialized ReadableObjectId _roid;
-    private @Initialized List<UnresolvedId> _unresolvedIds;
+    private static final long serialVersionUID = 1L;
+    private @Nullable ReadableObjectId _roid;
+    private @Nullable List<UnresolvedId> _unresolvedIds;
 
     /**
      * @since 2.7
@@ -62,7 +63,7 @@ public class UnresolvedForwardReference extends JsonMappingException {
     /**********************************************************
      */
 
-    public ReadableObjectId getRoid() {
+    public @Nullable ReadableObjectId getRoid() {
         return _roid;
     }
 
@@ -74,7 +75,7 @@ public class UnresolvedForwardReference extends JsonMappingException {
         _unresolvedIds.add(new UnresolvedId(id, type, where));
     }
 
-    public List<UnresolvedId> getUnresolvedIds(){
+    public @Nullable List<UnresolvedId> getUnresolvedIds(){
         return _unresolvedIds;
     }
     

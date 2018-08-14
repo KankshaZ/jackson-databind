@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  */
 public class ErrorThrowingDeserializer extends JsonDeserializer<Object>
 {
-    private final @Initialized Error _cause;
+    private final Error _cause;
 
     public ErrorThrowingDeserializer(@Initialized NoClassDefFoundError cause) {
         _cause = cause;

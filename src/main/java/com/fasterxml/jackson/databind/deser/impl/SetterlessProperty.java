@@ -25,15 +25,15 @@ import com.fasterxml.jackson.databind.util.Annotations;
 public final class SetterlessProperty
     extends SettableBeanProperty
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized AnnotatedMethod _annotated;
+    protected final AnnotatedMethod _annotated;
 
     /**
      * Get method for accessing property value used to access property
      * (of Collection or Map type) to modify.
      */
-    protected final @Initialized Method _getter;
+    protected final Method _getter;
 
     public SetterlessProperty(@Initialized BeanPropertyDefinition propDef, @Initialized JavaType type,
             @Initialized

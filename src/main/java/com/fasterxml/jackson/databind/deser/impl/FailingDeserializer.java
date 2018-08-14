@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -16,9 +17,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
  */
 public class FailingDeserializer extends StdDeserializer<Object>
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized String _message;
+    protected final String _message;
 
     public FailingDeserializer(@Initialized String m) {
         super(Object.class);
@@ -26,7 +27,7 @@ public class FailingDeserializer extends StdDeserializer<Object>
     }
     
     @Override
-    public Object deserialize(@Initialized FailingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
+    public @Nullable Object deserialize(@Initialized FailingDeserializer this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt) throws IOException {
         ctxt.reportInputMismatch(this, _message);
         return null;
     }

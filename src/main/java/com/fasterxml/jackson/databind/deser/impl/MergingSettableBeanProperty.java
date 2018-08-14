@@ -23,12 +23,12 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 public class MergingSettableBeanProperty
     extends SettableBeanProperty.Delegating
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Member (field, method) used for accessing existing value.
      */
-    protected final @Initialized AnnotatedMember _accessor;
+    protected final AnnotatedMember _accessor;
 
     /*
     /**********************************************************

@@ -1,7 +1,6 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
@@ -18,27 +17,27 @@ import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 public class ObjectIdReader
     implements java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized JavaType _idType;
+    protected final JavaType _idType;
 
-    public final @Initialized PropertyName propertyName;
+    public final PropertyName propertyName;
     
     /**
      * Blueprint generator instance: actual instance will be
      * fetched from {@link SerializerProvider} using this as
      * the key.
      */
-    public final @Initialized ObjectIdGenerator<?> generator;
+    public final ObjectIdGenerator<?> generator;
 
-    public final @Initialized ObjectIdResolver resolver;
+    public final ObjectIdResolver resolver;
 
     /**
      * Deserializer used for deserializing id values.
      */
-    protected final @Initialized JsonDeserializer<Object> _deserializer;
+    protected final JsonDeserializer<Object> _deserializer;
 
-    public final @Initialized SettableBeanProperty idProperty;
+    public final SettableBeanProperty idProperty;
     
     /*
     /**********************************************************
@@ -67,7 +66,7 @@ public class ObjectIdReader
     public static ObjectIdReader construct(@Initialized JavaType idType, @Initialized PropertyName propName,
             @Initialized
             ObjectIdGenerator<?> generator, @Initialized JsonDeserializer<?> deser,
-            @Initialized @Nullable SettableBeanProperty idProp, @Initialized ObjectIdResolver resolver)
+            @Initialized SettableBeanProperty idProp, @Initialized ObjectIdResolver resolver)
     {
         return new ObjectIdReader(idType, propName, generator, deser, idProp, resolver);
     }

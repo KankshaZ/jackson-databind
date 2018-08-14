@@ -25,20 +25,20 @@ public final class PropertyBasedCreator
      * Number of properties: usually same as size of {@link #_propertyLookup},
      * but not necessarily, when we have unnamed injectable properties.
      */
-    protected final @Initialized int _propertyCount;
+    protected final int _propertyCount;
 
     /**
      * Helper object that knows how to actually construct the instance by
      * invoking creator method with buffered arguments.
      */
-    protected final @Initialized ValueInstantiator _valueInstantiator;
+    protected final ValueInstantiator _valueInstantiator;
 
     /**
      * Map that contains property objects for either constructor or factory
      * method (whichever one is null: one property for each
      * parameter for that one), keyed by logical property name
      */
-    protected final @Initialized HashMap<String, SettableBeanProperty> _propertyLookup;
+    protected final HashMap<String, SettableBeanProperty> _propertyLookup;
 
     /**
      * Array that contains properties that expect value to inject, if any;
@@ -170,11 +170,11 @@ public final class PropertyBasedCreator
         return _propertyLookup.values();
     }
 
-    public SettableBeanProperty findCreatorProperty(@Initialized String name) {
+    public @Nullable SettableBeanProperty findCreatorProperty(@Initialized String name) {
         return _propertyLookup.get(name);
     }
 
-    public SettableBeanProperty findCreatorProperty(@Initialized int propertyIndex) {
+    public @Nullable SettableBeanProperty findCreatorProperty(@Initialized int propertyIndex) {
         for (SettableBeanProperty prop : _propertyLookup.values()) {
             if (prop.getPropertyIndex() == propertyIndex) {
                 return prop;
@@ -196,7 +196,7 @@ public final class PropertyBasedCreator
      */
     public PropertyValueBuffer startBuilding(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
             @Initialized
-            @Nullable
+            
             ObjectIdReader oir) {
         return new PropertyValueBuffer(p, ctxt, _propertyCount, oir);
     }
@@ -232,15 +232,15 @@ public final class PropertyBasedCreator
      */
     static class CaseInsensitiveMap extends HashMap<String, SettableBeanProperty>
     {
-        private static final @Initialized long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
         @Override
-        public SettableBeanProperty get(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized @Nullable Object key0) {
+        public @Nullable SettableBeanProperty get(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized @Nullable Object key0) {
             return super.get(((String) key0).toLowerCase());
         }
 
         @Override
-        public SettableBeanProperty put(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized String key, @Initialized SettableBeanProperty value) {
+        public @Nullable SettableBeanProperty put(PropertyBasedCreator.@Initialized CaseInsensitiveMap this, @Initialized String key, @Initialized SettableBeanProperty value) {
             key = key.toLowerCase();
             return super.put(key, value);
         }

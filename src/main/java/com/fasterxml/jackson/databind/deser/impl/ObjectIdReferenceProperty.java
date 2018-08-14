@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
 
 public class ObjectIdReferenceProperty extends SettableBeanProperty
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private final @Initialized SettableBeanProperty _forward;
+    private final SettableBeanProperty _forward;
 
     public ObjectIdReferenceProperty(@Initialized SettableBeanProperty forward, @Initialized ObjectIdInfo objectIdInfo)
     {
@@ -68,7 +69,7 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public <A extends Annotation> A getAnnotation(@Initialized ObjectIdReferenceProperty this, @Initialized Class<A> acls) {
+    public @Nullable <A extends Annotation> A getAnnotation(@Initialized ObjectIdReferenceProperty this, @Initialized Class<A> acls) {
         return _forward.getAnnotation(acls);
     }
 
@@ -88,7 +89,7 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object instance) throws IOException
+    public @Nullable Object deserializeSetAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
         try {
             return setAndReturn(instance, deserialize(p, ctxt));
@@ -108,13 +109,13 @@ public class ObjectIdReferenceProperty extends SettableBeanProperty
     }
 
     @Override
-    public Object setAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
+    public @Nullable Object setAndReturn(@Initialized ObjectIdReferenceProperty this, @Initialized Object instance, @Initialized Object value) throws IOException {
         return _forward.setAndReturn(instance, value);
     }
 
     public final static class PropertyReferring extends Referring {
-        private final @Initialized ObjectIdReferenceProperty _parent;
-        public final @Initialized Object _pojo;
+        private final ObjectIdReferenceProperty _parent;
+        public final Object _pojo;
 
         public PropertyReferring(@Initialized ObjectIdReferenceProperty parent,
                 @Initialized

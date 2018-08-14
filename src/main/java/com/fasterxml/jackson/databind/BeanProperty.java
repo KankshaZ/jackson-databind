@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
@@ -112,7 +114,7 @@ public interface BeanProperty extends Named
      * alternate {@link AnnotationIntrospector}s) should be accessed
      * through {@link AnnotationIntrospector}.
      */
-    public <A extends Annotation> A getAnnotation(Class<A> acls);
+    public @Nullable <A extends Annotation> A getAnnotation(Class<A> acls);
 
     /**
      * Method for finding annotation associated with context of

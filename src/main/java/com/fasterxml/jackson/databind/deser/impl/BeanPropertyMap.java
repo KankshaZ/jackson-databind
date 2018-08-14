@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,26 +33,26 @@ public class BeanPropertyMap
     implements Iterable<SettableBeanProperty>,
         java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * @since 2.5
      */
-    protected final @Initialized boolean _caseInsensitive;
+    protected final boolean _caseInsensitive;
 
-    private @Initialized int _hashMask;
+    private int _hashMask;
 
     /**
      * Number of entries stored in the hash area.
      */
-    private @Initialized int _size;
+    private int _size;
     
-    private @Initialized int _spillCount;
+    private int _spillCount;
 
     /**
      * Hash area that contains key/property pairs in adjacent elements.
      */
-    private @Nullable Object @Initialized [] _hashArea;
+    private Object @Initialized [] _hashArea;
 
     /**
      * Array of properties in the exact order they were handed in. This is
@@ -69,18 +70,19 @@ public class BeanPropertyMap
      *
      * @since 2.9
      */
-    private final @Initialized Map<String,List<PropertyName>> _aliasDefs;
+    private final Map<String,List<PropertyName>> _aliasDefs;
 
     /**
      * Mapping from secondary names (aliases) to primary names.
      *
      * @since 2.9
      */
-    private final @Initialized Map<String,String> _aliasMapping;
+    private final Map<String,String> _aliasMapping;
     
     /**
      * @since 2.9
      */
+    @SuppressWarnings("initialization") // props and aliasDefs is initialized
     public BeanPropertyMap(@Initialized boolean caseInsensitive, @Initialized Collection<SettableBeanProperty> props,
             @Initialized
             Map<String,List<PropertyName>> aliasDefs)
@@ -101,6 +103,7 @@ public class BeanPropertyMap
     /**
      * @since 2.8
      */
+    @SuppressWarnings("initialization") // _propsInOrder is initialized
     protected BeanPropertyMap(@Initialized BeanPropertyMap base, @Initialized boolean caseInsensitive)
     {
         _caseInsensitive = caseInsensitive;
@@ -126,6 +129,7 @@ public class BeanPropertyMap
         return new BeanPropertyMap(this, state);
     }
 
+    @SuppressWarnings("nullness") // hashed is non-null when a copy is made
     protected void init(@Initialized Collection<SettableBeanProperty> props)
     {
         _size = props.size();
@@ -213,6 +217,7 @@ public class BeanPropertyMap
      * Note that method does not modify this instance but constructs
      * and returns a new one.
      */
+    @SuppressWarnings("nullness") // _hashArea is non-null when a copy is made
     public BeanPropertyMap withProperty(@Initialized SettableBeanProperty newProp)
     {
         // First: may be able to just replace?
@@ -280,6 +285,7 @@ public class BeanPropertyMap
      * Mutant factory method for constructing a map where all entries use given
      * prefix
      */
+    @SuppressWarnings("nullness") // prop is non-null
     public BeanPropertyMap renameAll(@Initialized NameTransformer transformer)
     {
         if (transformer == null || (transformer == NameTransformer.NOP)) {
@@ -460,7 +466,7 @@ public class BeanPropertyMap
      * 
      * @since 2.1
      */
-    public SettableBeanProperty[] getPropertiesInInsertionOrder() {
+    public @Nullable SettableBeanProperty[] getPropertiesInInsertionOrder() {
         return _propsInOrder;
     }
 
@@ -479,7 +485,7 @@ public class BeanPropertyMap
     /**
      * @since 2.3
      */
-    public SettableBeanProperty find(@Initialized int index)
+    public @Nullable SettableBeanProperty find(@Initialized int index)
     {
         // note: will scan the whole area, including primary, secondary and
         // possible spill-area
@@ -492,7 +498,7 @@ public class BeanPropertyMap
         return null;
     }
 
-    public SettableBeanProperty find(@Initialized String key)
+    public @Nullable SettableBeanProperty find(@Initialized String key)
     {
         if (key == null) {
             throw new IllegalArgumentException("Cannot pass null property name");
@@ -514,7 +520,7 @@ public class BeanPropertyMap
         return _find2(key, slot, match);
     }
 
-    private final SettableBeanProperty _find2(@Initialized String key, @Initialized int slot, @Initialized Object match)
+    private @Nullable final SettableBeanProperty _find2(@Initialized String key, @Initialized int slot, @Initialized Object match)
     {
         if (match == null) {
             // 26-Feb-2017, tatu: Need to consider aliases
@@ -540,7 +546,7 @@ public class BeanPropertyMap
         return _findWithAlias(_aliasMapping.get(key));
     }
 
-    private SettableBeanProperty _findWithAlias(@Initialized @Nullable String keyFromAlias)
+    private @Nullable SettableBeanProperty _findWithAlias(@Initialized @Nullable String keyFromAlias)
     {
         if (keyFromAlias == null) {
             return null;
@@ -559,7 +565,7 @@ public class BeanPropertyMap
         return _find2ViaAlias(keyFromAlias, slot, match);
     }
 
-    private SettableBeanProperty _find2ViaAlias(@Initialized String key, @Initialized int slot, @Initialized Object match)
+    private @Nullable SettableBeanProperty _find2ViaAlias(@Initialized String key, @Initialized int slot, @Initialized Object match)
     {
         // no? secondary?
         int hashSize = _hashMask+1;

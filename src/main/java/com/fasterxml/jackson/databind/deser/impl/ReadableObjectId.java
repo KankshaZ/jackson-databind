@@ -23,13 +23,13 @@ public class ReadableObjectId
     /**
      * @since 2.8 (with this name, formerly `public Object item`)
      */
-    protected @Initialized Object _item;
+    protected @Nullable Object _item;
 
-    protected final ObjectIdGenerator.@Initialized IdKey _key;
+    protected final ObjectIdGenerator.IdKey _key;
 
-    protected @Initialized @Nullable LinkedList<Referring> _referringProperties;
+    protected @Nullable LinkedList<Referring> _referringProperties;
 
-    protected @Initialized ObjectIdResolver _resolver;
+    protected @Nullable ObjectIdResolver _resolver;
 
     public ReadableObjectId(ObjectIdGenerator.@Initialized IdKey key) {
         _key = key;
@@ -112,7 +112,7 @@ public class ReadableObjectId
      * 
      * @since 2.7
      */
-    public ObjectIdResolver getResolver() {
+    public @Nullable ObjectIdResolver getResolver() {
         return _resolver;
     }
 
@@ -128,8 +128,8 @@ public class ReadableObjectId
      */
 
     public static abstract class Referring {
-        private final @Initialized UnresolvedForwardReference _reference;
-        private final @Initialized Class<?> _beanType;
+        private final UnresolvedForwardReference _reference;
+        private final Class<?> _beanType;
 
         public Referring(UnresolvedForwardReference ref, Class<?> beanType) {
             _reference = ref;

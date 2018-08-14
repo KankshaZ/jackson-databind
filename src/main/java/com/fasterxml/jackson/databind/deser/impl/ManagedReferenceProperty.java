@@ -18,17 +18,17 @@ public final class ManagedReferenceProperty
     // Changed to extends delegating base class in 2.9
     extends SettableBeanProperty.Delegating
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized String _referenceName;
+    protected final String _referenceName;
 
     /**
      * Flag that indicates whether property to handle is a container type
      * (array, Collection, Map) or not.
      */
-    protected final @Initialized boolean _isContainer;
+    protected final boolean _isContainer;
 
-    protected final @Initialized SettableBeanProperty _backProperty;
+    protected final SettableBeanProperty _backProperty;
 
     public ManagedReferenceProperty(@Initialized SettableBeanProperty forward, @Initialized String refName,
             @Initialized

@@ -26,21 +26,21 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public final class FieldProperty
     extends SettableBeanProperty
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    final protected @Initialized AnnotatedField _annotated;
+    final protected AnnotatedField _annotated;
 
     /**
      * Actual field to set when deserializing this property.
      * Transient since there is no need to persist; only needed during
      * construction of objects.
      */
-    final protected transient @Initialized Field _field;
+    final protected transient Field _field;
 
     /**
      * @since 2.9
      */
-    final protected @Initialized boolean _skipNulls;
+    final protected boolean _skipNulls;
 
     public FieldProperty(@Initialized BeanPropertyDefinition propDef, @Initialized JavaType type,
             @Initialized
@@ -115,7 +115,7 @@ public final class FieldProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(@Initialized FieldProperty this, @Initialized Class<A> acls) {
+    public @Nullable <A extends Annotation> A getAnnotation(@Initialized FieldProperty this, @Initialized Class<A> acls) {
         return (_annotated == null) ? null : _annotated.getAnnotation(acls);
     }
 
@@ -128,6 +128,7 @@ public final class FieldProperty
      */
 
     @Override
+    @SuppressWarnings("nullness") // need to annotate JsonParser
     public void deserializeAndSet(@Initialized FieldProperty this, @Initialized JsonParser p,
     		@Initialized
     		DeserializationContext ctxt, @Initialized Object instance) throws IOException
@@ -151,6 +152,7 @@ public final class FieldProperty
     }
 
     @Override
+    @SuppressWarnings("nullness") // need to annotate JsonParser
     public Object deserializeSetAndReturn(@Initialized FieldProperty this, @Initialized JsonParser p,
     		@Initialized
     		DeserializationContext ctxt, @Initialized Object instance) throws IOException

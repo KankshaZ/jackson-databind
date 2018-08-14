@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.util.AccessPattern;
@@ -25,7 +26,7 @@ public interface NullValueProvider
      * `CONSTANT`, this method WILL NOT use provided `ctxt` and it may thus
      * be passed as `null`.
      */
-    public Object getNullValue(@Initialized DeserializationContext ctxt) throws JsonMappingException;
+    public @Nullable Object getNullValue(@Initialized DeserializationContext ctxt) throws JsonMappingException;
 
     /**
      * Accessor that may be used to determine if and when provider must be called to

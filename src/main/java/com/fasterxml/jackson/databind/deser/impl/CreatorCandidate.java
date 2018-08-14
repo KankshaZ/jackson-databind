@@ -11,9 +11,9 @@ import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 
 public final class CreatorCandidate
 {
-    protected final @Initialized AnnotationIntrospector _intr;
-    protected final @Initialized AnnotatedWithParams _creator;
-    protected final @Initialized int _paramCount;
+    protected final AnnotationIntrospector _intr;
+    protected final AnnotatedWithParams _creator;
+    protected final int _paramCount;
     protected final Param @Initialized [] _params;
 
     protected CreatorCandidate(@Initialized AnnotationIntrospector intr,
@@ -43,9 +43,9 @@ public final class CreatorCandidate
     public int paramCount() { return _paramCount; }
     public JacksonInject.Value injection(@Initialized int i) { return _params[i].injection; }
     public AnnotatedParameter parameter(@Initialized int i) { return _params[i].annotated; }
-    public BeanPropertyDefinition propertyDef(@Initialized int i) { return _params[i].propDef; }
+    public @Nullable BeanPropertyDefinition propertyDef(@Initialized int i) { return _params[i].propDef; }
 
-    public PropertyName paramName(@Initialized int i) {
+    public @Nullable PropertyName paramName(@Initialized int i) {
         BeanPropertyDefinition propDef = _params[i].propDef;
         if (propDef != null) {
             return propDef.getFullName();
@@ -53,7 +53,7 @@ public final class CreatorCandidate
         return null;
     }
 
-    public PropertyName explicitParamName(@Initialized int i) {
+    public @Nullable PropertyName explicitParamName(@Initialized int i) {
         BeanPropertyDefinition propDef = _params[i].propDef;
         if (propDef != null) {
             if (propDef.isExplicitlyNamed()) {
@@ -63,7 +63,7 @@ public final class CreatorCandidate
         return null;
     }
     
-    public PropertyName findImplicitParamName(@Initialized int i) {
+    public @Nullable PropertyName findImplicitParamName(@Initialized int i) {
         String str = _intr.findImplicitPropertyName(_params[i].annotated);
         if (str != null && !str.isEmpty()) {
             return PropertyName.construct(str);
@@ -96,8 +96,8 @@ public final class CreatorCandidate
     }
 
     public final static class Param {
-        public final @Initialized AnnotatedParameter annotated;
-        public final @Initialized BeanPropertyDefinition propDef;
+        public final AnnotatedParameter annotated;
+        public final @Nullable BeanPropertyDefinition propDef;
         public final JacksonInject.@Initialized Value injection;
 
         public Param(@Initialized AnnotatedParameter p, @Initialized @Nullable BeanPropertyDefinition pd,
@@ -108,7 +108,7 @@ public final class CreatorCandidate
             injection = i;
         }
 
-        public PropertyName fullName() {
+        public @Nullable PropertyName fullName() {
             if (propDef == null) {
                 return null;
             }

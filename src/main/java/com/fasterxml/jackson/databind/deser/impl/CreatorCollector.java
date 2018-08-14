@@ -21,29 +21,29 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
  */
 public class CreatorCollector {
     // Since 2.5
-    protected final static @Initialized int C_DEFAULT = 0;
-    protected final static @Initialized int C_STRING = 1;
-    protected final static @Initialized int C_INT = 2;
-    protected final static @Initialized int C_LONG = 3;
-    protected final static @Initialized int C_DOUBLE = 4;
-    protected final static @Initialized int C_BOOLEAN = 5;
-    protected final static @Initialized int C_DELEGATE = 6;
-    protected final static @Initialized int C_PROPS = 7;
-    protected final static @Initialized int C_ARRAY_DELEGATE = 8;
+    protected final static int C_DEFAULT = 0;
+    protected final static int C_STRING = 1;
+    protected final static int C_INT = 2;
+    protected final static int C_LONG = 3;
+    protected final static int C_DOUBLE = 4;
+    protected final static int C_BOOLEAN = 5;
+    protected final static int C_DELEGATE = 6;
+    protected final static int C_PROPS = 7;
+    protected final static int C_ARRAY_DELEGATE = 8;
 
     protected final static String @Initialized [] TYPE_DESCS = new String[] { "default",
             "from-String", "from-int", "from-long", "from-double",
             "from-boolean", "delegate", "property-based" };
 
     /// Type of bean being created
-    final protected @Initialized BeanDescription _beanDesc;
+    final protected BeanDescription _beanDesc;
 
-    final protected @Initialized boolean _canFixAccess;
+    final protected boolean _canFixAccess;
 
     /**
      * @since 2.7
      */
-    final protected @Initialized boolean _forceAccess;
+    final protected boolean _forceAccess;
 
     /**
      * Set of creators we have collected so far
@@ -59,18 +59,18 @@ public class CreatorCollector {
      * 
      * @since 2.5
      */
-    protected @Initialized int _explicitCreators = 0;
+    protected int _explicitCreators = 0;
 
-    protected @Initialized boolean _hasNonDefaultCreator = false;
+    protected boolean _hasNonDefaultCreator = false;
 
     // when there are injectable values along with delegate:
     protected SettableBeanProperty @Initialized @Nullable [] _delegateArgs;
 
     protected SettableBeanProperty @Initialized @Nullable [] _arrayDelegateArgs;
 
-    protected SettableBeanProperty @Initialized [] _propertyBasedArgs;
+    protected SettableBeanProperty @Initialized @Nullable [] _propertyBasedArgs;
 
-    protected @Initialized AnnotatedParameter _incompleteParameter;
+    protected @Nullable AnnotatedParameter _incompleteParameter;
 
     /*
     /**********************************************************
@@ -88,9 +88,9 @@ public class CreatorCollector {
     public ValueInstantiator constructValueInstantiator(
             @Initialized
             DeserializationConfig config) {
-        final JavaType delegateType = _computeDelegateType(
+        final @Nullable JavaType delegateType = _computeDelegateType(
                 _creators[C_DELEGATE], _delegateArgs);
-        final JavaType arrayDelegateType = _computeDelegateType(
+        final @Nullable JavaType arrayDelegateType = _computeDelegateType(
                 _creators[C_ARRAY_DELEGATE], _arrayDelegateArgs);
         final JavaType type = _beanDesc.getType();
 
@@ -157,7 +157,7 @@ public class CreatorCollector {
 
     public void addDelegatingCreator(@Initialized AnnotatedWithParams creator,
             @Initialized
-            boolean explicit, SettableBeanProperty @Initialized  @Nullable [] injectables,
+            boolean explicit, SettableBeanProperty @Initialized  [] injectables,
             @Initialized
             int delegateeIndex)
     {
@@ -174,7 +174,7 @@ public class CreatorCollector {
 
     public void addPropertyCreator(@Initialized AnnotatedWithParams creator,
             @Initialized
-            boolean explicit, SettableBeanProperty @Initialized  @Nullable [] properties)
+            boolean explicit, SettableBeanProperty @Initialized [] properties)
     {
         if (verifyNonDup(creator, C_PROPS, explicit)) {
             // Better ensure we have no duplicate names either...
@@ -238,8 +238,8 @@ public class CreatorCollector {
     /**********************************************************
      */
 
-    private JavaType _computeDelegateType(@Initialized AnnotatedWithParams creator,
-            SettableBeanProperty @Initialized [] delegateArgs) {
+    private @Nullable JavaType _computeDelegateType(@Initialized AnnotatedWithParams creator,
+            SettableBeanProperty @Initialized @Nullable [] delegateArgs) {
         if (!_hasNonDefaultCreator || (creator == null)) {
             return null;
         }
@@ -355,15 +355,15 @@ public class CreatorCollector {
      */
     protected final static class StdTypeConstructor extends AnnotatedWithParams
             implements java.io.Serializable {
-        private static final @Initialized long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-        public final static @Initialized int TYPE_ARRAY_LIST = 1;
-        public final static @Initialized int TYPE_HASH_MAP = 2;
-        public final static @Initialized int TYPE_LINKED_HASH_MAP = 3;
+        public final static int TYPE_ARRAY_LIST = 1;
+        public final static int TYPE_HASH_MAP = 2;
+        public final static int TYPE_LINKED_HASH_MAP = 3;
 
-        private final @Initialized AnnotatedWithParams _base;
+        private final AnnotatedWithParams _base;
 
-        private final @Initialized int _type;
+        private final int _type;
 
         public StdTypeConstructor(@Initialized AnnotatedWithParams base, @Initialized int t) {
             super(base, null);

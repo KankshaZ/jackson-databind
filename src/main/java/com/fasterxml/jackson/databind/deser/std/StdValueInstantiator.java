@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.std;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -21,18 +22,18 @@ public class StdValueInstantiator
     extends ValueInstantiator
     implements java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Type of values that are instantiated; used
      * for error reporting purposes.
      */
-    protected final @Initialized String _valueTypeDesc;
+    protected final String _valueTypeDesc;
 
     /**
      * @since 2.8
      */
-    protected final @Initialized Class<?> _valueClass;
+    protected final Class<?> _valueClass;
 
     // // // Default (no-args) construction
 
@@ -40,35 +41,35 @@ public class StdValueInstantiator
      * Default (no-argument) constructor to use for instantiation
      * (with {@link #createUsingDefault})
      */
-    protected @Initialized AnnotatedWithParams _defaultCreator;
+    protected @Nullable AnnotatedWithParams _defaultCreator;
 
     // // // With-args (property-based) construction
 
-    protected @Initialized AnnotatedWithParams _withArgsCreator;
-    protected SettableBeanProperty @Initialized [] _constructorArguments;
+    protected @Nullable AnnotatedWithParams _withArgsCreator;
+    protected SettableBeanProperty @Initialized @Nullable [] _constructorArguments;
 
     // // // Delegate construction
     
-    protected @Initialized JavaType _delegateType;
-    protected @Initialized AnnotatedWithParams _delegateCreator;
-    protected SettableBeanProperty @Initialized [] _delegateArguments;
+    protected @Nullable JavaType _delegateType;
+    protected @Nullable AnnotatedWithParams _delegateCreator;
+    protected SettableBeanProperty @Initialized @Nullable [] _delegateArguments;
 
     // // // Array delegate construction
 
-    protected @Initialized JavaType _arrayDelegateType;
-    protected @Initialized AnnotatedWithParams _arrayDelegateCreator;
-    protected SettableBeanProperty @Initialized [] _arrayDelegateArguments;
+    protected @Nullable JavaType _arrayDelegateType;
+    protected @Nullable AnnotatedWithParams _arrayDelegateCreator;
+    protected SettableBeanProperty @Initialized @Nullable [] _arrayDelegateArguments;
     
     // // // Scalar construction
 
-    protected @Initialized AnnotatedWithParams _fromStringCreator;
-    protected @Initialized AnnotatedWithParams _fromIntCreator;
-    protected @Initialized AnnotatedWithParams _fromLongCreator;
-    protected @Initialized AnnotatedWithParams _fromDoubleCreator;
-    protected @Initialized AnnotatedWithParams _fromBooleanCreator;
+    protected @Nullable AnnotatedWithParams _fromStringCreator;
+    protected @Nullable AnnotatedWithParams _fromIntCreator;
+    protected @Nullable AnnotatedWithParams _fromLongCreator;
+    protected @Nullable AnnotatedWithParams _fromDoubleCreator;
+    protected @Nullable AnnotatedWithParams _fromBooleanCreator;
 
     // // // Incomplete creator
-    protected @Initialized AnnotatedParameter  _incompleteParameter;
+    protected @Nullable AnnotatedParameter  _incompleteParameter;
     
     /*
     /**********************************************************
@@ -126,9 +127,9 @@ public class StdValueInstantiator
      */
     public void configureFromObjectSettings(@Initialized AnnotatedWithParams defaultCreator,
             @Initialized
-            AnnotatedWithParams delegateCreator, @Initialized JavaType delegateType, SettableBeanProperty @Initialized [] delegateArgs,
+            AnnotatedWithParams delegateCreator, @Initialized @Nullable JavaType delegateType, SettableBeanProperty @Initialized @Nullable [] delegateArgs,
             @Initialized
-            AnnotatedWithParams withArgsCreator, SettableBeanProperty @Initialized [] constructorArgs)
+            AnnotatedWithParams withArgsCreator, SettableBeanProperty @Initialized @Nullable [] constructorArgs)
     {
         _defaultCreator = defaultCreator;
         _delegateCreator = delegateCreator;
@@ -141,9 +142,9 @@ public class StdValueInstantiator
     public void configureFromArraySettings(
             @Initialized
             AnnotatedWithParams arrayDelegateCreator,
-            @Initialized
+            @Initialized @Nullable
             JavaType arrayDelegateType,
-            SettableBeanProperty @Initialized [] arrayDelegateArgs)
+            SettableBeanProperty @Initialized @Nullable [] arrayDelegateArgs)
     {
         _arrayDelegateCreator = arrayDelegateCreator;
         _arrayDelegateType = arrayDelegateType;
@@ -170,7 +171,7 @@ public class StdValueInstantiator
         _fromBooleanCreator = creator;
     }
 
-    public void configureIncompleteParameter(@Initialized AnnotatedParameter parameter) {
+    public void configureIncompleteParameter(@Initialized @Nullable AnnotatedParameter parameter) {
         _incompleteParameter = parameter;
     }
     
@@ -245,17 +246,17 @@ public class StdValueInstantiator
     }
 
     @Override
-    public JavaType getDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
+    public @Nullable JavaType getDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _delegateType;
     }
 
     @Override
-    public JavaType getArrayDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
+    public @Nullable JavaType getArrayDelegateType(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _arrayDelegateType;
     }
 
     @Override
-    public SettableBeanProperty[] getFromObjectArguments(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
+    public SettableBeanProperty @Nullable [] getFromObjectArguments(@Initialized StdValueInstantiator this, @Initialized DeserializationConfig config) {
         return _constructorArguments;
     }
     
@@ -266,6 +267,7 @@ public class StdValueInstantiator
      */
     
     @Override
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createUsingDefault(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt) throws IOException
     {
         if (_defaultCreator == null) { // sanity-check; caller should check
@@ -322,7 +324,7 @@ public class StdValueInstantiator
      */
 
     @Override
-    public Object createFromString(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized String value) throws IOException
+    public @Nullable Object createFromString(@Initialized StdValueInstantiator this, @Initialized DeserializationContext ctxt, @Initialized String value) throws IOException
     {
         if (_fromStringCreator == null) {
             return _createFromStringFallbacks(ctxt, value);
@@ -413,27 +415,27 @@ public class StdValueInstantiator
      */
 
     @Override
-    public AnnotatedWithParams getDelegateCreator(@Initialized StdValueInstantiator this) {
+    public @Nullable AnnotatedWithParams getDelegateCreator(@Initialized StdValueInstantiator this) {
         return _delegateCreator;
     }
 
     @Override
-    public AnnotatedWithParams getArrayDelegateCreator(@Initialized StdValueInstantiator this) {
+    public @Nullable AnnotatedWithParams getArrayDelegateCreator(@Initialized StdValueInstantiator this) {
         return _arrayDelegateCreator;
     }
 
     @Override
-    public AnnotatedWithParams getDefaultCreator(@Initialized StdValueInstantiator this) {
+    public @Nullable AnnotatedWithParams getDefaultCreator(@Initialized StdValueInstantiator this) {
         return _defaultCreator;
     }
 
     @Override
-    public AnnotatedWithParams getWithArgsCreator(@Initialized StdValueInstantiator this) {
+    public @Nullable AnnotatedWithParams getWithArgsCreator(@Initialized StdValueInstantiator this) {
         return _withArgsCreator;
     }
 
     @Override
-    public AnnotatedParameter getIncompleteParameter(@Initialized StdValueInstantiator this) {
+    public @Nullable AnnotatedParameter getIncompleteParameter(@Initialized StdValueInstantiator this) {
         return _incompleteParameter;
     }
 
@@ -448,6 +450,7 @@ public class StdValueInstantiator
      *  {@link #wrapAsJsonMappingException}
      */
     @Deprecated // since 2.7
+    @SuppressWarnings("nullness") //need to annotated JsonMappingException in parent folder
     protected JsonMappingException wrapException(Throwable t)
     {
         // 05-Nov-2015, tatu: This used to always unwrap the whole exception, but now only
@@ -515,11 +518,11 @@ public class StdValueInstantiator
     /* Helper methods
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness") // need to annotate findInjectableValue DeserializationContext.java in parent folder
     private Object _createUsingDelegate(
-            @Initialized
+            @Initialized @Nullable
             AnnotatedWithParams delegateCreator,
-            SettableBeanProperty @Initialized [] delegateArguments,
+            SettableBeanProperty @Initialized @Nullable [] delegateArguments,
             @Initialized
             DeserializationContext ctxt,
             @Initialized

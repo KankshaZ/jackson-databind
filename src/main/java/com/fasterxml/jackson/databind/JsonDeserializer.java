@@ -104,7 +104,7 @@ public abstract class JsonDeserializer<T>
      *
      * @return Deserialized value
      */
-    public abstract T deserialize(JsonParser p, DeserializationContext ctxt)
+    public abstract @Nullable T deserialize(JsonParser p, DeserializationContext ctxt)
         throws IOException, JsonProcessingException;
 
     /**
@@ -123,7 +123,7 @@ public abstract class JsonDeserializer<T>
      * that do not explicitly add support do not necessarily support
      * update-existing-value operation (esp. immutable types)
      */
-    public T deserialize(JsonParser p, DeserializationContext ctxt, T intoValue)
+    public @Nullable T deserialize(JsonParser p, DeserializationContext ctxt, T intoValue)
         throws IOException
     {
         if (ctxt.isEnabled(MapperFeature.IGNORE_MERGE_FOR_UNMERGEABLE)) {
@@ -206,7 +206,7 @@ public abstract class JsonDeserializer<T>
      *<p>
      * @since 2.3
      */
-    public Class<?> handledType() { return null; }
+    public @Nullable Class<?> handledType() { return null; }
 
     /**
      * Method called to see if deserializer instance is cachable and
@@ -235,7 +235,7 @@ public abstract class JsonDeserializer<T>
      * 
      * @since 2.1
      */
-    public JsonDeserializer<?> getDelegatee() {
+    public @Nullable JsonDeserializer<?> getDelegatee() {
         return null;
     }
 
@@ -251,7 +251,7 @@ public abstract class JsonDeserializer<T>
      * 
      * @since 2.0
      */
-    public Collection<Object> getKnownPropertyNames() {
+    public @Nullable Collection<Object> getKnownPropertyNames() {
         return null;
     }
 

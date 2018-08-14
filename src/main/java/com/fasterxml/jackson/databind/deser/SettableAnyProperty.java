@@ -25,31 +25,31 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 public class SettableAnyProperty
     implements java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     
     /**
      * Method used for setting "any" properties, along with annotation
      * information. Retained to allow contextualization of any properties.
      */
-    protected final @Initialized BeanProperty _property;
+    protected final BeanProperty _property;
 
     /**
      * Annotated variant is needed for JDK serialization only
      */
-    final protected @Initialized AnnotatedMember _setter;
+    final protected AnnotatedMember _setter;
 
-    final @Initialized boolean _setterIsField;
+    final boolean _setterIsField;
     
-    protected final @Initialized JavaType _type;
+    protected final JavaType _type;
 
-    protected @Initialized JsonDeserializer<Object> _valueDeserializer;
+    protected JsonDeserializer<Object> _valueDeserializer;
 
-    protected final @Initialized TypeDeserializer _valueTypeDeserializer;
+    protected final TypeDeserializer _valueTypeDeserializer;
 
     /**
      * @since 2.9
      */
-    protected final @Initialized KeyDeserializer _keyDeserializer;
+    protected final @Nullable KeyDeserializer _keyDeserializer;
 
     /*
     /**********************************************************
@@ -62,8 +62,8 @@ public class SettableAnyProperty
             @Nullable
             KeyDeserializer keyDeser,
             @Initialized
-            @Nullable
-            JsonDeserializer<Object> valueDeser, @Initialized @Nullable TypeDeserializer typeDeser)
+            
+            JsonDeserializer<Object> valueDeser, @Initialized TypeDeserializer typeDeser)
     {
         _property = property;
         _setter = setter;
@@ -132,7 +132,7 @@ public class SettableAnyProperty
      */
     public final void deserializeAndSet(@Initialized JsonParser p, @Initialized DeserializationContext ctxt,
             @Initialized
-            @Nullable
+            
             Object instance, @Initialized String propName)
         throws IOException
     {
@@ -199,6 +199,7 @@ public class SettableAnyProperty
      * @param propName Name of property (from Json input) to set
      * @param value Value of the property
      */
+    @SuppressWarnings("nullness") // need to annotate JsonMappingException in parent class
     protected void _throwAsIOE(@Initialized Exception e, @Initialized Object propName, @Initialized Object value)
         throws IOException
     {
@@ -227,9 +228,9 @@ public class SettableAnyProperty
     @Override public String toString(@Initialized SettableAnyProperty this) { return "[any property on class "+getClassName()+"]"; }
 
     private static class AnySetterReferring extends Referring {
-        private final @Initialized SettableAnyProperty _parent;
-        private final @Initialized Object _pojo;
-        private final @Initialized String _propName;
+        private final SettableAnyProperty _parent;
+        private final Object _pojo;
+        private final String _propName;
 
         public AnySetterReferring(@Initialized SettableAnyProperty parent,
                 @Initialized

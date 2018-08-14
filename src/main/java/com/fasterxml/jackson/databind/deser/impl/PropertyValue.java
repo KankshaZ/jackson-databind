@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,14 +15,14 @@ import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
  */
 public abstract class PropertyValue
 {
-    public final @Initialized PropertyValue next;
+    public final @Nullable PropertyValue next;
 
     /**
      * Value to assign when POJO has been instantiated.
      */
-    public final @Initialized Object value;
+    public final Object value;
     
-    protected PropertyValue(PropertyValue next, Object value)
+    protected PropertyValue(@Nullable PropertyValue next, Object value)
     {
         this.next = next;
         this.value = value;
@@ -47,9 +48,9 @@ public abstract class PropertyValue
     final static class Regular
         extends PropertyValue
     {
-        final @Initialized SettableBeanProperty _property;
+        final SettableBeanProperty _property;
         
-        public Regular(@Initialized PropertyValue next, @Initialized Object value,
+        public Regular(@Initialized @Nullable PropertyValue next, @Initialized Object value,
                        @Initialized
                        SettableBeanProperty prop)
         {
@@ -74,10 +75,10 @@ public abstract class PropertyValue
     final static class Any
         extends PropertyValue
     {
-        final @Initialized SettableAnyProperty _property;
-        final @Initialized String _propertyName;
+        final SettableAnyProperty _property;
+        final String _propertyName;
         
-        public Any(@Initialized PropertyValue next, @Initialized Object value,
+        public Any(@Initialized @Nullable PropertyValue next, @Initialized Object value,
                    @Initialized
                    SettableAnyProperty prop,
                    @Initialized
@@ -103,9 +104,9 @@ public abstract class PropertyValue
     final static class Map
         extends PropertyValue
     {
-        final @Initialized Object _key;
+        final Object _key;
         
-        public Map(@Initialized PropertyValue next, @Initialized Object value, @Initialized Object key)
+        public Map(@Initialized @Nullable PropertyValue next, @Initialized Object value, @Initialized Object key)
         {
             super(next, value);
             _key = key;

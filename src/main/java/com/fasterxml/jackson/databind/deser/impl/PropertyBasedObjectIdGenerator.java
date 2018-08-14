@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class PropertyBasedObjectIdGenerator
 	extends ObjectIdGenerators.PropertyGenerator
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public PropertyBasedObjectIdGenerator(@Initialized Class<?> scope) {
         super(scope);
@@ -30,7 +31,8 @@ public class PropertyBasedObjectIdGenerator
     }
 
     @Override
-    public com.fasterxml.jackson.annotation.ObjectIdGenerator.IdKey key(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Object key) {
+    @SuppressWarnings("nullness") //need to annotate com.fasterxml.jackson.annotation.ObjectIdGenerator
+    public com.fasterxml.jackson.annotation.ObjectIdGenerator.@Nullable IdKey key(@Initialized PropertyBasedObjectIdGenerator this, @Initialized Object key) {
         if (key == null) {
             return null;
         }

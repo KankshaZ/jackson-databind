@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -21,27 +22,27 @@ import com.fasterxml.jackson.databind.util.Converter;
  */
 public abstract class JavaUtilCollectionsDeserializers
 {
-    private final static @Initialized int TYPE_SINGLETON_SET = 1;
-    private final static @Initialized int TYPE_SINGLETON_LIST = 2;
-    private final static @Initialized int TYPE_SINGLETON_MAP = 3;
+    private final static int TYPE_SINGLETON_SET = 1;
+    private final static int TYPE_SINGLETON_LIST = 2;
+    private final static int TYPE_SINGLETON_MAP = 3;
 
-    private final static @Initialized int TYPE_UNMODIFIABLE_SET = 4;
-    private final static @Initialized int TYPE_UNMODIFIABLE_LIST = 5;
-    private final static @Initialized int TYPE_UNMODIFIABLE_MAP = 6;
+    private final static int TYPE_UNMODIFIABLE_SET = 4;
+    private final static int TYPE_UNMODIFIABLE_LIST = 5;
+    private final static int TYPE_UNMODIFIABLE_MAP = 6;
 
-    public final static @Initialized int TYPE_AS_LIST = 7;
+    public final static int TYPE_AS_LIST = 7;
 
     // 10-Jan-2018, tatu: There are a few "well-known" special containers in JDK too:
 
-    private final static @Initialized Class<?> CLASS_AS_ARRAYS_LIST = Arrays.asList(null, null).getClass();
+    private final static Class<?> CLASS_AS_ARRAYS_LIST = Arrays.asList(null, null).getClass();
 
-    private final static @Initialized Class<?> CLASS_SINGLETON_SET;
-    private final static @Initialized Class<?> CLASS_SINGLETON_LIST;
-    private final static @Initialized Class<?> CLASS_SINGLETON_MAP;
+    private final static Class<?> CLASS_SINGLETON_SET;
+    private final static Class<?> CLASS_SINGLETON_LIST;
+    private final static Class<?> CLASS_SINGLETON_MAP;
 
-    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_SET;
-    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_LIST;
-    private final static @Initialized Class<?> CLASS_UNMODIFIABLE_MAP;
+    private final static Class<?> CLASS_UNMODIFIABLE_SET;
+    private final static Class<?> CLASS_UNMODIFIABLE_LIST;
+    private final static Class<?> CLASS_UNMODIFIABLE_MAP;
 
     static {
         Set<?> set = Collections.singleton(Boolean.TRUE);
@@ -57,7 +58,7 @@ public abstract class JavaUtilCollectionsDeserializers
         CLASS_UNMODIFIABLE_MAP = Collections.unmodifiableMap(map).getClass();
     }
 
-    public static JsonDeserializer<?> findForCollection(@Initialized DeserializationContext ctxt,
+    public static @Nullable JsonDeserializer<?> findForCollection(@Initialized DeserializationContext ctxt,
             @Initialized
             JavaType type)
         throws JsonMappingException
@@ -81,7 +82,7 @@ public abstract class JavaUtilCollectionsDeserializers
         return new StdDelegatingDeserializer<Object>(conv);
     }
 
-    public static JsonDeserializer<?> findForMap(@Initialized DeserializationContext ctxt,
+    public static @Nullable JsonDeserializer<?> findForMap(@Initialized DeserializationContext ctxt,
             @Initialized
             JavaType type)
         throws JsonMappingException
@@ -113,9 +114,9 @@ public abstract class JavaUtilCollectionsDeserializers
      */
     private static class JavaUtilCollectionsConverter implements Converter<Object,Object>
     {
-        private final @Initialized JavaType _inputType;
+        private final JavaType _inputType;
 
-        private final @Initialized int _kind;
+        private final int _kind;
 
         private JavaUtilCollectionsConverter(@Initialized int kind, @Initialized JavaType inputType) {
             _inputType = inputType;
@@ -123,7 +124,8 @@ public abstract class JavaUtilCollectionsDeserializers
         }
         
         @Override
-        public Object convert(JavaUtilCollectionsDeserializers.@Initialized JavaUtilCollectionsConverter this, @Initialized Object value) {
+        @SuppressWarnings("nullness") //must annotate Converter in util folder
+        public @Nullable Object convert(JavaUtilCollectionsDeserializers.@Initialized JavaUtilCollectionsConverter this, @Initialized Object value) {
             if (value == null) { // is this legal to get?
                 return null;
             }

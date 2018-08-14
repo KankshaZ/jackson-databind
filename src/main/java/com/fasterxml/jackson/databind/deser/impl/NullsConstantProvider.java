@@ -14,15 +14,15 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
 public class NullsConstantProvider
     implements NullValueProvider, java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private final static @Initialized NullsConstantProvider SKIPPER = new NullsConstantProvider(null);
+    private final static NullsConstantProvider SKIPPER = new NullsConstantProvider(null);
 
-    private final static @Initialized NullsConstantProvider NULLER = new NullsConstantProvider(null);
+    private final static NullsConstantProvider NULLER = new NullsConstantProvider(null);
     
-    protected final @Initialized Object _nullValue;
+    protected final @Nullable Object _nullValue;
 
-    protected final @Initialized AccessPattern _access;
+    protected final AccessPattern _access;
 
     protected NullsConstantProvider(@Initialized @Nullable Object nvl) {
         _nullValue = nvl;
@@ -75,7 +75,7 @@ public class NullsConstantProvider
     }
     
     @Override
-    public Object getNullValue(@Initialized NullsConstantProvider this, @Initialized DeserializationContext ctxt) {
+    public @Nullable Object getNullValue(@Initialized NullsConstantProvider this, @Initialized DeserializationContext ctxt) {
         return _nullValue;
     }
 }

@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
 public class NullsAsEmptyProvider
     implements NullValueProvider, java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized JsonDeserializer<?> _deserializer;
+    protected final JsonDeserializer<?> _deserializer;
 
     public NullsAsEmptyProvider(@Initialized JsonDeserializer<?> deser) {
         _deserializer = deser;

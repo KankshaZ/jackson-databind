@@ -14,10 +14,10 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
 public class NullsFailProvider
     implements NullValueProvider, java.io.Serializable
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized PropertyName _name;
-    protected final @Initialized JavaType _type;
+    protected final @Nullable PropertyName _name;
+    protected final JavaType _type;
 
     protected NullsFailProvider(@Initialized @Nullable PropertyName name, @Initialized JavaType type) {
         _name = name;
@@ -39,7 +39,8 @@ public class NullsFailProvider
     }
 
     @Override
-    public Object getNullValue(@Initialized NullsFailProvider this, @Initialized DeserializationContext ctxt)
+    @SuppressWarnings("nullness") // need to annotate InvalidNullException in databind/exc
+    public @Nullable Object getNullValue(@Initialized NullsFailProvider this, @Initialized DeserializationContext ctxt)
             throws JsonMappingException {
         throw InvalidNullException.from(ctxt, _name, _type);
     }

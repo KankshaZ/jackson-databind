@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.util.NameTransformer;
 public class BeanAsArrayDeserializer
     extends BeanDeserializerBase
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Deserializer we delegate operations that we cannot handle.
      */
-    protected final @Initialized BeanDeserializerBase _delegate;
+    protected final BeanDeserializerBase _delegate;
 
     /**
      * Properties in order expected to be found in JSON array.

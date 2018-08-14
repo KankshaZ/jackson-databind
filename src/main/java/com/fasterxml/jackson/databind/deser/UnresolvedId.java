@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
  * @author pgelinas
  */
 public class UnresolvedId {
-    private final @Initialized Object _id;
-    private final @Initialized JsonLocation _location;
-    private final @Initialized Class<?> _type;
+    private final Object _id;
+    private final JsonLocation _location;
+    private final Class<?> _type;
 
     public UnresolvedId(@Initialized Object id, @Initialized Class<?> type, @Initialized JsonLocation where) {
         _id = id;

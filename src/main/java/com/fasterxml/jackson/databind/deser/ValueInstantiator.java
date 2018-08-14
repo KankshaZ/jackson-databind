@@ -147,7 +147,7 @@ public abstract class ValueInstantiator
      * NOTE: all properties will be of type
      * {@link com.fasterxml.jackson.databind.deser.CreatorProperty}.
      */
-    public SettableBeanProperty[] getFromObjectArguments(@Initialized DeserializationConfig config) {
+    public SettableBeanProperty @Nullable [] getFromObjectArguments(@Initialized DeserializationConfig config) {
         return null;
     }
 
@@ -158,7 +158,7 @@ public abstract class ValueInstantiator
      * specified type (using standard deserializer for that type), and
      * pass that to instantiator.
      */
-    public JavaType getDelegateType(@Initialized DeserializationConfig config) { return null; }
+    public @Nullable JavaType getDelegateType(@Initialized DeserializationConfig config) { return null; }
 
     /**
      * Method that can be used to determine what is the type of array delegate
@@ -169,7 +169,7 @@ public abstract class ValueInstantiator
      *
      * @since 2.7
      */
-    public JavaType getArrayDelegateType(@Initialized DeserializationConfig config) { return null; }
+    public @Nullable JavaType getArrayDelegateType(@Initialized DeserializationConfig config) { return null; }
 
     /*
     /**********************************************************
@@ -187,6 +187,7 @@ public abstract class ValueInstantiator
      * This method is called if {@link #getFromObjectArguments} returns
      * null or empty List.
      */
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createUsingDefault(@Initialized DeserializationContext ctxt) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no default no-arguments constructor found");
@@ -200,6 +201,7 @@ public abstract class ValueInstantiator
      * This method is called if {@link #getFromObjectArguments} returns
      * a non-empty List of arguments.
      */
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createFromObjectWith(@Initialized DeserializationContext ctxt, Object @Initialized [] args) throws IOException {
         // sanity check; shouldn't really get called if no Creator specified
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
@@ -235,6 +237,7 @@ public abstract class ValueInstantiator
      * Method to called to create value instance from JSON Object using
      * an intermediate "delegate" value to pass to createor method
      */
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createUsingDelegate(@Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no delegate creator specified");
@@ -244,6 +247,7 @@ public abstract class ValueInstantiator
      * Method to called to create value instance from JSON Array using
      * an intermediate "delegate" value to pass to createor method
      */
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createUsingArrayDelegate(@Initialized DeserializationContext ctxt, @Initialized Object delegate) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no array delegate creator specified");
@@ -255,29 +259,28 @@ public abstract class ValueInstantiator
     /* (String, Number, Boolean)
     /**********************************************************
      */
-    
-    public Object createFromString(@Initialized DeserializationContext ctxt, @Initialized @Nullable String value) throws IOException {
+    public @Nullable Object createFromString(@Initialized DeserializationContext ctxt, @Initialized String value) throws IOException {
         return _createFromStringFallbacks(ctxt, value);
     }
-
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createFromInt(@Initialized DeserializationContext ctxt, @Initialized int value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no int/Int-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
-
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createFromLong(@Initialized DeserializationContext ctxt, @Initialized long value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no long/Long-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
-
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createFromDouble(@Initialized DeserializationContext ctxt, @Initialized double value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no double/Double-argument constructor/factory method to deserialize from Number value (%s)",
                 value);
     }
-
+    @SuppressWarnings("nullness") // need to annotate DeserializationContext.java in parent folder
     public Object createFromBoolean(@Initialized DeserializationContext ctxt, @Initialized boolean value) throws IOException {
         return ctxt.handleMissingInstantiator(getValueClass(), this, null,
                 "no boolean/Boolean-argument constructor/factory method to deserialize from boolean value (%s)",
@@ -300,7 +303,7 @@ public abstract class ValueInstantiator
      * That is, even if {@link #canCreateUsingDefault()} returns true,
      * this method may return null .
      */
-    public AnnotatedWithParams getDefaultCreator() { return null; }
+    public @Nullable AnnotatedWithParams getDefaultCreator() { return null; }
 
     /**
      * Method that can be called to try to access member (constructor,
@@ -310,7 +313,7 @@ public abstract class ValueInstantiator
      * That is, even if {@link #canCreateUsingDelegate()} returns true,
      * this method may return null .
      */
-    public AnnotatedWithParams getDelegateCreator() { return null; }
+    public @Nullable AnnotatedWithParams getDelegateCreator() { return null; }
 
     /**
      * Method that can be called to try to access member (constructor,
@@ -320,7 +323,7 @@ public abstract class ValueInstantiator
      * That is, even if {@link #canCreateUsingArrayDelegate()} returns true,
      * this method may return null .
      */
-    public AnnotatedWithParams getArrayDelegateCreator() { return null; }
+    public @Nullable AnnotatedWithParams getArrayDelegateCreator() { return null; }
 
     /**
      * Method that can be called to try to access member (constructor,
@@ -331,13 +334,13 @@ public abstract class ValueInstantiator
      * That is, even if {@link #canCreateFromObjectWith()} returns true,
      * this method may return null .
      */
-    public AnnotatedWithParams getWithArgsCreator() { return null; }
+    public @Nullable AnnotatedWithParams getWithArgsCreator() { return null; }
 
     /**
      * If an incomplete creator was found, this is the first parameter that
      * needs further annotation to help make the creator complete.
      */
-    public AnnotatedParameter getIncompleteParameter() { return null; }
+    public @Nullable AnnotatedParameter getIncompleteParameter() { return null; }
 
     /*
     /**********************************************************
@@ -348,7 +351,7 @@ public abstract class ValueInstantiator
     /**
      * @since 2.4 (demoted from <code>StdValueInstantiator</code>)
      */
-    protected Object _createFromStringFallbacks(@Initialized DeserializationContext ctxt, @Initialized String value)
+    protected @Nullable Object _createFromStringFallbacks(@Initialized DeserializationContext ctxt, @Initialized String value)
             throws IOException
     {
         /* 28-Sep-2011, tatu: Ok this is not clean at all; but since there are legacy
@@ -400,7 +403,7 @@ public abstract class ValueInstantiator
      */
     public static class Base extends ValueInstantiator
     {
-        protected final @Initialized Class<?> _valueType;
+        protected final Class<?> _valueType;
 
         public Base(Class<?> type) {
             _valueType = type;

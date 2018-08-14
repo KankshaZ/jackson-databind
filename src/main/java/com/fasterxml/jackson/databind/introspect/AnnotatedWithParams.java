@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.introspect;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -18,7 +20,7 @@ public abstract class AnnotatedWithParams
      * Annotations associated with parameters of the annotated
      * entity (method or constructor parameters)
      */
-    protected final AnnotationMap[] _paramAnnotations;
+    protected final AnnotationMap @Nullable [] _paramAnnotations;
 
     /*
     /**********************************************************
@@ -35,7 +37,7 @@ public abstract class AnnotatedWithParams
     /**
      * @since 2.8.1
      */
-    protected AnnotatedWithParams(AnnotatedWithParams base, AnnotationMap[] paramAnnotations) {
+    protected AnnotatedWithParams(AnnotatedWithParams base, AnnotationMap @Nullable [] paramAnnotations) {
         super(base);
         _paramAnnotations = paramAnnotations;
     }
@@ -72,7 +74,7 @@ public abstract class AnnotatedWithParams
     /**********************************************************
      */
 
-    public final AnnotationMap getParameterAnnotations(int index)
+    public @Nullable final AnnotationMap getParameterAnnotations(int index)
     {
         if (_paramAnnotations != null) {
             if (index >= 0 && index < _paramAnnotations.length) {

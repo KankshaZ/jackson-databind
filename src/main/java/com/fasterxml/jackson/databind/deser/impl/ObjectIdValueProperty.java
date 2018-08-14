@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.deser.impl;
 
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -18,9 +19,9 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 public final class ObjectIdValueProperty
     extends SettableBeanProperty
 {
-    private static final @Initialized long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    protected final @Initialized ObjectIdReader _objectIdReader;
+    protected final ObjectIdReader _objectIdReader;
 
     public ObjectIdValueProperty(@Initialized ObjectIdReader objectIdReader,
             @Initialized
@@ -65,11 +66,11 @@ public final class ObjectIdValueProperty
     // // // BeanProperty impl
     
     @Override
-    public <A extends Annotation> A getAnnotation(@Initialized ObjectIdValueProperty this, @Initialized Class<A> acls) {
+    public @Nullable <A extends Annotation> A getAnnotation(@Initialized ObjectIdValueProperty this, @Initialized Class<A> acls) {
         return null;
     }
 
-    @Override public AnnotatedMember getMember(@Initialized ObjectIdValueProperty this) {  return null; }
+    @Override @Nullable public AnnotatedMember getMember(@Initialized ObjectIdValueProperty this) {  return null; }
 
     /*
     /**********************************************************
@@ -86,7 +87,7 @@ public final class ObjectIdValueProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(@Initialized ObjectIdValueProperty this, @Initialized JsonParser p,
+    public @Nullable Object deserializeSetAndReturn(@Initialized ObjectIdValueProperty this, @Initialized JsonParser p,
     		@Initialized
     		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
@@ -116,7 +117,7 @@ public final class ObjectIdValueProperty
     }
 
     @Override
-    public Object setAndReturn(@Initialized ObjectIdValueProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
+    public @Nullable Object setAndReturn(@Initialized ObjectIdValueProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         SettableBeanProperty idProp = _objectIdReader.idProperty;
         if (idProp == null) {

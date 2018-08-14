@@ -660,6 +660,7 @@ public abstract class MapperConfigBase<CFG extends ConfigFeature,
     }
 
     @Override
+    @SuppressWarnings("nullness") // [argument.type.incompatible] but will have to annotate jackson-annotations for this since method belongs to class in jackson-annotations
     public final JsonIgnoreProperties.@Nullable Value getDefaultPropertyIgnorals(@Initialized MapperConfigBase<CFG, T> this, @Initialized Class<?> baseType,
             @Initialized
             AnnotatedClass actualClass)

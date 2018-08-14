@@ -113,7 +113,7 @@ public class BeanAsArrayBuilderDeserializer
     /* JsonDeserializer implementation
     /**********************************************************
      */
-
+    @SuppressWarnings("nullness") // How do I annotated Method class's invoke method present in java.lang.reflect
     protected final Object finishBuild(@Initialized DeserializationContext ctxt, @Initialized Object builder)
         throws IOException
     {

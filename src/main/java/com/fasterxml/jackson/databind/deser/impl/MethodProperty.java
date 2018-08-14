@@ -22,20 +22,20 @@ import com.fasterxml.jackson.databind.util.Annotations;
 public final class MethodProperty
     extends SettableBeanProperty
 {
-    private static final @Initialized long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-    protected final @Initialized AnnotatedMethod _annotated;
+    protected final AnnotatedMethod _annotated;
     
     /**
      * Setter method for modifying property value; used for
      * "regular" method-accessible properties.
      */
-    protected final transient @Initialized Method _setter;
+    protected final transient Method _setter;
 
     /**
      * @since 2.9
      */
-    final protected @Initialized boolean _skipNulls;
+    final protected boolean _skipNulls;
     
     public MethodProperty(@Initialized BeanPropertyDefinition propDef,
             @Initialized
@@ -106,7 +106,7 @@ public final class MethodProperty
      */
     
     @Override
-    public <A extends Annotation> A getAnnotation(@Initialized MethodProperty this, @Initialized Class<A> acls) {
+    public @Nullable <A extends Annotation> A getAnnotation(@Initialized MethodProperty this, @Initialized Class<A> acls) {
         return (_annotated == null) ? null : _annotated.getAnnotation(acls);
     }
 
@@ -119,6 +119,7 @@ public final class MethodProperty
      */
 
     @Override
+    @SuppressWarnings("nullness") // need to annotate JsonParser|
     public void deserializeAndSet(@Initialized MethodProperty this, @Initialized JsonParser p, @Initialized DeserializationContext ctxt,
             @Initialized
             Object instance) throws IOException
@@ -142,7 +143,8 @@ public final class MethodProperty
     }
 
     @Override
-    public Object deserializeSetAndReturn(@Initialized MethodProperty this, @Initialized JsonParser p,
+    @SuppressWarnings("nullness") // need to annotate JsonParser|
+    public @Nullable Object deserializeSetAndReturn(@Initialized MethodProperty this, @Initialized JsonParser p,
     		@Initialized
     		DeserializationContext ctxt, @Initialized Object instance) throws IOException
     {
@@ -178,7 +180,7 @@ public final class MethodProperty
     }
 
     @Override
-    public Object setAndReturn(@Initialized MethodProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
+    public @Nullable Object setAndReturn(@Initialized MethodProperty this, @Initialized Object instance, @Initialized Object value) throws IOException
     {
         try {
             Object result = _setter.invoke(instance, value);
